@@ -6,24 +6,24 @@ const shiftController = require('../controllers/shift.controller');
 const app = express();
 
 // Booking routes
-app.get('/bookings', bookingController.getAllBookings);
-app.get('/bookings/:id', bookingController.getBookingById);
-app.post('/bookings', bookingController.createBooking);
-app.patch('/bookings/:id', bookingController.updateBooking);
-app.delete('/bookings/:id', bookingController.deleteBooking);
+app.get('/api/bookings', bookingController.getAllBookings);
+app.get('/api/bookings/:id', bookingController.getBookingById);
+app.post('/api/bookings', bookingController.createBooking);
+app.patch('/api/bookings/:id', bookingController.updateBooking);
+app.delete('/api/bookings/:id', bookingController.deleteBooking);
 
 // Employee routes
-app.get('/employees', employeeController.getAllEmployees);
-app.get('/employees/:id', employeeController.getEmployeeById);
-app.post('/employees', employeeController.createEmployee);
-app.patch('/employees/:id', employeeController.updateEmployee);
-app.delete('/employees/:id', employeeController.deleteEmployee);
+app.get('/api/employees', employeeController.getAllEmployees);
+app.get('/api/employees/:id', employeeController.getEmployeeById);
+app.post('/api/employees', employeeController.createEmployee);
+app.patch('/api/employees/:id', employeeController.updateEmployee);
+app.delete('/api/employees/:id', employeeController.deleteEmployee);
 
 // Shift routes
-app.get('/shifts', shiftController.getAllShifts);
-app.get('/shifts/:id', shiftController.getShiftById);
-app.post('/shifts', shiftController.createShift);
-app.patch('/shifts/:id', shiftController.updateShift);
-app.delete('/shifts/:id', shiftController.deleteShift);
+app.get('/api/shifts', shiftController.getAllShifts);
+app.get('/api/shifts/:id', shiftController.getShiftById);
+app.post('/api/shifts', shiftController.createShift);
+app.patch('/api/shifts/:id', shiftController.updateShift);
+app.delete('/api/shifts/:id', shiftController.deleteShift);
 
 module.exports = app;

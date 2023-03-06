@@ -2,30 +2,30 @@ const mongoose = require("mongoose");
 
 const EmployeeSchema = new mongoose.Schema({
     name: {
-    type: String,
-    required: [true, 'Name is required'],
+        type: String,
+        required: [true, 'Name is required'],
     },
     email: {
-    type: String,
-    required: [true, 'Email is required'],
-    unique: true,
-    match: [/\S+@\S+\.\S+/, 'Invalid email format'],
+        type: String,
+        required: [true, 'Email is required'],
+        unique: true,
+            match: [/\S+@\S+\.\S+/, 'Invalid email format'],
     },
     phone: {
-    type: String,
-    required: [true, 'Phone number is required'],
+        type: String,
+        required: [true, 'Phone number is required'],
     },
-    birthday: {
-    type: Date,
-    required: [true, 'Birthday is required'],
+        birthday: {
+        type: Date,
+        required: [true, 'Birthday is required'],
     },
     createdAt: {
-    type: Date,
-    default: Date.now,
+        type: Date,
+        default: Date.now,
     },
     updatedAt: {
-    type: Date,
-    default: Date.now,
+        type: Date,
+        default: Date.now,
     },
 });
 

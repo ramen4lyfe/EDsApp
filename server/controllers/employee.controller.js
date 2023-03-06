@@ -37,7 +37,7 @@ const createEmployee = (req, res) => {
     console.log(body);
     Employee.create(req.body)
         .then((newEmployee) => {
-            res.json({ newEmployee });
+            res.json({newEmployee});
         })
         .catch((err) => {
             res.status(400).json({error: err });

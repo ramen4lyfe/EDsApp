@@ -3,17 +3,18 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 
 const EmployeeModal = ({ show, handleClose }) => {
+
 const [name, setName] = useState('');
 const [email, setEmail] = useState('');
 const [phone, setPhone] = useState('');
 const [birthday, setBirthday] = useState('');
-// const [errors, setErrors] = useState("");
+const [errors, setErrors] = useState("");
 
 
 const handleSubmit = (e) => {
     e.preventDefault();
     // const newEmployee = { name, email, phone, birthday };
-    axios.post("http://localhost:8000/api/employees", {name,email,phone, birthday})
+    axios.post("http://localhost:8000/api/employees", {name, email, phone, birthday})
     .then(response => {
         console.log(response);
         setName("")
@@ -21,11 +22,10 @@ const handleSubmit = (e) => {
         setPhone("")
         setBirthday("")
         // setShow(false)
-        handleClose();
+        handleClose("")
     })
     .catch((err) => {
-        console.log(err)
-            // setErrors(err.response.data.error.errors);
+        console.log(err.response.data.error.errors)
     });
 };
 
@@ -71,7 +71,7 @@ return (
                 onChange={(e) => setBirthday(e.target.value)}
             />
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" onClick={handleSubmit}>
             Add Employee
         </Button>
         </Form>

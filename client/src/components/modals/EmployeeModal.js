@@ -8,7 +8,7 @@ const [name, setName] = useState('');
 const [email, setEmail] = useState('');
 const [phone, setPhone] = useState('');
 const [birthday, setBirthday] = useState('');
-const [errors, setErrors] = useState("");
+const [errors, setErrors] = useState('');
 
 
 const handleSubmit = (e) => {

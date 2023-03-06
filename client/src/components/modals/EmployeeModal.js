@@ -15,17 +15,17 @@ const handleSubmit = (e) => {
     e.preventDefault();
     // const newEmployee = { name, email, phone, birthday };
     axios.post("http://localhost:8000/api/employees", {name, email, phone, birthday})
-    .then(response => {
-        console.log(response);
-        setName("")
-        setEmail("")
-        setPhone("")
-        setBirthday("")
+        .then(response => {
+            console.log(response);
+            setName("")
+            setEmail("")
+            setPhone("")
+            setBirthday("")
         // setShow(false)
         handleClose("")
     })
     .catch((err) => {
-        console.log(err.response.data.error.errors)
+        setErrors(err.response.data.error.errors)
     });
 };
 
@@ -71,14 +71,12 @@ return (
                 onChange={(e) => setBirthday(e.target.value)}
             />
         </Form.Group>
-        <Button variant="primary" type="submit" onClick={handleSubmit}>
-            Add Employee
-        </Button>
+        
         </Form>
     </Modal.Body>
     <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-            Close
+        <Button variant="primary" type="submit" onClick={handleSubmit}>
+            Add Employee
         </Button>
     </Modal.Footer>
     </Modal>

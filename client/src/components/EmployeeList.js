@@ -7,13 +7,16 @@ const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
-    const fetchEmployees = async () => {
-      const res = await axios.get("http://localhost:8000/api/employees");
+useEffect(() => {
+  axios.get("http://localhost:8000/api/employees")
+    .then(res => {
       setEmployees(res.data);
-    };
-    fetchEmployees();
-  }, []);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}, []);
+
 
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);

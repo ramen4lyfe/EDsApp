@@ -7,12 +7,26 @@ const [name, setName] = useState('');
 const [email, setEmail] = useState('');
 const [phone, setPhone] = useState('');
 const [birthday, setBirthday] = useState('');
+// const [errors, setErrors] = useState("");
 
-const handleSubmit = async (e) => {
+
+const handleSubmit = (e) => {
     e.preventDefault();
-    const newEmployee = { name, email, phone, birthday };
-    await axios.post("http://localhost:3000/employees", newEmployee);
-    handleClose();
+    // const newEmployee = { name, email, phone, birthday };
+    axios.post("http://localhost:8000/api/employees", {name,email,phone, birthday})
+    .then(response => {
+        console.log(response);
+        setName("")
+        setEmail("")
+        setPhone("")
+        setBirthday("")
+        // setShow(false)
+        handleClose();
+    })
+    .catch((err) => {
+        console.log(err)
+            // setErrors(err.response.data.error.errors);
+    });
 };
 
 return (

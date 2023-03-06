@@ -9,9 +9,10 @@ const EmployeeList = () => {
 
 useEffect(() => {
   axios.get("http://localhost:8000/api/employees")
-    .then(res => {
-      setEmployees(res.data);
-    })
+    .then((response) => {
+            console.log(response.data);
+            setEmployees(response.data);
+        })
     .catch(err => {
       console.log(err);
     });
@@ -35,7 +36,7 @@ useEffect(() => {
               </tr>
             </thead>
             <tbody>
-              {employees.map((employee) => (
+              {employees.map((employee,index) => (
                 <tr key={employee._id}>
                   <td>{employee.name}</td>
                   <td>{employee.email}</td>

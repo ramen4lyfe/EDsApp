@@ -1,58 +1,73 @@
-const { Employee } = require('../models/edscheduling.model');
+const Employee = require("../models/employee.model");
 
-// Get all employees
-const getAllEmployees = (req, res) => {
-    Employee.find()
-        .then((allEmployee) => {
-            res.json(allEmployee);
-        })
-        .catch((err) => {
-            res.status(400).json({error: err });
-        });
-};
-
-// Get an employee by ID
-const getEmployeeById = (req, res) => {
-    Employee.findById(req.params.id)
-        .then((employee) => {
-            res.json(employee);
-        })
-        .catch((err) => {
-            res.status(400).json({error: err });
-        });
-};
-
-// Create an employee
 const createEmployee = (req, res) => {
-    Employee.create(req.body)
+    const {body} = req;
+    console.log(body);
+    Patient.create(req.body)
         .then((newEmployee) => {
-            res.json(newEmployee);
+            res.json({ newEmployee });
         })
         .catch((err) => {
             res.status(400).json({error: err });
         });
 };
+const getAllEmployees = (req, res) => {
+    Patient.find()
+        .then((allEmployees) => {
+            res.json(allEmployees);
+        })
+        .catch((err) => {
+            res.status(400).json({error: err });
+        });
+};
+const getEmployeeById = (req, res) => {
+    Patient.findOne({_id: req.params.id})
+    .then((oneEmployee) => {
+        res.json(oneEmployee);
+    })
+    .catch((err) => {
+        res.status(400).json({error: err });
+    });
+};
 
-// Update an employee by ID
+// const addToList = (req, res) => {
+//     Patient.findOne({_id: req.params.id})
+//     .then((onePatient) => {
+//         res.json(onePatient);
+//     })
+//     .catch((err) => {
+//         res.status(400).json({error: err });
+//     });
+// };
+
+// const getOneByName = (req, res) => {
+//     Patient.findOne({firstName: req.params.firstName})
+//     .then((onePatientByName) => {
+//         res.json(onePatientByName);
+//         console.log(onePatientByName)
+//     })
+//     .catch((err) => {
+//         res.status(400).json({error: err });
+//     });
+// };
+
 const updateEmployee = (req, res) => {
-    Employee.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true})
+    Patient.findOneAndUpdate({_id: req.params.id}, req.body, {new: true, runValidators: true,})
         .then((updatedEmployee) => {
-            res.json(updatedEmployee);
+            res.json({ updatedEmployee });
         })
         .catch((err) => {
             res.status(400).json({error: err });
         });
 };
-
-// Delete an employee by ID
 const deleteEmployee = (req, res) => {
-    Employee.findByIdAndDelete(req.params.id)
+    Patient.deleteOne({_id: req.params.id})
         .then((deletedEmployee) => {
-            res.json(deletedEmployee);
+            res.json({ deletedEmployee });
         })
         .catch((err) => {
             res.status(400).json({error: err });
         });
 };
 
-module.exports = { getAllEmployees, getEmployeeById, createEmployee, updateEmployee, deleteEmployee };
+module.exports = {createEmployee, getAllEmployees, getEmployeeById, updateEmployee, deleteEmployee};

@@ -3,7 +3,7 @@ const Employee = require("../models/employee.model");
 const createEmployee = (req, res) => {
     const {body} = req;
     console.log(body);
-    Patient.create(req.body)
+    Employee.create(req.body)
         .then((newEmployee) => {
             res.json({ newEmployee });
         })
@@ -12,7 +12,7 @@ const createEmployee = (req, res) => {
         });
 };
 const getAllEmployees = (req, res) => {
-    Patient.find()
+    Employee.find()
         .then((allEmployees) => {
             res.json(allEmployees);
         })
@@ -21,7 +21,7 @@ const getAllEmployees = (req, res) => {
         });
 };
 const getEmployeeById = (req, res) => {
-    Patient.findOne({_id: req.params.id})
+    Employee.findOne({_id: req.params.id})
     .then((oneEmployee) => {
         res.json(oneEmployee);
     })
@@ -31,9 +31,9 @@ const getEmployeeById = (req, res) => {
 };
 
 // const addToList = (req, res) => {
-//     Patient.findOne({_id: req.params.id})
-//     .then((onePatient) => {
-//         res.json(onePatient);
+//     Employee.findOne({_id: req.params.id})
+//     .then((oneEmployee) => {
+//         res.json(oneEmployee);
 //     })
 //     .catch((err) => {
 //         res.status(400).json({error: err });
@@ -41,10 +41,10 @@ const getEmployeeById = (req, res) => {
 // };
 
 // const getOneByName = (req, res) => {
-//     Patient.findOne({firstName: req.params.firstName})
-//     .then((onePatientByName) => {
-//         res.json(onePatientByName);
-//         console.log(onePatientByName)
+//     Employee.findOne({firstName: req.params.firstName})
+//     .then((oneEmployeeByName) => {
+//         res.json(oneEmployeeByName);
+//         console.log(oneEmployeeByName)
 //     })
 //     .catch((err) => {
 //         res.status(400).json({error: err });
@@ -52,7 +52,7 @@ const getEmployeeById = (req, res) => {
 // };
 
 const updateEmployee = (req, res) => {
-    Patient.findOneAndUpdate({_id: req.params.id}, req.body, {new: true, runValidators: true,})
+    Employee.findOneAndUpdate({_id: req.params.id}, req.body, {new: true, runValidators: true,})
         .then((updatedEmployee) => {
             res.json({ updatedEmployee });
         })
@@ -61,7 +61,7 @@ const updateEmployee = (req, res) => {
         });
 };
 const deleteEmployee = (req, res) => {
-    Patient.deleteOne({_id: req.params.id})
+    Employee.deleteOne({_id: req.params.id})
         .then((deletedEmployee) => {
             res.json({ deletedEmployee });
         })

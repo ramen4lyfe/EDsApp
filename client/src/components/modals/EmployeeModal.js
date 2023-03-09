@@ -2,90 +2,89 @@ import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 
-const EmployeeModal = ({ show, handleClose }) => {
+function EmployeeModal ({ show, handleClose }) {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [birthday, setBirthday] = useState('');
+    const [errors, setErrors] = useState('');
 
-const [name, setName] = useState('');
-const [email, setEmail] = useState('');
-const [phone, setPhone] = useState('');
-const [birthday, setBirthday] = useState('');
-const [errors, setErrors] = useState('');
-
-
-const handleSubmit = (e) => {
+    const handleSubmit = (e) => {
     e.preventDefault();
-    // const newEmployee = { name, email, phone, birthday };
-    axios.post('http://localhost:8000/api/employees', {name, email, phone, birthday})
-        .then(response => {
-            console.log(response);
-            setName("")
-            setEmail("")
-            setPhone("")
-            setBirthday("")
-        // setShow(false)
-        handleClose("")
-    })
-    .catch((err) => {
-    if (err.response && err.response.data && err.response.data.error && err.response.data.error.errors) {
-        setErrors(err.response.data.error.errors);
-    } else {
-        // handle other types of errors
-        console.log(err);
-    }
-});
+    axios.post("http://localhost:8000/api/employees", { name, email, phone, birthday })
+        .then((response) => {
+        console.log(response);
+        setName("");
+        setEmail("");
+        setPhone("");
+        setBirthday("");
+        handleClose();
+        })
+        .catch((err) => {
+        console.log("Axios error:", err); // log error
+        if (err.response && err.response.data && err.response.data.error && err.response.data.error.errors) {
+            setErrors(err.response.data.error.errors);
+        } else {
+          // handle other types of errors
+            console.log(err);
+        }
+    });
 };
 
 return (
     <Modal show={show} onHide={handleClose}>
-    <Modal.Header closeButton>
+        <Modal.Header closeButton>
         <Modal.Title>Add Employee</Modal.Title>
-    </Modal.Header>
+        </Modal.Header>
     <Modal.Body>
         <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formBasicName">
+            <Form.Group controlId="formBasicName">
             <Form.Label>Name</Form.Label>
             <Form.Control
-                type="text"
-                placeholder="Enter name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+              type="text"
+              placeholder="Enter name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
-        </Form.Group>
-        <Form.Group controlId="formBasicEmail">
+          </Form.Group>
+          <Form.Group controlId="formBasicEmail">
             <Form.Label>Email</Form.Label>
             <Form.Control
-                type="email"
-                placeholder="Enter email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
-        </Form.Group>
-        <Form.Group controlId="formBasicPhone">
+          </Form.Group>
+          <Form.Group controlId="formBasicPhone">
             <Form.Label>Phone</Form.Label>
             <Form.Control
-                type="text"
-                placeholder="Enter phone number"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+              type="text"
+              placeholder="Enter phone number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
             />
-        </Form.Group>
-        <Form.Group controlId="formBasicBirthday">
+          </Form.Group>
+          <Form.Group controlId="formBasicBirthday">
             <Form.Label>Birthday</Form.Label>
             <Form.Control
-                type="date"
-                value={birthday}
-                onChange={(e) => setBirthday(e.target.value)}
+              type="date"
+              value={birthday}
+              onChange={(e) => setBirthday(e.target.value)}
             />
-        </Form.Group>
-        
+          </Form.Group>
         </Form>
-    </Modal.Body>
-    <Modal.Footer>
-        <Button variant="primary" type="submit" onClick={handleSubmit}>
-            Add Employee
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Cancel
         </Button>
-    </Modal.Footer>
+        <Button variant="primary" type="submit" onClick={handleSubmit}>
+          Add Employee
+        </Button>
+      </Modal.Footer>
     </Modal>
-    );
+  );
 };
 
 export default EmployeeModal;

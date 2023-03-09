@@ -47,7 +47,7 @@ useEffect(() => {
             </tbody>
           </Table>
           <Button onClick={handleShow} className="btn-primary mt-3">
-            Add Employee
+            Add Employee Modal
           </Button>
           <EmployeeModal show={showModal} handleClose={handleClose} />
         </div>

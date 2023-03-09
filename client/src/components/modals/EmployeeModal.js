@@ -14,7 +14,7 @@ const [errors, setErrors] = useState('');
 const handleSubmit = (e) => {
     e.preventDefault();
     // const newEmployee = { name, email, phone, birthday };
-    axios.post("http://localhost:8000/api/employees", {name, email, phone, birthday})
+    axios.post('http://localhost:8000/api/employees', {name, email, phone, birthday})
         .then(response => {
             console.log(response);
             setName("")
@@ -25,8 +25,13 @@ const handleSubmit = (e) => {
         handleClose("")
     })
     .catch((err) => {
-        setErrors(err.response.data.error.errors)
-    });
+    if (err.response && err.response.data && err.response.data.error && err.response.data.error.errors) {
+        setErrors(err.response.data.error.errors);
+    } else {
+        // handle other types of errors
+        console.log(err);
+    }
+});
 };
 
 return (

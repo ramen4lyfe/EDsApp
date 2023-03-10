@@ -13,12 +13,12 @@ function EmployeeModal ({ show, handleClose }) {
     e.preventDefault();
     axios.post("http://localhost:8000/api/employees", { name, email, phone, birthday })
         .then((response) => {
-        console.log(response);
-        setName("");
-        setEmail("");
-        setPhone("");
-        setBirthday("");
-        handleClose();
+            console.log(response);
+            setName("");
+            setEmail("");
+            setPhone("");
+            setBirthday("");
+            handleClose();
         })
         .catch((err) => {
         console.log("Axios error:", err); // log error
@@ -41,50 +41,50 @@ return (
             <Form.Group controlId="formBasicName">
             <Form.Label>Name</Form.Label>
             <Form.Control
-              type="text"
-              placeholder="Enter name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+                type="text"
+                placeholder="Enter name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
             />
-          </Form.Group>
-          <Form.Group controlId="formBasicEmail">
+        </Form.Group>
+        <Form.Group controlId="formBasicEmail">
             <Form.Label>Email</Form.Label>
             <Form.Control
-              type="email"
-              placeholder="Enter email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                placeholder="Enter email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
             />
-          </Form.Group>
-          <Form.Group controlId="formBasicPhone">
+        </Form.Group>
+        <Form.Group controlId="formBasicPhone">
             <Form.Label>Phone</Form.Label>
             <Form.Control
-              type="text"
-              placeholder="Enter phone number"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+                type="text"
+                placeholder="Enter phone number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
             />
-          </Form.Group>
-          <Form.Group controlId="formBasicBirthday">
+        </Form.Group>
+        <Form.Group controlId="formBasicBirthday">
             <Form.Label>Birthday</Form.Label>
             <Form.Control
-              type="date"
-              value={birthday}
-              onChange={(e) => setBirthday(e.target.value)}
+                type="date"
+                value={birthday}
+                onChange={(e) => setBirthday(e.target.value)}
             />
-          </Form.Group>
+        </Form.Group>
         </Form>
-      </Modal.Body>
-      <Modal.Footer>
+    </Modal.Body>
+    <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
-          Cancel
+            Cancel
         </Button>
         <Button variant="primary" type="submit" onClick={handleSubmit}>
-          Add Employee
+            Add Employee
         </Button>
-      </Modal.Footer>
+    </Modal.Footer>
     </Modal>
-  );
+    );
 };
 
 export default EmployeeModal;

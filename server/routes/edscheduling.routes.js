@@ -1,26 +1,28 @@
-// const bookingController = require('../controllers/booking.controller');
 // const employeeController = require('../controllers/employee.controller');
-// const shiftController = require('../controllers/shift.controller');
+// const edschedulingController = require('../controllers/shift.controller');
+// const edschedulingController = require('../controllers/booking.controller');
+const edschedulingController = require('../controllers/edscheduling.controller');
 
-// module.exports = (app) => {
-//   // Booking routes
-//     app.get('/api/bookings', bookingController.getAllBookings);
-//     app.get('/api/bookings/:id', bookingController.getBookingById);
-//     app.post('/api/bookings', bookingController.createBooking);
-//     app.patch('/api/bookings/:id', bookingController.updateBooking);
-//     app.delete('/api/bookings/:id', bookingController.deleteBooking);
 
-//   // Employee routes
-//     app.get('/api/employees', employeeController.getAllEmployees);
-//     app.get('/api/employees/:id', employeeController.getEmployeeById);
-//     app.post('/api/employees', employeeController.createEmployee);
-//     app.patch('/api/employees/:id', employeeController.updateEmployee);
-//     app.delete('/api/employees/:id', employeeController.deleteEmployee);
+module.exports = (app) => {
+  // Employee routes
+    app.get('/api/employees', edschedulingController.getAllEmployees);
+    app.get('/api/employees/:id', edschedulingController.getEmployeeById);
+    app.post('/api/employees', edschedulingController.createEmployee);
+    app.patch('/api/employees/:id', edschedulingController.updateEmployee);
+    app.delete('/api/employees/:id', edschedulingController.deleteEmployee);
 
-//   // Shift routes
-//     app.get('/api/shifts', shiftController.getAllShifts);
-//     app.get('/api/shifts/:id', shiftController.getShiftById);
-//     app.post('/api/shifts', shiftController.createShift);
-//     app.patch('/api/shifts/:id', shiftController.updateShift);
-//     app.delete('/api/shifts/:id', shiftController.deleteShift);
-// };
+  // Shift routes
+    app.get('/api/shifts', edschedulingController.getAllShifts);
+    app.get('/api/shifts/:id', edschedulingController.getShiftById);
+    app.post('/api/shifts', edschedulingController.createShift);
+    app.patch('/api/shifts/:id', edschedulingController.updateShift);
+    app.delete('/api/shifts/:id', edschedulingController.deleteShift);
+
+  // Booking routes
+    app.get('/api/bookings', edschedulingController.getAllBookings);
+    app.get('/api/bookings/:id', edschedulingController.getBookingById);
+    app.post('/api/bookings', edschedulingController.createBooking);
+    app.patch('/api/bookings/:id', edschedulingController.updateBooking);
+    app.delete('/api/bookings/:id', edschedulingController.deleteBooking);
+}

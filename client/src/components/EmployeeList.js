@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Table, Button } from 'react-bootstrap';
 import moment from 'moment'; // Import Moment.js library
-import EmployeeModal from './modals/EmployeeModal';
+import EmployeeModal from './modals/CreateEmployeeModal';
 
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
@@ -28,9 +28,9 @@ const EmployeeList = () => {
   };
 
   return (
-    <div className="container mt-5 mb-5">
-      <div className="row justify-content-center">
-        <div className="col-md-0">
+    <div className="container-fluid">
+      <div className="row justify-content-center mt-2">
+        <div className="col-0">
           <Table striped bordered hover>
             <thead>
               <tr>

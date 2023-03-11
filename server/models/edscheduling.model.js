@@ -80,8 +80,13 @@ const BookingSchema = new mongoose.Schema({
     },
 });
 
-const Employee = mongoose.model('Employee', EmployeeSchema);
-const Shift = mongoose.model('Shift', ShiftSchema);
-const Booking = mongoose.model('Booking', BookingSchema);
+// const Employee = mongoose.model('Employee', EmployeeSchema);
+// const Shift = mongoose.model('Shift', ShiftSchema);
+// const Booking = mongoose.model('Booking', BookingSchema);
 
-module.exports = { Employee, Shift, Booking };
+// module.exports = { Employee, Shift, Booking };
+module.exports = {
+    EmployeeSchema,
+    ShiftSchema,
+    BookingSchema
+};

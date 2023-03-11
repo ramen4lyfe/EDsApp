@@ -1,32 +1,32 @@
-// const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
-// const BookingSchema = new mongoose.Schema({
-//     gameName: {
-//     type: String,
-//     required: true
-//     },
-//     time: {
-//     type: Date,
-//     required: true
-//     },
-//     numberOfPeople: {
-//     type: Number,
-//     required: true
-//     },
-//     shift: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: 'Shift'
-//     },
-//     host: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: 'Employee'
-//     },
-//     gameMaster: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: 'Employee'
-//     },
-// });
+const BookingSchema = new mongoose.Schema({
+  gameName: {
+    type: String,
+    required: true,
+  },
+  time: {
+    type: Date,
+    required: true,
+  },
+  numberOfPeople: {
+    type: Number,
+    required: true,
+  },
+  shift: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Shift",
+  },
+  host: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Employee",
+  },
+  gameMaster: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Employee",
+  },
+});
 
-// const Booking = mongoose.model('Booking', BookingSchema);
+const Booking = mongoose.model("Booking", BookingSchema);
 
-// module.exports = Booking;
+module.exports = Booking;

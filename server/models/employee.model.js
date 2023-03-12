@@ -34,7 +34,7 @@ const EmployeeSchema = new mongoose.Schema({
   businessTitle: {
     type: String,
     required: [true, "Business title is required"],
-    enum: ['Employee', 'Manager'],
+    enum: ['Employee', 'Manager', 'Stake Holder', 'Owner'],
   },
   workEmail: {
     type: String,

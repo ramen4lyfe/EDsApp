@@ -2,30 +2,62 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Table, Button } from 'react-bootstrap';
 import moment from 'moment'; // Import Moment.js library
-import EmployeeModal from './modals/CreateEmployeeModal';
+import CreateEmployeeModal from './modals/CreateEmployeeModal';
+import UpdateEmployeeModal from './modals/UpdateEmployeeModal';
 
 const EmployeeList = () => {
-  const [employees, setEmployees] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+const [employees, setEmployees] = useState([]);
+const [showModal, setShowModal] = useState(false);
+const [showCreateModal, setShowCreateModal] = useState(false);
+const [showUpdateModal, setShowUpdateModal] = useState(false);
+const [selectedEmployee, setSelectedEmployee] = useState({});
 
-  useEffect(() => {
-    axios.get("http://localhost:8000/api/employees")
+
+useEffect(() => {
+  axios.get("http://localhost:8000/api/employees")
+    .then((response) => {
+      console.log(response.data);
+      setEmployees(response.data);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}, []);
+
+const handleCloseCreateModal = () => setShowCreateModal(false);
+const handleShowCreateModal = () => setShowCreateModal(true);
+
+const handleCloseUpdateModal = () => setShowUpdateModal(false);
+const handleShowUpdateModal = (employee) => {
+  setSelectedEmployee(employee);
+  setShowUpdateModal(true);
+};
+
+const handleUpdateEmployee = (updatedEmployee) => {
+    axios.put(`http://localhost:8000/api/employees/${selectedEmployee._id}`, updatedEmployee)
       .then((response) => {
-        console.log(response.data);
-        setEmployees(response.data);
+        console.log(response);
+        setEmployees(employees.map((employee) => {
+          if (employee._id === selectedEmployee._id) {
+            return {
+              ...employee,
+              ...updatedEmployee
+            }
+          } else {
+            return employee;
+          }
+        }));
+        handleCloseUpdateModal();
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
-  }, []);
-
-  const handleClose = () => setShowModal(false);
-  const handleShow = () => setShowModal(true);
-
-  // Format the birthday using Moment.js
-  const formatDate = (date) => {
-    return moment(date).format('MMMM DD, YYYY');
   };
+  
+// Format the birthday using Moment.js
+const formatDate = (date) => {
+  return moment(date).format('MMMM DD, YYYY');
+};
 
   return (
     <div className="container-fluid">
@@ -41,7 +73,7 @@ const EmployeeList = () => {
                 <th>Birthday</th>
                 <th>Personal Email</th>
                 <th>Cell Phone</th>
-                <th>Title</th>
+                <th>Business Title</th>
                 <th>Work Email</th>
                 <th>Hire Date</th>
                 <th>Termination Date</th>
@@ -70,15 +102,16 @@ const EmployeeList = () => {
                     <Button variant="warning">
                       Update Info
                     </Button>
+                  <UpdateEmployeeModal show={showUpdateModal} handleClose={handleShowUpdateModal} />
                   </td>
                 </tr>
               ))}
             </tbody>
           </Table>
-          <Button onClick={handleShow} className="btn-primary mt-3">
+          <Button onClick={handleShowCreateModal} className="btn-primary mt-3">
             Add New Employee
           </Button>
-          <EmployeeModal show={showModal} handleClose={handleClose} />
+          <CreateEmployeeModal show={showCreateModal} handleClose={handleCloseCreateModal} />
         </div>
       </div>
     </div>

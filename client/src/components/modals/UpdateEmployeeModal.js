@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
-function EmployeeModal ({ show, handleClose }) {
+const UpdateEmployeeModal = () => {
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    const {id} = useParams();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [prefferedName, setPreferredName] = useState('');
@@ -19,10 +25,9 @@ function EmployeeModal ({ show, handleClose }) {
 
     const [errors, setErrors] = useState('');
 
-    const handleSubmit = (e) => {
-    e.preventDefault();
-    axios.post("http://localhost:8000/api/employees", { firstName, lastName, prefferedName, genderName, birthday, personalEmail, cellPhone, businessTitle, workEmail, hireDate, terminationDate, promotionDate, isActive })
-        .then((response) => {
+    useEffect(()=>{
+        axios.get(`http://localhost:8000/api/employees/${id}`)
+        .then((response)=> {
             console.log(response);
             setFirstName("");
             setLastName("");
@@ -40,6 +45,32 @@ function EmployeeModal ({ show, handleClose }) {
             handleClose();
         })
         .catch((err) => {
+            console.log(err.response.data.error.errors);
+            // setErrors(err.response.data.error.errors);
+        });
+    },[id]);
+
+    const handleSubmit = (e) => {
+    e.preventDefault();
+    axios.put(`http://localhost:8000/api/employees/${id}`, { 
+        firstName, 
+        lastName, 
+        prefferedName, 
+        genderName, 
+        birthday, 
+        personalEmail, 
+        cellPhone, 
+        businessTitle, 
+        workEmail, 
+        hireDate, 
+        terminationDate, 
+        promotionDate, 
+        isActive })
+        .then((response) => {
+            console.log(response);
+            handleClose();
+        })
+        .catch((err) => {
         console.log("Axios error:", err); // log error
         if (err.response && err.response.data && err.response.data.error && err.response.data.error.errors) {
             setErrors(err.response.data.error.errors);
@@ -51,7 +82,7 @@ function EmployeeModal ({ show, handleClose }) {
 };
 
 return (
-    <Modal show={show} onHide={handleClose} size="md">
+    <Modal show={show} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
         <Modal.Title>Add Employee</Modal.Title>
         </Modal.Header>
@@ -208,11 +239,11 @@ return (
             Cancel
         </Button>
         <Button variant="primary" type="submit" onClick={handleSubmit}>
-            Add Employee
+            Update Info
         </Button>
     </Modal.Footer>
     </Modal>
     );
 };
 
-export default EmployeeModal;
+export default UpdateEmployeeModal

@@ -2,16 +2,15 @@ import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 
-function EmployeeModal ({ show, handleClose }) {
+function CreateEmployeeModal ({ show, handleClose }) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [prefferedName, setPreferredName] = useState('');
+    const [preferredName, setPreferredName] = useState('');
     const [genderName, setGenderName] = useState('');
     const [birthday, setBirthday] = useState('');
-    const [personalEmail, setPersonalEmail] = useState('');
+    const [email, setEmail] = useState('');
     const [cellPhone, setCellPhone] = useState('');
     const [businessTitle, setBusinessTitle] = useState('');
-    const [workEmail, setWorkEmail] = useState('');
     const [hireDate, setHireDate] = useState('');
     const [terminationDate, setTerminationDate] = useState('');
     const [promotionDate, setPromotionDate] = useState('');
@@ -21,18 +20,30 @@ function EmployeeModal ({ show, handleClose }) {
 
     const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post("http://localhost:8000/api/employees", { firstName, lastName, prefferedName, genderName, birthday, personalEmail, cellPhone, businessTitle, workEmail, hireDate, terminationDate, promotionDate, isActive })
+    axios.post("http://localhost:8000/api/employees", { 
+        firstName, 
+        lastName, 
+        preferredName, 
+        genderName, 
+        birthday, 
+        email, 
+        cellPhone, 
+        businessTitle, 
+        hireDate, 
+        terminationDate, 
+        promotionDate, 
+        isActive })
         .then((response) => {
+            console.log(email)
             console.log(response);
             setFirstName("");
             setLastName("");
             setPreferredName("");
             setGenderName("");
             setBirthday("");
-            setPersonalEmail("");
+            setEmail("");
             setCellPhone("");
             setBusinessTitle("");
-            setWorkEmail("");
             setHireDate("");
             setTerminationDate("");
             setPromotionDate("");
@@ -86,7 +97,7 @@ return (
             <Form.Control
                 type="text"
                 placeholder="Preferred Name"
-                value={prefferedName}
+                value={preferredName}
                 onChange={(e) => setPreferredName(e.target.value)}
             />
             {errors.prefferedName ? <p className="text-danger">{errors.prefferedName.message}</p> : null}
@@ -113,18 +124,15 @@ return (
                 onChange={(e) => setBirthday(e.target.value)}
             />
             {/* {errors.birthday ? <p className="text-danger">{errors.birthday.message}</p> : null} */}
-
             </Form.Group>
 
-            <Form.Group controlId="formBasicPersonalEmail">
-            <Form.Label>Personal Email</Form.Label>
+            <Form.Group controlId="formBasicEmail">
+            <Form.Label>Email</Form.Label>
             <Form.Control
                 type="email"
-                value={personalEmail}
-                onChange={(e) => setPersonalEmail(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
             />
-            {/* {errors.personalEmail ? <p className="text-danger">{errors.personalEmail.message}</p> : null} */}
-
             </Form.Group>
 
             <Form.Group controlId="formBasicPhone">
@@ -151,16 +159,7 @@ return (
             </Form.Group>
 
             
-            <Form.Group controlId="formBasicWorkEmail">
-            <Form.Label>Work Email</Form.Label>
-            <Form.Control
-                type="email"
-                placeholder="Enter EDs email"
-                value={workEmail}
-                onChange={(e) => setWorkEmail(e.target.value)}
-            />
-            {/* {errors.workEmail ? <p className="text-danger">{errors.workEmail.message}</p> : null} */}
-            </Form.Group>
+            
             
             <Form.Group controlId="formBasicHireDate">
             <Form.Label>Hire Date</Form.Label>
@@ -198,7 +197,7 @@ return (
                 <option value={true}>Yes</option>
                 <option value={false}>No</option>
             </Form.Control>
-            {/* {errors.isActive ? <p className="text-danger">{errors.isActive.message}</p> : null} */}
+            {errors.isActive ? <p className="text-danger">{errors.isActive.message}</p> : null}
             </Form.Group>
 
         </Form>
@@ -215,4 +214,4 @@ return (
     );
 };
 
-export default EmployeeModal;
+export default CreateEmployeeModal;

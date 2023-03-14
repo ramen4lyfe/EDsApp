@@ -14,14 +14,14 @@ const UpdateEmployeeModal = () => {
     const [prefferedName, setPreferredName] = useState('');
     const [genderName, setGenderName] = useState('');
     const [birthday, setBirthday] = useState('');
-    const [personalEmail, setPersonalEmail] = useState('');
+    const [email, setEmail] = useState('');
     const [cellPhone, setCellPhone] = useState('');
     const [businessTitle, setBusinessTitle] = useState('');
-    const [workEmail, setWorkEmail] = useState('');
     const [hireDate, setHireDate] = useState('');
     const [terminationDate, setTerminationDate] = useState('');
     const [promotionDate, setPromotionDate] = useState('');
-    const [isActive, setIsActive] = useState('');
+    const [isActive, setIsActive] = useState(null);
+
 
     const [errors, setErrors] = useState('');
 
@@ -34,10 +34,9 @@ const UpdateEmployeeModal = () => {
             setPreferredName("");
             setGenderName("");
             setBirthday("");
-            setPersonalEmail("");
+            setEmail("");
             setCellPhone("");
             setBusinessTitle("");
-            setWorkEmail("");
             setHireDate("");
             setTerminationDate("");
             setPromotionDate("");
@@ -58,10 +57,9 @@ const UpdateEmployeeModal = () => {
         prefferedName, 
         genderName, 
         birthday, 
-        personalEmail, 
+        email, 
         cellPhone, 
         businessTitle, 
-        workEmail, 
         hireDate, 
         terminationDate, 
         promotionDate, 
@@ -117,10 +115,10 @@ return (
             <Form.Control
                 type="text"
                 placeholder="Preferred Name"
-                value={prefferedName}
+                value={preferredName}
                 onChange={(e) => setPreferredName(e.target.value)}
             />
-            {errors.prefferedName ? <p className="text-danger">{errors.prefferedName.message}</p> : null}
+            {errors.prefferedName ? <p className="text-danger">{errors.preferredName.message}</p> : null}
 
             </Form.Group>
 
@@ -147,15 +145,13 @@ return (
 
             </Form.Group>
 
-            <Form.Group controlId="formBasicPersonalEmail">
+            <Form.Group controlId="formBasicEmail">
             <Form.Label>Personal Email</Form.Label>
             <Form.Control
                 type="email"
-                value={personalEmail}
-                onChange={(e) => setPersonalEmail(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
             />
-            {/* {errors.personalEmail ? <p className="text-danger">{errors.personalEmail.message}</p> : null} */}
-
             </Form.Group>
 
             <Form.Group controlId="formBasicPhone">
@@ -222,15 +218,11 @@ return (
             />
             </Form.Group>
 
-            <Form.Group controlId="formBasicIsActive">
-            <Form.Label>Is Active</Form.Label>
-            <Form.Control as="select" value={isActive} onChange={(e) => setIsActive(e.target.value)}>
+            <Form.Control as="select" value={isActive} onChange={(e) => setIsActive(Boolean(e.target.value))}>
                 <option value="">--Select--</option>
-                <option value={true}>Yes</option>
-                <option value={false}>No</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
             </Form.Control>
-            {/* {errors.isActive ? <p className="text-danger">{errors.isActive.message}</p> : null} */}
-            </Form.Group>
 
         </Form>
     </Modal.Body>

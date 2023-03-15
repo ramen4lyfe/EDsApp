@@ -5,9 +5,11 @@ import moment from 'moment';
 import CreateEmployeeModal from './modals/CreateEmployeeModal';
 import UpdateEmployeeModal from './modals/UpdateEmployeeModal';
 
+
+
 const EmployeeList = () => {
 const [employees, setEmployees] = useState([]);
-const [showModal, setShowModal] = useState(false);
+// const [showModal, setShowModal] = useState(false);
 const [showCreateModal, setShowCreateModal] = useState(false);
 const [showUpdateModal, setShowUpdateModal] = useState(false);
 const [selectedEmployee, setSelectedEmployee] = useState({});
@@ -34,25 +36,26 @@ const handleShowUpdateModal = (employee) => {
 };
 
 const handleUpdateEmployee = (updatedEmployee) => {
-    axios.put(`http://localhost:8000/api/employees/${id}`, updatedEmployee)
-      .then((response) => {
-        console.log(response);
-        setEmployees(employees.map((employee) => {
-          if (employee._id === selectedEmployee._id) {
-            return {
-              ...employee,
-              ...updatedEmployee
-            }
-          } else {
-            return employee;
+  axios.put(`http://localhost:8000/api/employees/update/${selectedEmployee._id}`, updatedEmployee)
+    .then((response) => {
+      console.log(response);
+      setEmployees(employees.map((employee) => {
+        if (employee._id === selectedEmployee._id) {
+          return {
+            ...employee,
+            ...updatedEmployee
           }
-        }));
-        handleCloseUpdateModal();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+        } else {
+          return employee;
+        }
+      }));
+      handleCloseUpdateModal(); // change this line
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
   
 // Format the birthday using Moment.js
 const formatDate = (date) => {
@@ -97,10 +100,11 @@ const formatDate = (date) => {
                   <td>{formatDate(employee.promotionDate)}</td>
                   <td style={{ color: employee.isActive ? "green" : "red", fontWeight: "bold" }}>{employee.isActive ? "Active" : "Inactive"}</td>
                   <td className="d-flex justify-content-center">
-                    <Button variant="warning">
+                    <Button variant="warning" onClick={handleShowUpdateModal}>
                       Update Info
                     </Button>
-                  <UpdateEmployeeModal show={showUpdateModal} handleClose={handleShowUpdateModal} />
+                  <UpdateEmployeeModal show={showUpdateModal} handleClose={handleCloseUpdateModal} employee={selectedEmployee} handleUpdateEmployee={handleUpdateEmployee} />
+
                   </td>
                 </tr>
               ))}

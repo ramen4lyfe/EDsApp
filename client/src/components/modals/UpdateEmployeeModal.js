@@ -3,12 +3,8 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
-const UpdateEmployeeModal = () => {
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
-    const {id} = useParams();
+const UpdateEmployeeModal = ({ show, handleClose, employee }) => {
+    const { id } = useParams();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [preferredName, setPreferredName] = useState('');
@@ -22,36 +18,35 @@ const UpdateEmployeeModal = () => {
     const [promotionDate, setPromotionDate] = useState('');
     const [isActive, setIsActive] = useState(null);
 
+    // const [errors, setErrors] = useState('');
 
-    const [errors, setErrors] = useState('');
-
-    useEffect(()=>{
-        axios.get(`http://localhost:8000/api/employees/${id}`)
-        .then((response)=> {
-            console.log(response);
-            setFirstName(response.data.firstName);
-            setLastName(response.data.lastName);
-            setPreferredName(response.data.preferredName);
-            setGenderName(response.data.genderName);
-            setBirthday(response.data.birthday);
-            setEmail(response.data.email);
-            setCellPhone(response.data.cellPhone);
-            setBusinessTitle(response.data.businessTitle);
-            setHireDate(response.data.hireDate);
-            setTerminationDate(response.data.terminationDate);
-            setPromotionDate(response.data.promotionDate);
-            setIsActive(response.data.isActive);
-            handleClose();
-        })
-        .catch((err) => {
-            console.log(err.response.data.error.errors);
-            // setErrors(err.response.data.error.errors);
-        });
-    },[id]);
+    useEffect(() => {
+  axios.get(`http://localhost:8000/api/employees/${id}`)
+    .then((response) => {
+      console.log(response);
+      setFirstName(response.data.firstName);
+      setLastName(response.data.lastName);
+      setPreferredName(response.data.preferredName);
+      setGenderName(response.data.genderName);
+      setBirthday(response.data.birthday);
+      setEmail(response.data.email);
+      setCellPhone(response.data.cellPhone);
+      setBusinessTitle(response.data.businessTitle);
+      setHireDate(response.data.hireDate);
+      setTerminationDate(response.data.terminationDate);
+      setPromotionDate(response.data.promotionDate);
+      setIsActive(response.data.isActive);
+    //   handleClose();
+    })
+    .catch((err) => {
+      console.log(err.response.data.error.errors);
+      // setErrors(err.response.data.error.errors);
+    });
+}, [id]);
 
     const handleSubmit = (e) => {
     e.preventDefault();
-    axios.put(`http://localhost:8000/api/employees/${id}`, { 
+    axios.put(`http://localhost:8000/api/employees/update/${id}`, { 
         firstName, 
         lastName, 
         preferredName, 
@@ -69,20 +64,26 @@ const UpdateEmployeeModal = () => {
             handleClose();
         })
         .catch((err) => {
-        console.log("Axios error:", err); // log error
-        if (err.response && err.response.data && err.response.data.error && err.response.data.error.errors) {
-            setErrors(err.response.data.error.errors);
-        } else {
-          // handle other types of errors
-            console.log(err);
-        }
-    });
+            if (err.response) {
+                // Request made and server responded
+                console.log(err.response.data);
+                console.log(err.response.status);
+                console.log(err.response.headers);
+            } else if (err.request) {
+                // The request was made but no response was received
+                console.log(err.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', err.message);
+            }
+            console.log(err.config);
+        });
 };
 
 return (
     <Modal show={show} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
-        <Modal.Title>Add Employee</Modal.Title>
+        <Modal.Title>Update info</Modal.Title>
         </Modal.Header>
     <Modal.Body>
         <Form onSubmit={handleSubmit}>
@@ -118,7 +119,7 @@ return (
                 value={preferredName}
                 onChange={(e) => setPreferredName(e.target.value)}
             />
-            {errors.prefferedName ? <p className="text-danger">{errors.preferredName.message}</p> : null}
+            {/* {errors.prefferedName ? <p className="text-danger">{errors.preferredName.message}</p> : null} */}
 
             </Form.Group>
 
@@ -175,18 +176,6 @@ return (
                 <option value="Owner">Owner</option>
             </Form.Control>
             {/* {errors.businessTitle ? <p className="text-danger">{errors.businessTitle.message}</p> : null} */}
-            </Form.Group>
-
-            
-            <Form.Group controlId="formBasicWorkEmail">
-            <Form.Label>Work Email</Form.Label>
-            <Form.Control
-                type="email"
-                placeholder="Enter EDs email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            {/* {errors.workEmail ? <p className="text-danger">{errors.workEmail.message}</p> : null} */}
             </Form.Group>
             
             <Form.Group controlId="formBasicHireDate">

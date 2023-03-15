@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Table, Button } from 'react-bootstrap';
 import moment from 'moment'; 
 import CreateEmployeeModal from './modals/CreateEmployeeModal';
-// import UpdateEmployeeModal from './modals/UpdateEmployeeModal';
+import UpdateEmployeeModal from './modals/UpdateEmployeeModal';
 
 const EmployeeList = () => {
 const [employees, setEmployees] = useState([]);
@@ -33,26 +33,26 @@ const handleShowUpdateModal = (employee) => {
   setShowUpdateModal(true);
 };
 
-// const handleUpdateEmployee = (updatedEmployee) => {
-//     axios.put(`http://localhost:8000/api/employees/${selectedEmployee._id}`, updatedEmployee)
-//       .then((response) => {
-//         console.log(response);
-//         setEmployees(employees.map((employee) => {
-//           if (employee._id === selectedEmployee._id) {
-//             return {
-//               ...employee,
-//               ...updatedEmployee
-//             }
-//           } else {
-//             return employee;
-//           }
-//         }));
-//         handleCloseUpdateModal();
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-//   };
+const handleUpdateEmployee = (updatedEmployee) => {
+    axios.put(`http://localhost:8000/api/employees/${id}`, updatedEmployee)
+      .then((response) => {
+        console.log(response);
+        setEmployees(employees.map((employee) => {
+          if (employee._id === selectedEmployee._id) {
+            return {
+              ...employee,
+              ...updatedEmployee
+            }
+          } else {
+            return employee;
+          }
+        }));
+        handleCloseUpdateModal();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   
 // Format the birthday using Moment.js
 const formatDate = (date) => {
@@ -63,7 +63,7 @@ const formatDate = (date) => {
     <div className="container-fluid">
       <div className="row justify-content-center mt-2">
         <div className="col-0">
-          <Table striped bordered hover>
+          <Table striped bordered hover responsive="lg">
             <thead>
               <tr>
                 <th>First Name</th>
@@ -100,7 +100,7 @@ const formatDate = (date) => {
                     <Button variant="warning">
                       Update Info
                     </Button>
-                  {/* <UpdateEmployeeModal show={showUpdateModal} handleClose={handleShowUpdateModal} /> */}
+                  <UpdateEmployeeModal show={showUpdateModal} handleClose={handleShowUpdateModal} />
                   </td>
                 </tr>
               ))}

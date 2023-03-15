@@ -11,7 +11,7 @@ const UpdateEmployeeModal = () => {
     const {id} = useParams();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [prefferedName, setPreferredName] = useState('');
+    const [preferredName, setPreferredName] = useState('');
     const [genderName, setGenderName] = useState('');
     const [birthday, setBirthday] = useState('');
     const [email, setEmail] = useState('');
@@ -29,18 +29,18 @@ const UpdateEmployeeModal = () => {
         axios.get(`http://localhost:8000/api/employees/${id}`)
         .then((response)=> {
             console.log(response);
-            setFirstName("");
-            setLastName("");
-            setPreferredName("");
-            setGenderName("");
-            setBirthday("");
-            setEmail("");
-            setCellPhone("");
-            setBusinessTitle("");
-            setHireDate("");
-            setTerminationDate("");
-            setPromotionDate("");
-            setIsActive("");
+            setFirstName(response.data.firstName);
+            setLastName(response.data.lastName);
+            setPreferredName(response.data.preferredName);
+            setGenderName(response.data.genderName);
+            setBirthday(response.data.birthday);
+            setEmail(response.data.email);
+            setCellPhone(response.data.cellPhone);
+            setBusinessTitle(response.data.businessTitle);
+            setHireDate(response.data.hireDate);
+            setTerminationDate(response.data.terminationDate);
+            setPromotionDate(response.data.promotionDate);
+            setIsActive(response.data.isActive);
             handleClose();
         })
         .catch((err) => {
@@ -54,7 +54,7 @@ const UpdateEmployeeModal = () => {
     axios.put(`http://localhost:8000/api/employees/${id}`, { 
         firstName, 
         lastName, 
-        prefferedName, 
+        preferredName, 
         genderName, 
         birthday, 
         email, 
@@ -183,8 +183,8 @@ return (
             <Form.Control
                 type="email"
                 placeholder="Enter EDs email"
-                value={workEmail}
-                onChange={(e) => setWorkEmail(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
             />
             {/* {errors.workEmail ? <p className="text-danger">{errors.workEmail.message}</p> : null} */}
             </Form.Group>

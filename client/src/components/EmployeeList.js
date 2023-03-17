@@ -1,30 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { Table, Button, Col, Container, Form, Row } from 'react-bootstrap';
 import moment from 'moment';
 import CreateEmployeeModal from './modals/CreateEmployeeModal';
 import UpdateEmployeeModal from './modals/UpdateEmployeeModal';
+import { EmployeeContext } from '../components/context/EmployeeContext';
+
 
 
 const EmployeeList = () => {
-const [employees, setEmployees] = useState([]);
-// const [showModal, setShowModal] = useState(false);
+// const [employees, setEmployees] = useState([]);
+const { employees, setEmployees } = useContext(EmployeeContext);
 const [showCreateModal, setShowCreateModal] = useState(false);
 const [showUpdateModal, setShowUpdateModal] = useState(false);
 const [selectedEmployee, setSelectedEmployee] = useState({});
 const [searchTerm, setSearchTerm] = useState('');
 
 //use effect to show employee
-useEffect(() => {
-  axios.get("http://localhost:8000/api/employees")
-    .then((response) => {
-      console.log(response.data);
-      setEmployees(response.data);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-}, []);
+// useEffect(() => {
+//   axios.get("http://localhost:8000/api/employees")
+//     .then((response) => {
+//       console.log(response.data);
+//       setEmployees(response.data);
+//     })
+//     .catch(err => {
+//       console.log(err);
+//     });
+// }, []);
 
 const handleCloseCreateModal = () => setShowCreateModal(false);
 const handleShowCreateModal = () => setShowCreateModal(true);
@@ -88,7 +90,7 @@ const handleSearch = (event) => {
               <Col>
                 <Form.Control
                   type="search"
-                  placeholder="Search employees"
+                  placeholder="Search by name"
                   value={searchTerm}
                   onChange={handleSearch}
                 />

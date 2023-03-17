@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, Button, Col } from 'react-bootstrap';
+import { Table, Button, Col, Container } from 'react-bootstrap';
 import moment from 'moment'; 
 import CreateEmployeeModal from './modals/CreateEmployeeModal';
 import UpdateEmployeeModal from './modals/UpdateEmployeeModal';
@@ -59,14 +59,17 @@ const handleUpdateEmployee = (updatedEmployee) => {
   
 // Format the birthday using Moment.js
 const formatDate = (date) => {
+  if (!date) {
+    return null;
+  }
   return moment(date).format('MMMM DD, YYYY');
 };
 
   return (
-    <div className="container-fluid">
+    <Container>
       <div className="row justify-content-center mt-2">
         <div className="col-0">
-          <Table striped bordered hover responsive size="sm" style={{fontSize: '0.8rem'}} >
+          <Table striped bordered hover responsive size="md" style={{fontSize: '0.8rem'}} >
             <thead>
               <tr>
                 <th>First Name</th>
@@ -121,7 +124,7 @@ const formatDate = (date) => {
           <CreateEmployeeModal show={showCreateModal} handleClose={handleCloseCreateModal} />
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 

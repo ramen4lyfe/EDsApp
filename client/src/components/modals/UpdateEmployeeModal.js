@@ -3,8 +3,8 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
-const UpdateEmployeeModal = ({ show, handleClose, employee }) => {
-    const { id } = useParams();
+const UpdateEmployeeModal = ({ show, handleClose, employee, id }) => {
+    // const { id } = useParams();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [preferredName, setPreferredName] = useState('');
@@ -21,28 +21,28 @@ const UpdateEmployeeModal = ({ show, handleClose, employee }) => {
     // const [errors, setErrors] = useState('');
 
     useEffect(() => {
-  axios.get(`http://localhost:8000/api/employees/${id}`)
-    .then((response) => {
-      console.log(response);
-      setFirstName(response.data.firstName);
-      setLastName(response.data.lastName);
-      setPreferredName(response.data.preferredName);
-      setGenderName(response.data.genderName);
-      setBirthday(response.data.birthday);
-      setEmail(response.data.email);
-      setCellPhone(response.data.cellPhone);
-      setBusinessTitle(response.data.businessTitle);
-      setHireDate(response.data.hireDate);
-      setTerminationDate(response.data.terminationDate);
-      setPromotionDate(response.data.promotionDate);
-      setIsActive(response.data.isActive);
-    //   handleClose();
-    })
-    .catch((err) => {
-      console.log(err.response.data.error.errors);
-      // setErrors(err.response.data.error.errors);
-    });
-}, [id]);
+    if (id) {
+      axios.get(`http://localhost:8000/api/employees/${id}`)
+        .then((response) => {
+          console.log(response);
+          setFirstName(response.data.firstName);
+          setLastName(response.data.lastName);
+          setPreferredName(response.data.preferredName);
+          setGenderName(response.data.genderName);
+          setBirthday(response.data.birthday);
+          setEmail(response.data.email);
+          setCellPhone(response.data.cellPhone);
+          setBusinessTitle(response.data.businessTitle);
+          setHireDate(response.data.hireDate);
+          setTerminationDate(response.data.terminationDate);
+          setPromotionDate(response.data.promotionDate);
+          setIsActive(response.data.isActive);
+        })
+        .catch((err) => {
+          console.log(err.response.data.error.errors);
+        });
+    }
+  }, [id, employee]);
 
     const handleSubmit = (e) => {
     e.preventDefault();
@@ -81,7 +81,7 @@ const UpdateEmployeeModal = ({ show, handleClose, employee }) => {
 };
 
 return (
-    <Modal show={show} onHide={handleClose} size="lg">
+    <Modal show={show} onHide={handleClose} size="md">
         <Modal.Header closeButton>
         <Modal.Title>Update info</Modal.Title>
         </Modal.Header>
@@ -207,11 +207,14 @@ return (
             />
             </Form.Group>
 
+            <Form.Group controlId="formBasicIsActive">
+            <Form.Label>Is Active</Form.Label>
             <Form.Control as="select" value={isActive} onChange={(e) => setIsActive(Boolean(e.target.value))}>
                 <option value="">--Select--</option>
                 <option value="true">Yes</option>
                 <option value="false">No</option>
             </Form.Control>
+            </Form.Group>
 
         </Form>
     </Modal.Body>

@@ -100,7 +100,7 @@ return (
                 value={preferredName}
                 onChange={(e) => setPreferredName(e.target.value)}
             />
-            {errors.prefferedName ? <p className="text-danger">{errors.prefferedName.message}</p> : null}
+            {/* {errors.prefferedName ? <p className="text-danger">{errors.prefferedName.message}</p> : null} */}
 
             </Form.Group>
 

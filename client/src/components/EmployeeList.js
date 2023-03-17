@@ -100,10 +100,16 @@ const formatDate = (date) => {
                   <td>{formatDate(employee.promotionDate)}</td>
                   <td style={{ color: employee.isActive ? "green" : "red", fontWeight: "bold" }}>{employee.isActive ? "Active" : "Inactive"}</td>
                   <td className="d-flex justify-content-center">
-                    <Button variant="warning" onClick={handleShowUpdateModal}>
+                    <Button variant="warning" onClick={() => handleShowUpdateModal(employee)} >
                       Update Info
                     </Button>
-                  <UpdateEmployeeModal show={showUpdateModal} handleClose={handleCloseUpdateModal} employee={selectedEmployee} handleUpdateEmployee={handleUpdateEmployee} />
+                    <UpdateEmployeeModal 
+                    show={showUpdateModal} 
+                    handleClose={handleCloseUpdateModal} 
+                    employee={selectedEmployee} 
+                    id={selectedEmployee._id} 
+                    handleUpdateEmployee={handleUpdateEmployee} 
+                    />
 
                   </td>
                 </tr>

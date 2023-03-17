@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, Button } from 'react-bootstrap';
+import { Table, Button, Col } from 'react-bootstrap';
 import moment from 'moment'; 
 import CreateEmployeeModal from './modals/CreateEmployeeModal';
 import UpdateEmployeeModal from './modals/UpdateEmployeeModal';
@@ -66,7 +66,7 @@ const formatDate = (date) => {
     <div className="container-fluid">
       <div className="row justify-content-center mt-2">
         <div className="col-0">
-          <Table striped bordered hover responsive="lg">
+          <Table striped bordered hover responsive size="sm" style={{fontSize: '0.8rem'}} >
             <thead>
               <tr>
                 <th>First Name</th>
@@ -100,8 +100,8 @@ const formatDate = (date) => {
                   <td>{formatDate(employee.promotionDate)}</td>
                   <td style={{ color: employee.isActive ? "green" : "red", fontWeight: "bold" }}>{employee.isActive ? "Active" : "Inactive"}</td>
                   <td className="d-flex justify-content-center">
-                    <Button variant="warning" onClick={() => handleShowUpdateModal(employee)} >
-                      Update Info
+                    <Button variant="warning" size="sm" onClick={() => handleShowUpdateModal(employee)} >
+                      Update
                     </Button>
                     <UpdateEmployeeModal 
                     show={showUpdateModal} 
@@ -110,7 +110,6 @@ const formatDate = (date) => {
                     id={selectedEmployee._id} 
                     handleUpdateEmployee={handleUpdateEmployee} 
                     />
-
                   </td>
                 </tr>
               ))}

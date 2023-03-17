@@ -209,7 +209,11 @@ return (
 
             <Form.Group controlId="formBasicIsActive">
             <Form.Label>Is Active</Form.Label>
-            <Form.Control as="select" value={isActive} onChange={(e) => setIsActive(Boolean(e.target.value))}>
+            <Form.Control
+                as="select"
+                value={isActive}
+                onChange={(e) => setIsActive(e.target.value === "true")}
+            >
                 <option value="">--Select--</option>
                 <option value="true">Yes</option>
                 <option value="false">No</option>

@@ -192,13 +192,18 @@ return (
 
             <Form.Group controlId="formBasicIsActive">
             <Form.Label>Is Active</Form.Label>
-            <Form.Control as="select" value={isActive} onChange={(e) => setIsActive(e.target.value)}>
+            <Form.Control
+                as="select"
+                value={isActive}
+                onChange={(e) => setIsActive(e.target.value === "true")}
+            >
                 <option value="">--Select--</option>
-                <option value={true}>Yes</option>
-                <option value={false}>No</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
             </Form.Control>
-            {errors.isActive ? <p className="text-danger">{errors.isActive.message}</p> : null}
+            {/* {errors.isActive ? <p className="text-danger">{errors.isActive.message}</p> : null} */}
             </Form.Group>
+
 
         </Form>
     </Modal.Body>

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, Button, Col, Container } from 'react-bootstrap';
-import moment from 'moment'; 
+import { Table, Button, Col, Container, Form, Row } from 'react-bootstrap';
+import moment from 'moment';
 import CreateEmployeeModal from './modals/CreateEmployeeModal';
 import UpdateEmployeeModal from './modals/UpdateEmployeeModal';
-
 
 
 const EmployeeList = () => {
@@ -13,6 +12,7 @@ const [employees, setEmployees] = useState([]);
 const [showCreateModal, setShowCreateModal] = useState(false);
 const [showUpdateModal, setShowUpdateModal] = useState(false);
 const [selectedEmployee, setSelectedEmployee] = useState({});
+const [searchTerm, setSearchTerm] = useState('');
 
 //use effect to show employee
 useEffect(() => {
@@ -65,11 +65,60 @@ const formatDate = (date) => {
   return moment(date).format('MMMM DD, YYYY');
 };
 
+// search bar
+const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredEmployees = employees.filter((employee) =>
+    `${employee.firstName} ${employee.lastName} ${employee.preferredName} ${employee.genderName} ${employee.email} ${employee.cellPhone} ${employee.businessTitle}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
+
   return (
     <Container>
       <div className="row justify-content-center mt-2">
-        <div className="col-0">
-          <Table striped bordered hover responsive size="md" style={{fontSize: '0.8rem'}} >
+        <Col>
+          <Form>
+            <Form.Group as={Row} className="align-items-center">
+              <Form.Label column sm="1">
+                Search
+              </Form.Label>
+              <Col>
+                <Form.Control
+                  type="search"
+                  placeholder="Search employees"
+                  value={searchTerm}
+                  onChange={handleSearch}
+                />
+              </Col>
+              <Col sm="auto">
+                <Button variant="primary" type="button">
+                  Search
+                </Button>
+              </Col>
+              <Col sm="auto">
+                <Button
+                  onClick={handleShowCreateModal}
+                  className="btn-primary"
+                >
+                  Add New
+                </Button>
+                <CreateEmployeeModal show={showCreateModal} handleClose={handleCloseCreateModal} />
+
+              </Col>
+            </Form.Group>
+          </Form>
+          <Table
+            striped
+            bordered
+            hover
+            responsive
+            size="md"
+            className="mt-2"
+            style={{ fontSize: '0.8rem' }}
+          >
             <thead>
               <tr>
                 <th>First Name</th>
@@ -88,7 +137,7 @@ const formatDate = (date) => {
               </tr>
             </thead>
             <tbody>
-              {employees.map((employee,index) => (
+              {filteredEmployees.map((employee,index) => (
                 <tr key={employee._id}>
                   <td>{employee.firstName}</td>
                   <td>{employee.lastName}</td>
@@ -118,11 +167,7 @@ const formatDate = (date) => {
               ))}
             </tbody>
           </Table>
-          <Button onClick={handleShowCreateModal} className="btn-primary mt-3">
-            Add New Employee
-          </Button>
-          <CreateEmployeeModal show={showCreateModal} handleClose={handleCloseCreateModal} />
-        </div>
+      </Col>
       </div>
     </Container>
   );

@@ -7,4 +7,4 @@ module.exports = (app) => {
     app.post('/api/employees',employeeController.createEmployee);
     app.put('/api/employees/update/:id', employeeController.updateEmployee);
     app.delete('/api/employees/:id', employeeController.deleteEmployee)
-}
+};

@@ -1,5 +1,7 @@
 import './App.css';
 import EmployeeList from './components/EmployeeList';
+import Bookings from './components/Bookings';
+import ShiftSchedule from './components/ShiftSchedule';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import UpdateEmployeeModal from './components/modals/UpdateEmployeeModal';
 import NavigationBar from './components/navigation/NavigationBar';
@@ -12,8 +14,8 @@ function App() {
         <NavigationBar />
         <Routes>
           <Route path="/" element={<EmployeeList />} />
-          {/* <Route path="/shift-schedule" element={<ShiftSchedule />} /> */}
-          {/* <Route path="/bookings" element={<Bookings />} /> */}
+          <Route path="/shift-schedule" element={<ShiftSchedule />} />
+          <Route path="/bookings" element={<Bookings />} />
           <Route path="/employees" element={<EmployeeList />} />
           <Route path="/update/:id" element={<UpdateEmployeeModal />} />
         </Routes>

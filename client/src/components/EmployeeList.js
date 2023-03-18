@@ -88,14 +88,11 @@ const handleSearch = (event) => {
 // };
 
   return (
-    <Container >
+    <Container fluid className='p-4'>
       <div className="row justify-content-center mt-2">
         <Col>
           <Form>
             <Form.Group as={Row} className="align-items-center">
-              <Form.Label column sm="1">
-                Search
-              </Form.Label>
               <Col>
                 <Form.Control
                   type="search"
@@ -126,15 +123,15 @@ const handleSearch = (event) => {
             </Form.Group>
           </Form>
           <Table
-            striped
-            bordered
+            // striped
+            // bordered
             hover
             responsive
             size="md"
-            className="mt-2"
+            className="mt-2 align-middle"
             style={{ fontSize: '0.8rem' }}
           >
-            <thead>
+            <thead className='align-top'>
               <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
@@ -167,7 +164,7 @@ const handleSearch = (event) => {
                   <td>{formatDate(employee.promotionDate)}</td>
                   <td style={{ color: employee.isActive ? "green" : "red", fontWeight: "bold" }}>{employee.isActive ? "Active" : "Inactive"}</td>
                   <td className="d-flex justify-content-center">
-                    <Button variant="warning" size="sm" onClick={() => handleShowUpdateModal(employee)} >
+                    <Button variant="light" size="md" onClick={() => handleShowUpdateModal(employee)} >
                       Update
                     </Button>
                     <UpdateEmployeeModal 

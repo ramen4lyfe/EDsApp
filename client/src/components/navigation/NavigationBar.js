@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 
 const NavigationBar = () => {
 return (
-<Container>
+<Container fluid >
     <Navbar sticky="top" expand="lg" variant="light" bg="light" className="p-2">
     <Navbar.Brand href="#">EDs App</Navbar.Brand>
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -14,7 +14,7 @@ return (
             <NavLink
             to="/shift-schedule"
             className="nav-link"
-            activeClassName="active"
+            activeclassname="active"
             >
             Shift Schedule
             </NavLink>
@@ -23,7 +23,7 @@ return (
             <NavLink
             to="/bookings"
             className="nav-link"
-            activeClassName="active"
+            activeclassname="active"
             >
             Bookings
             </NavLink>
@@ -32,7 +32,7 @@ return (
             <NavLink
             to="/employees"
             className="nav-link"
-            activeClassName="active"
+            activeclassname="active"
             >
             Employees
             </NavLink>

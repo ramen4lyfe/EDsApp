@@ -9,24 +9,12 @@ import { EmployeeContext } from '../components/context/EmployeeContext';
 
 
 const EmployeeList = () => {
-// const [employees, setEmployees] = useState([]);
 const { employees, setEmployees } = useContext(EmployeeContext);
 const [showCreateModal, setShowCreateModal] = useState(false);
 const [showUpdateModal, setShowUpdateModal] = useState(false);
 const [selectedEmployee, setSelectedEmployee] = useState({});
 const [searchTerm, setSearchTerm] = useState('');
 
-//use effect to show employee
-// useEffect(() => {
-//   axios.get("http://localhost:8000/api/employees")
-//     .then((response) => {
-//       console.log(response.data);
-//       setEmployees(response.data);
-//     })
-//     .catch(err => {
-//       console.log(err);
-//     });
-// }, []);
 
 const handleCloseCreateModal = () => setShowCreateModal(false);
 const handleShowCreateModal = () => setShowCreateModal(true);
@@ -51,7 +39,7 @@ const handleUpdateEmployee = (updatedEmployee) => {
           return employee;
         }
       }));
-      handleCloseUpdateModal(); // change this line
+      handleCloseUpdateModal();
     })
     .catch((err) => {
       console.log(err);
@@ -78,8 +66,29 @@ const handleSearch = (event) => {
       .includes(searchTerm.toLowerCase())
   );
 
+
+// // code to auto update the list of employees
+// const handleEmployeeCreated = () => {
+//   fetchEmployees();
+// };
+
+// const handleEmployeeUpdated = () => {
+//   fetchEmployees();
+// };
+
+// const fetchEmployees = () => {
+//   axios.get("http://localhost:8000/api/employees")
+//     .then((response) => {
+//       console.log(response.data);
+//       setEmployees(response.data);
+//     })
+//     .catch(err => {
+//       console.log(err);
+//     });
+// };
+
   return (
-    <Container>
+    <Container >
       <div className="row justify-content-center mt-2">
         <Col>
           <Form>
@@ -107,8 +116,12 @@ const handleSearch = (event) => {
                 >
                   Add New
                 </Button>
-                <CreateEmployeeModal show={showCreateModal} handleClose={handleCloseCreateModal} />
-
+                <CreateEmployeeModal 
+                  show={showCreateModal} 
+                  handleClose={handleCloseCreateModal} 
+                  setEmployees={setEmployees}
+                  // onEmployeeCreated={handleEmployeeCreated} 
+                  />
               </Col>
             </Form.Group>
           </Form>
@@ -149,7 +162,7 @@ const handleSearch = (event) => {
                   <td>{employee.email}</td>
                   <td>{employee.cellPhone}</td>
                   <td>{employee.businessTitle}</td>
-                  <td>{formatDate(employee.hirDate)}</td>
+                  <td>{formatDate(employee.hireDate)}</td>
                   <td>{formatDate(employee.terminationDate)}</td>
                   <td>{formatDate(employee.promotionDate)}</td>
                   <td style={{ color: employee.isActive ? "green" : "red", fontWeight: "bold" }}>{employee.isActive ? "Active" : "Inactive"}</td>
@@ -158,11 +171,12 @@ const handleSearch = (event) => {
                       Update
                     </Button>
                     <UpdateEmployeeModal 
-                    show={showUpdateModal} 
-                    handleClose={handleCloseUpdateModal} 
-                    employee={selectedEmployee} 
-                    id={selectedEmployee._id} 
-                    handleUpdateEmployee={handleUpdateEmployee} 
+                      show={showUpdateModal} 
+                      handleClose={handleCloseUpdateModal} 
+                      employee={selectedEmployee} 
+                      id={selectedEmployee._id} 
+                      handleUpdateEmployee={handleUpdateEmployee} 
+                      // onEmployeeUpdated={handleEmployeeUpdated}
                     />
                   </td>
                 </tr>

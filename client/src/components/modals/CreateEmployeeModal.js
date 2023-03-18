@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
+import { EmployeeContext } from '../context/EmployeeContext';
 
-function CreateEmployeeModal ({ show, handleClose }) {
+function CreateEmployeeModal ({ show, handleClose, setEmployees }) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [preferredName, setPreferredName] = useState('');
@@ -18,48 +19,68 @@ function CreateEmployeeModal ({ show, handleClose }) {
 
     const [errors, setErrors] = useState('');
 
+    // const { setEmployees } = useContext(EmployeeContext);
+
+
+    // // code to auto update the list of employees
+    // const handleEmployeeCreated = () => {
+    // fetchEmployees();
+    // };
+    // const handleEmployeeUpdated = () => {
+    // fetchEmployees();
+    // };
+
+
     const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post("http://localhost:8000/api/employees", { 
-        firstName, 
-        lastName, 
-        preferredName, 
-        genderName, 
-        birthday, 
-        email, 
-        cellPhone, 
-        businessTitle, 
-        hireDate, 
-        terminationDate, 
-        promotionDate, 
-        isActive })
+    e.stopPropagation();
+    axios.post("http://localhost:8000/api/employees", {
+        firstName,
+        lastName,
+        preferredName,
+        genderName,
+        birthday,
+        email,
+        cellPhone,
+        businessTitle,
+        hireDate,
+        terminationDate,
+        promotionDate,
+        isActive,
+    })
         .then((response) => {
-            console.log(email)
-            console.log(response);
-            setFirstName("");
-            setLastName("");
-            setPreferredName("");
-            setGenderName("");
-            setBirthday("");
-            setEmail("");
-            setCellPhone("");
-            setBusinessTitle("");
-            setHireDate("");
-            setTerminationDate("");
-            setPromotionDate("");
-            setIsActive("");
-            handleClose();
+        console.log(email);
+        console.log(response);
+        setEmployees((prevEmployees) => [
+            ...prevEmployees,
+            response.data,
+        ]);
+        setFirstName("");
+        setLastName("");
+        setPreferredName("");
+        setGenderName("");
+        setBirthday("");
+        setEmail("");
+        setCellPhone("");
+        setBusinessTitle("");
+        setHireDate("");
+        setTerminationDate("");
+        setPromotionDate("");
+        setIsActive("");
+        handleClose();
+        
         })
         .catch((err) => {
         console.log("Axios error:", err); // log error
         if (err.response && err.response.data && err.response.data.error && err.response.data.error.errors) {
             setErrors(err.response.data.error.errors);
         } else {
-          // handle other types of errors
+            // handle other types of errors
             console.log(err);
         }
-    });
-};
+        });
+    };
+
 
 return (
     <Modal show={show} onHide={handleClose} size="md">
@@ -211,7 +232,7 @@ return (
         <Button variant="secondary" onClick={handleClose}>
             Cancel
         </Button>
-        <Button variant="primary" type="submit" onClick={handleSubmit}>
+        <Button variant="primary" onClick={handleSubmit} >
             Add Employee
         </Button>
     </Modal.Footer>

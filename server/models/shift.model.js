@@ -1,27 +1,38 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const ShiftSchema = new mongoose.Schema(
   {
-    shiftPeriod: {
-      type: String,
-      enum: ["Morning", "Evening"],
-      required: [true, "Please select the shift period."],
-    },
     date: {
       type: Date,
-      required: [true, "Please provide the shift date."],
+      // required: [true, "Please provide the shift date."],
     },
-    employees: [
-      {
+    dayShift: {
+      pic: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Employee",
-        required: [true, "Please provide at least one employee."],
+        // required: [true, "Please provide the day shift PIC."],
       },
-    ],
-    pic: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Employee",
-      required: [true, "Please provide the person in charge."],
+      employees: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Employee",
+          // required: [true, "Please provide at least one employee for day shift."],
+        },
+      ],
+    },
+    eveningShift: {
+      pic: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Employee",
+        // required: [true, "Please provide the evening shift PIC."],
+      },
+      employees: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Employee",
+          // required: [true, "Please provide at least one employee for evening shift."],
+        },
+      ],
     },
   },
   {

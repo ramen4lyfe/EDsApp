@@ -31,27 +31,6 @@ const getEmployeeById = (req, res) => {
     });
 };
 
-// const addToList = (req, res) => {
-//     Employee.findOne({_id: req.params.id})
-//     .then((oneEmployee) => {
-//         res.json(oneEmployee);
-//     })
-//     .catch((err) => {
-//         res.status(400).json({error: err });
-//     });
-// };
-
-// const getOneByName = (req, res) => {
-//     Employee.findOne({firstName: req.params.firstName})
-//     .then((oneEmployeeByName) => {
-//         res.json(oneEmployeeByName);
-//         console.log(oneEmployeeByName)
-//     })
-//     .catch((err) => {
-//         res.status(400).json({error: err });
-//     });
-// };
-
 const updateEmployee = (req, res) => {
     Employee.findOneAndUpdate({_id: req.params.id}, req.body, {new: true, runValidators: true,})
         .then((updatedEmployee) => {

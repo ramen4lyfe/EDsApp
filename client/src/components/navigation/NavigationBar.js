@@ -12,7 +12,7 @@ return (
         <Nav className="mr-auto">
         <Nav.Item>
             <NavLink
-            to="/shift-schedule"
+            to="/shifts"
             className="nav-link"
             activeclassname="active"
             >

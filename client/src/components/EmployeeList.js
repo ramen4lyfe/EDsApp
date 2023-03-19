@@ -102,11 +102,6 @@ const handleSearch = (event) => {
                 />
               </Col>
               <Col sm="auto">
-                <Button variant="primary" type="button">
-                  Search
-                </Button>
-              </Col>
-              <Col sm="auto">
                 <Button
                   onClick={handleShowCreateModal}
                   className="btn-primary"

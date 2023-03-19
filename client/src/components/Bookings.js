@@ -23,10 +23,19 @@ function CurrentDateTime() {
 
 return (
 <Container fluid className="p-4">
+    <Container>
+            <Row>
+                <Col style={{ textAlign: 'center' }}>
+                <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>
+                    <CurrentDateTime />
+                </h1>
+                </Col>
+            </Row>
+            </Container>
     <Row>
-    <Col>
+    <Col >
         <h4>Assigned Bookings</h4>
-        <CurrentDateTime />
+        
         <Table striped bordered hover>
         <thead className="align-top">
             <tr>

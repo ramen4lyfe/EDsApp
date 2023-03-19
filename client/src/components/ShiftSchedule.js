@@ -1,62 +1,94 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Container, Row, Col, Form, Table, Card } from 'react-bootstrap';
+import { Container, Row, Col, Form, Table, Card, Button } from 'react-bootstrap';
 import moment from 'moment';
 import { EmployeeContext } from './context/EmployeeContext';
 import axios from 'axios';
+import CreateWorkScheduleModal from './modals/CreateWorkScheduleModal';
 
 const ShiftSchedule = () => {
-  function CurrentDateTime() {
-    const [dateTime, setDateTime] = useState(moment().format('MMMM Do YYYY, h:mm:ss a'));
+    const { employees, setEmployees } = useContext(EmployeeContext);
+
+    const [shifts, setShifts] = useState([]);
+
+    const daysOfWeek = [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday',
+    ];
+
+    const generateDates = () => {
+        const startOfWeek = moment().startOf('week').add(1, 'day'); // Start from Monday
+        const dates = [];
+
+        for (let i = 0; i < 7; i++) {
+        dates.push(moment(startOfWeek).add(i, 'days').format('YYYY-MM-DD'));
+        }
+
+        return dates;
+    };
+
+    const dates = generateDates();
+
+    const [showCreateModal, setShowCreateModal] = useState(false);
+
+    const handleShowCreateModal = () => {
+        setShowCreateModal(true);
+    };
+
+    const handleCloseCreateModal = () => {
+        setShowCreateModal(false);
+    };
 
     useEffect(() => {
-    const timer = setInterval(() => {
-        setDateTime(moment().format('MMMM Do YYYY, h:mm:ss a'));
-    }, 1000);
-
-    return () => {
-        clearInterval(timer);
-    };
+    axios.get("http://localhost:8000/api/shifts")
+        .then((response) => {
+        setShifts(response.data);
+        })
+        .catch(err => {
+        console.log(err);
+        });
     }, []);
-
-    return <p>{dateTime}</p>;
-}
-
-return (
-<Container 
-// fluid 
-// className="p-4"
->
+  return (
     <Container>
-            <Row>
-                <Col style={{ textAlign: 'center' }}>
-                <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>
-                    <CurrentDateTime />
-                </h1>
-                </Col>
-            </Row>
-            </Container>
-    <Row>
-    <Col >
-        <Card style={{ width: '40rem' }}>
-          <Card.Body>
-          <Card.Title>Day Shift</Card.Title>
-          <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </Card.Text>
-          {/* <Card.Link href="#">Card Link</Card.Link>
-          <Card.Link href="#">Another Link</Card.Link> */}
-        </Card.Body>
-        </Card>
-    </Col>
-    <Col>
-        <h4>Night Shift</h4>
-    </Col>
-    </Row>
-
-    
-</Container>
-);
+      <Row className="mb-2">
+        <Col className="d-flex justify-content-end">
+          <Button variant="primary" onClick={handleShowCreateModal}>
+            Create Shift
+          </Button>
+        </Col>
+      </Row>
+      <Table striped bordered hover responsive>
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Date</th>
+            <th>PIC</th>
+            <th>Day Shift</th>
+            <th>Evening Shift</th>
+          </tr>
+        </thead>
+        <tbody>
+            {shifts.map((shift, index) => (
+                <tr key={index}>
+                <td>{daysOfWeek[moment(shift.date).day() - 1]}</td>
+                <td>{moment(shift.date).format('YYYY-MM-DD')}</td>
+                <td>{shift.pic.firstName} {shift.pic.lastName}</td>
+                <td>{shift.dayShift.map(employee => `${employee.firstName} ${employee.lastName}`).join(', ')}</td>
+                <td>{shift.eveningShift.map(employee => `${employee.firstName} ${employee.lastName}`).join(', ')}</td>
+                </tr>
+            ))}
+        </tbody>
+      </Table>
+      <CreateWorkScheduleModal
+        show={showCreateModal}
+        handleClose={handleCloseCreateModal}
+      />
+    </Container>
+  );
 };
 
-export default ShiftSchedule
+export default ShiftSchedule;

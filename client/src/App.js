@@ -14,7 +14,7 @@ function App() {
         <NavigationBar />
         <Routes>
           <Route path="/" element={<EmployeeList />} />
-          <Route path="/shift-schedule" element={<ShiftSchedule />} />
+          <Route path="/shifts" element={<ShiftSchedule />} />
           <Route path="/bookings" element={<Bookings />} />
           <Route path="/employees" element={<EmployeeList />} />
           <Route path="/update/:id" element={<UpdateEmployeeModal />} />

@@ -90,34 +90,21 @@ return (
               <td>{day}</td>
               <td>{currentDate}</td>
               <td>
-                {currentShift.dayShiftPic
-                  ? `${currentShift.dayShiftPic.firstName} ${currentShift.dayShiftPic.lastName}`
-                  : ''}
+                {currentShift.dayShiftPic ? `${currentShift.dayShiftPic.firstName} ${currentShift.dayShiftPic.lastName}` : ''}
               </td>
               <td>
                 {Array.isArray(currentShift.dayShift)
                   ? currentShift.dayShift
-                      .map(
-                        (employee) =>
-                          `${employee.firstName} ${employee.lastName}`
-                      )
-                      .join(', ')
-                  : ''}
+                      .map((employee) => `${employee.firstName} ${employee.lastName}`)
+                      .join(', ') : ''}
               </td>
               <td>
-                {currentShift.eveningShiftPic
-                  ? `${currentShift.eveningShiftPic.firstName} ${currentShift.eveningShiftPic.lastName}`
-                  : ''}
+                {currentShift.eveningShiftPic ? `${currentShift.eveningShiftPic.firstName} ${currentShift.eveningShiftPic.lastName}` : ''}
               </td>
               <td>
-                {Array.isArray(currentShift.eveningShift)
-                  ? currentShift.eveningShift
-                      .map(
-                        (employee) =>
-                          `${employee.firstName} ${employee.lastName}`
-                      )
-                      .join(', ')
-                  : ''}
+                {Array.isArray(currentShift.eveningShift) ? currentShift.eveningShift
+                      .map((employee) => `${employee.firstName} ${employee.lastName}`)
+                      .join(', ') : ''}
               </td>
             </tr>
           );
@@ -130,7 +117,6 @@ return (
     />
   </Container>
 );
-
 };
 
 export default ShiftSchedule;

@@ -4,10 +4,10 @@ const Shift = require('../models/shift.model');
 const getAllShifts = async (req, res) => {
     try {
         const shifts = await Shift.find()
-            .populate('dayShift')
-            .populate('eveningShift')
-            .populate('dayShiftPic')
-            .populate('eveningShiftPic');
+            .populate('dayShift.pic')
+            .populate('dayShift.employees')
+            .populate('eveningShift.pic')
+            .populate('eveningShift.employees');
         res.json(shifts);
     } catch (err) {
         res.status(500).json({
@@ -36,12 +36,14 @@ const getShiftById = async (req, res) => {
 
 // CREATE a new shift
 const createShift = async (req, res) => {
+    // Extract date, dayShift, and eveningShift from the request body
     const {
         date,
         dayShift,
         eveningShift
     } = req.body;
 
+    // Create a new Shift instance using the provided data
     const shift = new Shift({
         date,
         dayShift,
@@ -49,15 +51,23 @@ const createShift = async (req, res) => {
     });
 
     try {
+        // Save the new shift to the database
         const newShift = await shift.save();
-        await newShift.populate('dayShift.pic dayShift.employees eveningShift.pic eveningShift.employees').execPopulate();
-        res.status(201).json(newShift);
+
+        // Populate the shift object with the related data for dayShift and eveningShift
+        // This step retrieves the data for the 'pic' and 'employees' fields in both dayShift and eveningShift
+        const populatedShift = await newShift.populate('dayShift.pic dayShift.employees eveningShift.pic eveningShift.employees');
+
+        // Return the populated shift object with a status of 201 (Created)
+        res.status(201).json(populatedShift);
     } catch (err) {
+        // If there's an error, return a 400 status (Bad Request) with the error message
         res.status(400).json({
             message: err.message
         });
     }
 };
+
 
 // UPDATE an existing shift by ID
 const updateShift = async (req, res) => {

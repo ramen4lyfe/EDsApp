@@ -59,77 +59,78 @@ const ShiftSchedule = () => {
       });
   }, []);
 
-  return (
-    <Container>
-      <Row className="mb-2">
-        <Col className="d-flex justify-content-end">
-          <Button variant="primary" onClick={handleShowCreateModal}>
-            Create Shift
-          </Button>
-        </Col>
-      </Row>
-      <Table striped bordered hover responsive>
-        <thead>
-          <tr>
-            <th>Day</th>
-            <th>Date</th>
-            <th>Day Shift PIC</th>
-            <th>Day Shift</th>
-            <th>Evening Shift PIC</th>
-            <th>Evening Shift</th>
-          </tr>
-        </thead>
-        <tbody>
-          {daysOfWeek.map((day, index) => {
-            const currentDate = dates[index];
-            const currentShift = shifts.find(
-              (shift) => moment(shift.date).format('YYYY-MM-DD') === currentDate
-            ) || {};
-            return (
-              <tr key={index}>
-                <td>{day}</td>
-                <td>{currentDate}</td>
-                <td>
-                  {currentShift.dayShiftPic
-                    ? `${currentShift.dayShiftPic.firstName} ${currentShift.dayShiftPic.lastName}`
-                    : ''}
-                </td>
-                <td>
-                  {currentShift.dayShift
-                    ? currentShift.dayShift
+return (
+  <Container>
+    <Row className="mb-2">
+      <Col className="d-flex justify-content-end">
+        <Button variant="primary" onClick={handleShowCreateModal}>
+          Create Shift
+        </Button>
+      </Col>
+    </Row>
+    <Table striped bordered hover responsive>
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Date</th>
+          <th>Day Shift PIC</th>
+          <th>Day Shift</th>
+          <th>Evening Shift PIC</th>
+          <th>Evening Shift</th>
+        </tr>
+      </thead>
+      <tbody>
+        {daysOfWeek.map((day, index) => {
+          const currentDate = dates[index];
+          const currentShift = shifts.find(
+            (shift) => moment(shift.date).format('YYYY-MM-DD') === currentDate
+          ) || {};
+          return (
+            <tr key={index}>
+              <td>{day}</td>
+              <td>{currentDate}</td>
+              <td>
+                {currentShift.dayShiftPic
+                  ? `${currentShift.dayShiftPic.firstName} ${currentShift.dayShiftPic.lastName}`
+                  : ''}
+              </td>
+              <td>
+                {Array.isArray(currentShift.dayShift)
+                  ? currentShift.dayShift
                       .map(
                         (employee) =>
                           `${employee.firstName} ${employee.lastName}`
                       )
                       .join(', ')
-                    : ''}
-                </td>
-                <td>
-                  {currentShift.eveningShiftPic
-                    ? `${currentShift.eveningShiftPic.firstName} ${currentShift.eveningShiftPic.lastName}`
-                    : ''}
-                </td>
-                <td>
-                  {currentShift.eveningShift
-                    ? currentShift.eveningShift
+                  : ''}
+              </td>
+              <td>
+                {currentShift.eveningShiftPic
+                  ? `${currentShift.eveningShiftPic.firstName} ${currentShift.eveningShiftPic.lastName}`
+                  : ''}
+              </td>
+              <td>
+                {Array.isArray(currentShift.eveningShift)
+                  ? currentShift.eveningShift
                       .map(
                         (employee) =>
                           `${employee.firstName} ${employee.lastName}`
                       )
                       .join(', ')
-                    : ''}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </Table>
-      <CreateWorkScheduleModal
-        show={showCreateModal}
-        handleClose={handleCloseCreateModal}
-      />
-    </Container>
-  );
+                  : ''}
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </Table>
+    <CreateWorkScheduleModal
+      show={showCreateModal}
+      handleClose={handleCloseCreateModal}
+    />
+  </Container>
+);
+
 };
 
 export default ShiftSchedule;

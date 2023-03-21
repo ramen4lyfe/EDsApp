@@ -99,10 +99,14 @@ const ShiftSchedule = () => {
           </Button>
         </Col>
       </Row>
+      {/* display the number of the week on top of each table and separate the data into individual tables for each week */}
       {Object.entries(weeksShifts).map(([weekNumber, shiftsInWeek], index) => (
         <React.Fragment key={index}>
-          <h3>Week {weekNumber}</h3>
-          <Table hover responsive size="lg">
+          <h4 style={{textAlign:'center', marginbottom:'1rem'}}>
+            Week {weekNumber} ({moment(shiftsInWeek[0].date).startOf('isoWeek').format('M/D')} -{' '}
+            {moment(shiftsInWeek[0].date).endOf('isoWeek').format('M/D')})
+          </h4>
+          <Table hover responsive className='mb-5'>
             <thead>
               <tr>
                 <th>Day</th>
@@ -115,7 +119,7 @@ const ShiftSchedule = () => {
             </thead>
             <tbody>
               {shiftsInWeek.map((shift, index) => {
-                const formattedDate = moment(shift.date).format('YYYY-MM-DD');
+                const formattedDate = moment(shift.date).format('MM-DD');
                 const day = moment(shift.date).format('dddd');
                 return (
                   <tr key={index}>

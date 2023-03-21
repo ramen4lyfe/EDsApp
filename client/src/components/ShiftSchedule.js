@@ -201,7 +201,7 @@ const ShiftSchedule = () => {
                             <Button variant="light" onClick={() => handleUpdateShift(shift)}>
                               <BiPencil />
                             </Button>
-                            <Button variant="danger" onClick={() => handleDeleteShift(shift._id)}>
+                            <Button variant="light" onClick={() => handleDeleteShift(shift._id)}>
                               <BiTrash />
                             </Button>
                           </ButtonGroup>

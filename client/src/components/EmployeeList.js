@@ -5,6 +5,8 @@ import moment from 'moment';
 import CreateEmployeeModal from './modals/CreateEmployeeModal';
 import UpdateEmployeeModal from './modals/UpdateEmployeeModal';
 import { EmployeeContext } from '../components/context/EmployeeContext';
+import { BiPencil, BiTrash } from 'react-icons/bi';
+
 
 
 
@@ -124,7 +126,7 @@ const handleSearch = (event) => {
             responsive
             size="md"
             className="mt-2 align-middle"
-            style={{ fontSize: '14px' }}
+            style={{ fontSize: '0.8rem' }}
           >
             <thead className='align-top'>
               <tr>
@@ -158,9 +160,9 @@ const handleSearch = (event) => {
                   <td>{formatDate(employee.terminationDate)}</td>
                   <td>{formatDate(employee.promotionDate)}</td>
                   <td style={{ color: employee.isActive ? "green" : "red", fontWeight: "bold" }}>{employee.isActive ? "Active" : "Inactive"}</td>
-                  <td className="d-flex justify-content-center">
-                    <Button variant="light" size="md" onClick={() => handleShowUpdateModal(employee)} >
-                      Update
+                  <td className=" justify-content-center">
+                    <Button variant="light" size="sm" onClick={() => handleShowUpdateModal(employee)} >
+                     < BiPencil / >
                     </Button>
                     <UpdateEmployeeModal 
                       show={showUpdateModal} 

@@ -94,7 +94,7 @@ const ShiftSchedule = () => {
 
 
   return (
-    <Container fluid className='p-4'>
+    <Container >
       <Row>
         <Col className="d-flex align-items-center justify-content-end ">
           <Form.Group className="d-flex align-items-center">
@@ -124,57 +124,66 @@ const ShiftSchedule = () => {
       {/* display the number of the week on top of each table and separate the data into individual tables for each week */}
       {Object.entries(weeksShifts).map(([weekNumber, shiftsInWeek], index) => (
         <React.Fragment key={index}>
-          <h4 style={{textAlign:'center', marginbottom:'1rem'}}>
-            Week {weekNumber} : {moment(shiftsInWeek[0].date).startOf('isoWeek').format('M/D/YY')} -{' '}
-            {moment(shiftsInWeek[0].date).endOf('isoWeek').format('M/D/YY')}
-          </h4>
-          <Table hover responsive className='mb-5' style={{ fontSize: '14px' }}>
-            <thead>
-              <tr>
-                <th>Day</th>
-                <th>Date</th>
-                <th>Day Shift PIC</th>
-                <th>Day Shift</th>
-                <th>Evening Shift PIC</th>
-                <th>Evening Shift</th>
-              </tr>
-            </thead>
-            <tbody>
-              {shiftsInWeek.map((shift, index) => {
-                const formattedDate = moment(shift.date).format('MM-DD');
-                const day = moment(shift.date).format('dddd');
-                return (
-                  <tr key={index}>
-                    <td>{day}</td>
-                    <td>{formattedDate}</td>
-                    <td>
-                      {shift.dayShift.pic ? `${shift.dayShift.pic.firstName} ${shift.dayShift.pic.lastName}` : ''}
-                    </td>
-                    <td>
-                      {Array.isArray(shift.dayShift.employees)
-                        ? shift.dayShift.employees
-                          .map((employee) => `${employee.firstName} ${employee.lastName}`)
-                          .join(', ')
-                        : ''}
-                    </td>
-                    <td>
-                      {shift.eveningShift.pic ? `${shift.eveningShift.pic.firstName} ${shift.eveningShift.pic.lastName}` : ''}
-                    </td>
-                    <td>
-                      {Array.isArray(shift.eveningShift.employees)
-                        ? shift.eveningShift.employees
-                          .map((employee) => `${employee.firstName} ${employee.lastName}`)
-                          .join(', ')
-                        : ''}
-                    </td>
+          <div className="card mt-4">
+            <div className="card-header">
+              <h4 className="text-center mb-0">
+                Week {weekNumber} : {moment(shiftsInWeek[0].date).startOf('isoWeek').format('M/D/YY')} -{' '}
+                {moment(shiftsInWeek[0].date).endOf('isoWeek').format('M/D/YY')}
+              </h4>
+            </div>
+            <div className="card-body">
+              <Table hover responsive className='mb-5' style={{ fontSize: '14px' }}>
+                <thead>
+                  <tr>
+                    <th>Day</th>
+                    <th>Date</th>
+                    <th>Day Shift PIC</th>
+                    <th>Day Shift</th>
+                    <th>Evening Shift PIC</th>
+                    <th>Evening Shift</th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </Table>
+                </thead>
+                <tbody>
+                  {shiftsInWeek.map((shift, index) => {
+                    const formattedDate = moment(shift.date).format('MM-DD');
+                    const day = moment(shift.date).format('dddd');
+                    return (
+                      <tr key={index}>
+                        <td>{day}</td>
+                        <td>{formattedDate}</td>
+                        <td style={{ whiteSpace: "pre-wrap", width: "120px" }}>
+                          {shift.dayShift.pic ? `${shift.dayShift.pic.firstName} ${shift.dayShift.pic.lastName}\n` : ''}
+                        </td>
+                        <td style={{ whiteSpace: "pre-wrap" }}>
+                          {Array.isArray(shift.dayShift.employees)
+                            ? shift.dayShift.employees
+                              .map((employee) => `${employee.firstName} ${employee.lastName}\n`)
+                              .join('')
+                            : ''}
+                        </td>
+                        <td style={{ whiteSpace: "pre-wrap", width: "120px" }}>
+                          {shift.eveningShift.pic ? `${shift.eveningShift.pic.firstName} ${shift.eveningShift.pic.lastName}\n` : ''}
+                        </td>
+                        <td style={{ whiteSpace: "pre-wrap" }}>
+                          {Array.isArray(shift.eveningShift.employees)
+                            ? shift.eveningShift.employees
+                              .map((employee) => `${employee.firstName} ${employee.lastName}\n`)
+                              .join('')
+                            : ''}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
+            </div>
+          </div>
         </React.Fragment>
       ))}
-      <Pagination>{renderPaginationItems()}</Pagination>
+
+      <div className="d-flex justify-content-center mt-4">
+        <Pagination>{renderPaginationItems()}</Pagination>
+      </div>
       <CreateWorkScheduleModal
         show={showCreateModal}
         handleClose={handleCloseCreateModal}

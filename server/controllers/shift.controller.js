@@ -92,14 +92,21 @@ const updateShift = async (req, res) => {
         }
 
         const updatedShift = await shift.save();
-        await updatedShift.populate('dayShift.pic dayShift.employees eveningShift.pic eveningShift.employees').execPopulate();
-        res.json(updatedShift);
+        const populatedShift = await Shift.findById(updatedShift._id)
+            .populate('dayShift.pic')
+            .populate('dayShift.employees')
+            .populate('eveningShift.pic')
+            .populate('eveningShift.employees');
+
+        res.json(populatedShift);
     } catch (err) {
         res.status(400).json({
             message: err.message
         });
     }
 };
+
+
 
 // DELETE a shift by ID
 const deleteShift = async (req, res) => {

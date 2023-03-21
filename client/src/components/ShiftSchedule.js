@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Container, Row, Col, Table, Button } from 'react-bootstrap';
+import { Container, Row, Col, Table, Button, Pagination } from 'react-bootstrap';
 import { EmployeeContext } from './context/EmployeeContext';
 import axios from 'axios';
 import CreateWorkScheduleModal from './modals/CreateWorkScheduleModal';
@@ -8,11 +8,21 @@ import moment from 'moment';
 
 const ShiftSchedule = () => {
   const { employees, setEmployees } = useContext(EmployeeContext);
+  
   const [shifts, setShifts] = useState([]);
+  
   const [currentDate, setCurrentDate] = useState(new Date().toISOString().substr(0, 10));
+  
   const [showCreateModal, setShowCreateModal] = useState(false);
+  
   const handleShowCreateModal = () => {setShowCreateModal(true)};
+  
   const handleCloseCreateModal = () => {setShowCreateModal(false)}
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  
+  const [shiftsPerPage] = useState(7); // Set the number of shifts per page
+  
   const handleCreateShift = () => {
     // update shifts after creating a new shift
     axios
@@ -24,11 +34,50 @@ const ShiftSchedule = () => {
         console.log(err);
       });
   };
+  
   const sortShiftsByDate = (shifts) => {
     return shifts.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
   };
 
+  const groupShiftsByWeek = (shifts) => {
+    const weeks = {};
+    shifts.forEach((shift) => {
+      const weekNumber = moment(shift.date).isoWeek();
+      if (!weeks[weekNumber]) {
+        weeks[weekNumber] = [];
+      }
+      weeks[weekNumber].push(shift);
+    });
+    return weeks;
+  };
+
   const sortedShifts = sortShiftsByDate(shifts);
+  
+  const weeksShifts = groupShiftsByWeek(sortedShifts);
+
+  // Pagination
+  const indexOfLastShift = currentPage * shiftsPerPage;
+  
+  const indexOfFirstShift = indexOfLastShift - shiftsPerPage;
+  
+  const currentShifts = Object.values(weeksShifts).flat().slice(indexOfFirstShift, indexOfLastShift);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const renderPaginationItems = () => {
+    const totalShifts = Object.values(weeksShifts).flat().length;
+    const pageCount = Math.ceil(totalShifts / shiftsPerPage);
+
+    let items = [];
+    for (let number = 1; number <= pageCount; number++) {
+      items.push(
+        <Pagination.Item key={number} active={number === currentPage} onClick={() => paginate(number)}>
+          {number}
+        </Pagination.Item>
+      );
+    }
+    return items;
+  };
 
   useEffect(() => {
     axios
@@ -50,7 +99,7 @@ const ShiftSchedule = () => {
           </Button>
         </Col>
       </Row>
-      <Table striped bordered hover responsive>
+      <Table striped bordered hover responsive size="lg">
         <thead>
           <tr>
             <th>Day</th>
@@ -62,7 +111,7 @@ const ShiftSchedule = () => {
           </tr>
         </thead>
         <tbody>
-          {sortedShifts.map((shift, index) => {
+          {currentShifts.map((shift, index) => {
             const formattedDate = moment(shift.date).format('YYYY-MM-DD');
             const day = moment(shift.date).format('dddd');
             return (
@@ -94,6 +143,7 @@ const ShiftSchedule = () => {
           })}
         </tbody>
       </Table>
+      <Pagination>{renderPaginationItems()}</Pagination>
       <CreateWorkScheduleModal
         show={showCreateModal}
         handleClose={handleCloseCreateModal}

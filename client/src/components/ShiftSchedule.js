@@ -65,6 +65,9 @@ const ShiftSchedule = () => {
     return true;
   });
 
+  const handleClearSearch = () => {
+    setSearchDate('');
+  };
   
   const weeksShifts = groupShiftsByWeek(sortedShifts);
 
@@ -105,17 +108,28 @@ const ShiftSchedule = () => {
 
 
   return (
-    <Container>
-      <Row className="mb-2 mt-4">
-        <Col>
-          <Form.Control
-            type="date"
-            value={searchDate}
-            onChange={handleSearchDateChange}
-            style={{ display: 'inline', width: 'auto' }}
-          />
-        </Col>
-        <Col className="d-flex justify-content-end">
+    <Container fluid className='p-4'>
+      <Row>
+        <Col className="d-flex align-items-center justify-content-end ">
+          <Form.Group className="d-flex align-items-center">
+            <Form.Label htmlFor="searchDate" className="m-2 ">
+              Search
+            </Form.Label>
+            <Form.Control
+              type="date"
+              value={searchDate}
+              onChange={handleSearchDateChange}
+              id="searchDate"
+              className="m-2"
+            />
+          </Form.Group>
+          <Button
+            variant="secondary"
+            onClick={handleClearSearch}
+            className="m-3"
+          >
+            Clear Search
+          </Button>
           <Button variant="primary" onClick={handleShowCreateModal}>
             Create Shift
           </Button>

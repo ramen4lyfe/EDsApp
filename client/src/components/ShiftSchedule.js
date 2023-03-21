@@ -1,9 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Container, Row, Col, Table, Button, Pagination, Form } from 'react-bootstrap';
+import { Container, Row, Col, Table, Button, ButtonGroup, Pagination, Form } from 'react-bootstrap';
 import { EmployeeContext } from './context/EmployeeContext';
 import axios from 'axios';
 import CreateWorkScheduleModal from './modals/CreateWorkScheduleModal';
 import moment from 'moment';
+import { BiPencil, BiTrash } from 'react-icons/bi';
 
 
 const ShiftSchedule = () => {
@@ -92,6 +93,29 @@ const ShiftSchedule = () => {
       });
   }, [currentDate]);
 
+  const handleUpdateShift = (id, updatedShift) => {
+    axios
+      .put(`http://localhost:8000/api/shifts/${id}`, updatedShift)
+      .then((response) => {
+        console.log(response.data);
+        // Update the state with the updated shift
+        // setShifts([...shifts]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleDeleteShift = async (shiftId) => {
+    try {
+      await axios.delete(`/api/shifts/${shiftId}`);
+      // If the delete request was successful, update the state to remove the deleted shift
+      // setShiftsInWeek((prevShifts) => prevShifts.filter((shift) => shift._id !== shiftId));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
 
   return (
     <Container >
@@ -141,6 +165,7 @@ const ShiftSchedule = () => {
                     <th>Day Shift</th>
                     <th>Evening Shift PIC</th>
                     <th>Evening Shift</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -154,7 +179,7 @@ const ShiftSchedule = () => {
                         <td style={{ whiteSpace: "pre-wrap", width: "120px" }}>
                           {shift.dayShift.pic ? `${shift.dayShift.pic.firstName} ${shift.dayShift.pic.lastName}\n` : ''}
                         </td>
-                        <td style={{ whiteSpace: "pre-wrap" , width: "120px" }}>
+                        <td style={{ whiteSpace: "pre-wrap", width: "120px" }}>
                           {Array.isArray(shift.dayShift.employees)
                             ? shift.dayShift.employees
                               .map((employee) => `${employee.firstName} ${employee.lastName}\n`)
@@ -170,6 +195,16 @@ const ShiftSchedule = () => {
                               .map((employee) => `${employee.firstName} ${employee.lastName}\n`)
                               .join('')
                             : ''}
+                        </td>
+                        <td style={{ whiteSpace: "pre-wrap", width: "80px", }}>
+                          <ButtonGroup size="sm">
+                            <Button variant="light" onClick={() => handleUpdateShift(shift)}>
+                              <BiPencil />
+                            </Button>
+                            <Button variant="danger" onClick={() => handleDeleteShift(shift._id)}>
+                              <BiTrash />
+                            </Button>
+                          </ButtonGroup>
                         </td>
                       </tr>
                     );

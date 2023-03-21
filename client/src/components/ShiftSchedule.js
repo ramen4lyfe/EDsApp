@@ -96,7 +96,7 @@ const ShiftSchedule = () => {
   return (
     <Container >
       <Row>
-        <Col className="d-flex align-items-center justify-content-end ">
+        <Col className="d-flex align-items-center justify-content-center ">
           <Form.Group className="d-flex align-items-center">
             <Form.Label htmlFor="searchDate" className="m-2 ">
               Search
@@ -123,8 +123,8 @@ const ShiftSchedule = () => {
       </Row>
       {/* display the number of the week on top of each table and separate the data into individual tables for each week */}
       {Object.entries(weeksShifts).map(([weekNumber, shiftsInWeek], index) => (
-        <React.Fragment key={index}>
-          <div className="card mt-4">
+        <React.Fragment key={index} >
+          <div className="card mt-4 " style={{ width: "900px", margin: "0 auto" }}>
             <div className="card-header">
               <h4 className="text-center mb-0">
                 Week {weekNumber} : {moment(shiftsInWeek[0].date).startOf('isoWeek').format('M/D/YY')} -{' '}
@@ -149,12 +149,12 @@ const ShiftSchedule = () => {
                     const day = moment(shift.date).format('dddd');
                     return (
                       <tr key={index}>
-                        <td>{day}</td>
-                        <td>{formattedDate}</td>
+                        <td style={{ whiteSpace: "pre-wrap", width: "80px" }}>{day}</td>
+                        <td style={{ whiteSpace: "pre-wrap", width: "80px" }}>{formattedDate}</td>
                         <td style={{ whiteSpace: "pre-wrap", width: "120px" }}>
                           {shift.dayShift.pic ? `${shift.dayShift.pic.firstName} ${shift.dayShift.pic.lastName}\n` : ''}
                         </td>
-                        <td style={{ whiteSpace: "pre-wrap" }}>
+                        <td style={{ whiteSpace: "pre-wrap" , width: "120px" }}>
                           {Array.isArray(shift.dayShift.employees)
                             ? shift.dayShift.employees
                               .map((employee) => `${employee.firstName} ${employee.lastName}\n`)
@@ -164,7 +164,7 @@ const ShiftSchedule = () => {
                         <td style={{ whiteSpace: "pre-wrap", width: "120px" }}>
                           {shift.eveningShift.pic ? `${shift.eveningShift.pic.firstName} ${shift.eveningShift.pic.lastName}\n` : ''}
                         </td>
-                        <td style={{ whiteSpace: "pre-wrap" }}>
+                        <td style={{ whiteSpace: "pre-wrap", width: "120px" }}>
                           {Array.isArray(shift.eveningShift.employees)
                             ? shift.eveningShift.employees
                               .map((employee) => `${employee.firstName} ${employee.lastName}\n`)

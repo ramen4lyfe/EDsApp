@@ -92,57 +92,62 @@ const ShiftSchedule = () => {
 
   return (
     <Container>
-      <Row className="mb-2">
+      <Row className="mb-2 mt-4">
         <Col className="d-flex justify-content-end">
           <Button variant="primary" onClick={handleShowCreateModal}>
             Create Shift
           </Button>
         </Col>
       </Row>
-      <Table striped bordered hover responsive size="lg">
-        <thead>
-          <tr>
-            <th>Day</th>
-            <th>Date</th>
-            <th>Day Shift PIC</th>
-            <th>Day Shift</th>
-            <th>Evening Shift PIC</th>
-            <th>Evening Shift</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentShifts.map((shift, index) => {
-            const formattedDate = moment(shift.date).format('YYYY-MM-DD');
-            const day = moment(shift.date).format('dddd');
-            return (
-              <tr key={index}>
-                <td>{day}</td>
-                <td>{formattedDate}</td>
-                <td>
-                  {shift.dayShift.pic ? `${shift.dayShift.pic.firstName} ${shift.dayShift.pic.lastName}` : ''}
-                </td>
-                <td>
-                  {Array.isArray(shift.dayShift.employees)
-                    ? shift.dayShift.employees
-                      .map((employee) => `${employee.firstName} ${employee.lastName}`)
-                      .join(', ')
-                    : ''}
-                </td>
-                <td>
-                  {shift.eveningShift.pic ? `${shift.eveningShift.pic.firstName} ${shift.eveningShift.pic.lastName}` : ''}
-                </td>
-                <td>
-                  {Array.isArray(shift.eveningShift.employees)
-                    ? shift.eveningShift.employees
-                      .map((employee) => `${employee.firstName} ${employee.lastName}`)
-                      .join(', ')
-                    : ''}
-                </td>
+      {Object.entries(weeksShifts).map(([weekNumber, shiftsInWeek], index) => (
+        <React.Fragment key={index}>
+          <h3>Week {weekNumber}</h3>
+          <Table hover responsive size="lg">
+            <thead>
+              <tr>
+                <th>Day</th>
+                <th>Date</th>
+                <th>Day Shift PIC</th>
+                <th>Day Shift</th>
+                <th>Evening Shift PIC</th>
+                <th>Evening Shift</th>
               </tr>
-            );
-          })}
-        </tbody>
-      </Table>
+            </thead>
+            <tbody>
+              {shiftsInWeek.map((shift, index) => {
+                const formattedDate = moment(shift.date).format('YYYY-MM-DD');
+                const day = moment(shift.date).format('dddd');
+                return (
+                  <tr key={index}>
+                    <td>{day}</td>
+                    <td>{formattedDate}</td>
+                    <td>
+                      {shift.dayShift.pic ? `${shift.dayShift.pic.firstName} ${shift.dayShift.pic.lastName}` : ''}
+                    </td>
+                    <td>
+                      {Array.isArray(shift.dayShift.employees)
+                        ? shift.dayShift.employees
+                          .map((employee) => `${employee.firstName} ${employee.lastName}`)
+                          .join(', ')
+                        : ''}
+                    </td>
+                    <td>
+                      {shift.eveningShift.pic ? `${shift.eveningShift.pic.firstName} ${shift.eveningShift.pic.lastName}` : ''}
+                    </td>
+                    <td>
+                      {Array.isArray(shift.eveningShift.employees)
+                        ? shift.eveningShift.employees
+                          .map((employee) => `${employee.firstName} ${employee.lastName}`)
+                          .join(', ')
+                        : ''}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+        </React.Fragment>
+      ))}
       <Pagination>{renderPaginationItems()}</Pagination>
       <CreateWorkScheduleModal
         show={showCreateModal}

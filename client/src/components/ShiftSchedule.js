@@ -3,6 +3,7 @@ import { Container, Row, Col, Table, Button, ButtonGroup, Pagination, Form } fro
 import { EmployeeContext } from './context/EmployeeContext';
 import axios from 'axios';
 import CreateWorkScheduleModal from './modals/CreateWorkScheduleModal';
+import UpdateShiftModal from './modals/UpdateShiftModal';
 import moment from 'moment';
 import { BiPencil, BiTrash } from 'react-icons/bi';
 
@@ -14,6 +15,15 @@ const ShiftSchedule = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const handleShowCreateModal = () => {setShowCreateModal(true)};
   const handleCloseCreateModal = () => {setShowCreateModal(false)}
+  
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const handleShowUpdateModal = (shift) => {
+    setSelectedShift(shift);
+    setShowUpdateModal(true);
+  };
+  const handleCloseUpdateModal = () => {setShowUpdateModal(false)};
+  const [selectedShift, setSelectedShift] = useState(null);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [shiftsPerPage] = useState(7); // Set the number of shifts per page
   const [searchDate, setSearchDate] = useState('')
@@ -198,9 +208,17 @@ const ShiftSchedule = () => {
                         </td>
                         <td style={{ whiteSpace: "pre-wrap", width: "80px", }}>
                           <ButtonGroup size="sm">
-                            <Button variant="light" onClick={() => handleUpdateShift(shift)}>
+                            <Button variant="light" onClick={() => handleShowUpdateModal(shift)}>
                               <BiPencil />
                             </Button>
+                            {selectedShift && (
+                              <UpdateShiftModal
+                                shift={selectedShift}
+                                show={showUpdateModal}
+                                handleClose={handleCloseUpdateModal}
+                                handleUpdateShift={handleUpdateShift}
+                              />
+                            )}
                             <Button variant="light" onClick={() => handleDeleteShift(shift._id)}>
                               <BiTrash />
                             </Button>

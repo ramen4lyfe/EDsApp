@@ -8,22 +8,11 @@ import moment from 'moment';
 
 const ShiftSchedule = () => {
   const { employees, setEmployees } = useContext(EmployeeContext);
-
-  // const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
-
   const [shifts, setShifts] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date().toISOString().substr(0, 10));
   const [showCreateModal, setShowCreateModal] = useState(false);
-
-  const handleShowCreateModal = () => {
-    setShowCreateModal(true);
-  };
-
-  const handleCloseCreateModal = () => {
-    setShowCreateModal(false);
-  };
-
+  const handleShowCreateModal = () => {setShowCreateModal(true)};
+  const handleCloseCreateModal = () => {setShowCreateModal(false)}
   const handleCreateShift = () => {
     // update shifts after creating a new shift
     axios
@@ -35,6 +24,11 @@ const ShiftSchedule = () => {
         console.log(err);
       });
   };
+  const sortShiftsByDate = (shifts) => {
+    return shifts.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
+  };
+
+  const sortedShifts = sortShiftsByDate(shifts);
 
   useEffect(() => {
     axios
@@ -68,7 +62,7 @@ const ShiftSchedule = () => {
           </tr>
         </thead>
         <tbody>
-          {shifts.map((shift, index) => {
+          {sortedShifts.map((shift, index) => {
             const formattedDate = moment(shift.date).format('YYYY-MM-DD');
             const day = moment(shift.date).format('dddd');
             return (

@@ -8,25 +8,15 @@ import moment from 'moment';
 
 const ShiftSchedule = () => {
   const { employees, setEmployees } = useContext(EmployeeContext);
-  
   const [shifts, setShifts] = useState([]);
-  
   const [currentDate, setCurrentDate] = useState(new Date().toISOString().substr(0, 10));
-  
   const [showCreateModal, setShowCreateModal] = useState(false);
-  
   const handleShowCreateModal = () => {setShowCreateModal(true)};
-  
   const handleCloseCreateModal = () => {setShowCreateModal(false)}
-  
   const [currentPage, setCurrentPage] = useState(1);
-  
   const [shiftsPerPage] = useState(7); // Set the number of shifts per page
-
-  const [searchDate, setSearchDate] = useState('');
-
+  const [searchDate, setSearchDate] = useState('')
   const handleSearchDateChange = (e) => { setSearchDate(e.target.value) };
-  
   const handleCreateShift = () => {
     // update shifts after creating a new shift
     axios
@@ -73,13 +63,9 @@ const ShiftSchedule = () => {
 
   // Pagination
   const indexOfLastShift = currentPage * shiftsPerPage;
-  
-  const indexOfFirstShift = indexOfLastShift - shiftsPerPage;
-  
+  const indexOfFirstShift = indexOfLastShift - shiftsPerPage;  
   const currentShifts = Object.values(weeksShifts).flat().slice(indexOfFirstShift, indexOfLastShift);
-
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
   const renderPaginationItems = () => {
     const totalShifts = Object.values(weeksShifts).flat().length;
     const pageCount = Math.ceil(totalShifts / shiftsPerPage);
@@ -142,7 +128,7 @@ const ShiftSchedule = () => {
             Week {weekNumber} : {moment(shiftsInWeek[0].date).startOf('isoWeek').format('M/D/YY')} -{' '}
             {moment(shiftsInWeek[0].date).endOf('isoWeek').format('M/D/YY')}
           </h4>
-          <Table hover responsive className='mb-5'>
+          <Table hover responsive className='mb-5' style={{ fontSize: '14px' }}>
             <thead>
               <tr>
                 <th>Day</th>

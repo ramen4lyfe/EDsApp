@@ -124,7 +124,7 @@ const handleSearch = (event) => {
             responsive
             size="md"
             className="mt-2 align-middle"
-            style={{ fontSize: '0.8rem' }}
+            style={{ fontSize: '14px' }}
           >
             <thead className='align-top'>
               <tr>

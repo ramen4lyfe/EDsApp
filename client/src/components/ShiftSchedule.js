@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Container, Row, Col, Table, Button, Pagination } from 'react-bootstrap';
+import { Container, Row, Col, Table, Button, Pagination, Form } from 'react-bootstrap';
 import { EmployeeContext } from './context/EmployeeContext';
 import axios from 'axios';
 import CreateWorkScheduleModal from './modals/CreateWorkScheduleModal';
@@ -22,6 +22,10 @@ const ShiftSchedule = () => {
   const [currentPage, setCurrentPage] = useState(1);
   
   const [shiftsPerPage] = useState(7); // Set the number of shifts per page
+
+  const [searchDate, setSearchDate] = useState('');
+
+  const handleSearchDateChange = (e) => { setSearchDate(e.target.value) };
   
   const handleCreateShift = () => {
     // update shifts after creating a new shift
@@ -80,19 +84,34 @@ const ShiftSchedule = () => {
   };
 
   useEffect(() => {
+    let apiUrl = `http://localhost:8000/api/shifts?date=${currentDate}`;
+
+    if (searchDate) {
+      apiUrl = `http://localhost:8000/api/shifts?date=${searchDate}`;
+    }
+
     axios
-      .get(`http://localhost:8000/api/shifts?date=${currentDate}`)
+      .get(apiUrl)
       .then((response) => {
         setShifts(response.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [currentDate]);
+  }, [currentDate, searchDate]);
+
 
   return (
     <Container>
       <Row className="mb-2 mt-4">
+        <Col>
+          <Form.Control
+            type="date"
+            value={searchDate}
+            onChange={handleSearchDateChange}
+            style={{ display: 'inline', width: 'auto' }}
+          />
+        </Col>
         <Col className="d-flex justify-content-end">
           <Button variant="primary" onClick={handleShowCreateModal}>
             Create Shift
@@ -103,8 +122,8 @@ const ShiftSchedule = () => {
       {Object.entries(weeksShifts).map(([weekNumber, shiftsInWeek], index) => (
         <React.Fragment key={index}>
           <h4 style={{textAlign:'center', marginbottom:'1rem'}}>
-            Week {weekNumber} ({moment(shiftsInWeek[0].date).startOf('isoWeek').format('M/D')} -{' '}
-            {moment(shiftsInWeek[0].date).endOf('isoWeek').format('M/D')})
+            Week {weekNumber} : {moment(shiftsInWeek[0].date).startOf('isoWeek').format('M/D/YY')} -{' '}
+            {moment(shiftsInWeek[0].date).endOf('isoWeek').format('M/D/YY')}
           </h4>
           <Table hover responsive className='mb-5'>
             <thead>

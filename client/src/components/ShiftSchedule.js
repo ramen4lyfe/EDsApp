@@ -39,6 +39,7 @@ const ShiftSchedule = () => {
       });
   };
   
+  // filter shifts based on the searchDate:
   const sortShiftsByDate = (shifts) => {
     return shifts.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
   };
@@ -55,7 +56,15 @@ const ShiftSchedule = () => {
     return weeks;
   };
 
-  const sortedShifts = sortShiftsByDate(shifts);
+  const sortedShifts = sortShiftsByDate(shifts).filter((shift) => {
+    if (searchDate) {
+      const searchWeekStart = moment(searchDate).startOf('isoWeek');
+      const searchWeekEnd = moment(searchDate).endOf('isoWeek');
+      return moment(shift.date).isBetween(searchWeekStart, searchWeekEnd, undefined, '[]');
+    }
+    return true;
+  });
+
   
   const weeksShifts = groupShiftsByWeek(sortedShifts);
 
@@ -84,21 +93,15 @@ const ShiftSchedule = () => {
   };
 
   useEffect(() => {
-    let apiUrl = `http://localhost:8000/api/shifts?date=${currentDate}`;
-
-    if (searchDate) {
-      apiUrl = `http://localhost:8000/api/shifts?date=${searchDate}`;
-    }
-
     axios
-      .get(apiUrl)
+      .get(`http://localhost:8000/api/shifts?date=${currentDate}`)
       .then((response) => {
         setShifts(response.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [currentDate, searchDate]);
+  }, [currentDate]);
 
 
   return (

@@ -8,15 +8,12 @@ import { EmployeeContext } from '../components/context/EmployeeContext';
 import { BiPencil, BiTrash } from 'react-icons/bi';
 
 
-
-
 const EmployeeList = () => {
 const { employees, setEmployees } = useContext(EmployeeContext);
 const [showCreateModal, setShowCreateModal] = useState(false);
 const [showUpdateModal, setShowUpdateModal] = useState(false);
 const [selectedEmployee, setSelectedEmployee] = useState({});
 const [searchTerm, setSearchTerm] = useState('');
-
 
 const handleCloseCreateModal = () => setShowCreateModal(false);
 const handleShowCreateModal = () => setShowCreateModal(true);
@@ -67,21 +64,6 @@ const handleSearch = (event) => {
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
   );
-
-
-// code to auto update the list of employees
-const handleEmployeeCreated = () => {
-  fetchEmployees();
-};
-
-const handleEmployeeUpdated = () => {
-  fetchEmployees();
-};
-
-// useEffect(() => {
-//   fetchEmployees();
-// }, []);
-
 
 const fetchEmployees = () => {
   axios.get("http://localhost:8000/api/employees")
@@ -155,7 +137,7 @@ const fetchEmployees = () => {
                 <tr key={employee._id}>
                   <td className=" justify-content-center">
                     <Button variant="light" size="sm" onClick={() => handleShowUpdateModal(employee)} >
-                     < BiPencil / >
+                      < BiPencil / >
                     </Button>
                     <UpdateEmployeeModal 
                       show={showUpdateModal} 

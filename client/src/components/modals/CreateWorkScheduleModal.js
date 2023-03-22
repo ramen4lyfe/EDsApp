@@ -47,8 +47,6 @@ const CreateWorkScheduleModal = ({ show, handleClose }) => {
     };
 
 
-
-
     return (
         <Modal show={show} onHide={handleClose} size='lg'>
             <Modal.Header closeButton>
@@ -173,7 +171,7 @@ const CreateWorkScheduleModal = ({ show, handleClose }) => {
                     </Row>
                 </Form>
             </Modal.Body>
-            <Modal.Footer>
+            <Modal.Footer className='d-flex justify-content-center'>
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>

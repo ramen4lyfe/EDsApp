@@ -168,9 +168,9 @@ const ShiftSchedule = () => {
 
   const handleDeleteShift = async (shiftId) => {
     try {
-      await axios.delete(`/api/shifts/${shiftId}`);
+      await axios.delete(`http://localhost:8000/api/shifts/delete/${shiftId}`);
       // If the delete request was successful, update the state to remove the deleted shift
-      // setShiftsInWeek((prevShifts) => prevShifts.filter((shift) => shift._id !== shiftId));
+      setShifts((prevShifts) => prevShifts.filter((shift) => shift._id !== shiftId));
     } catch (err) {
       console.error(err);
     }

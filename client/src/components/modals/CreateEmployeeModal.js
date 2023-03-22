@@ -16,6 +16,7 @@ function CreateEmployeeModal ({ show, handleClose, setEmployees, onEmployeeCreat
     const [terminationDate, setTerminationDate] = useState('');
     const [promotionDate, setPromotionDate] = useState('');
     const [isActive, setIsActive] = useState('');
+    const [allottedHours, setAllottedHours] = useState(''); 
 
     const [errors, setErrors] = useState('');
 
@@ -47,6 +48,7 @@ function CreateEmployeeModal ({ show, handleClose, setEmployees, onEmployeeCreat
         terminationDate,
         promotionDate,
         isActive,
+        allottedHours,
     })
         .then((response) => {
         console.log(email);
@@ -67,9 +69,9 @@ function CreateEmployeeModal ({ show, handleClose, setEmployees, onEmployeeCreat
         setTerminationDate("");
         setPromotionDate("");
         setIsActive("");
+        setAllottedHours("");
         handleClose();
         onEmployeeCreated();
-        
         })
         .catch((err) => {
         console.log("Axios error:", err); // log error
@@ -200,6 +202,17 @@ return (
                             type="date"
                             value={promotionDate}
                             onChange={(e) => setPromotionDate(e.target.value)}
+                        />
+                    </InputGroup>
+                </Form.Group>
+                
+                <Form.Group controlId="formBasicAllottedHours" className='mb-4'>
+                    <InputGroup>
+                        <InputGroup.Text>Allotted Hours</InputGroup.Text>
+                        <Form.Control
+                            type="number"
+                            value={allottedHours}
+                            onChange={(e) => setAllottedHours(e.target.value)}
                         />
                     </InputGroup>
                 </Form.Group>

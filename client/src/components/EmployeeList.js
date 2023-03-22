@@ -107,7 +107,7 @@ const fetchEmployees = () => {
             </Form.Group>
           </Form>
           <Table
-            // striped
+            striped
             // bordered
             hover
             responsive
@@ -118,6 +118,7 @@ const fetchEmployees = () => {
             <thead className='align-top'>
               <tr>
                 <th> </th>
+                <th>Active Status</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Preferred Name</th>
@@ -129,7 +130,7 @@ const fetchEmployees = () => {
                 <th>Hire Date</th>
                 <th>Termination Date</th>
                 <th>Promotion Date</th>
-                <th>Active Status</th>
+                <th>Allotted Hours/ Week</th>
               </tr>
             </thead>
             <tbody>
@@ -148,6 +149,7 @@ const fetchEmployees = () => {
                       onEmployeeUpdated={fetchEmployees}
                     />
                   </td>
+                  <td style={{ color: employee.isActive ? "green" : "red", fontWeight: "bold" }}>{employee.isActive ? "Active" : "Inactive"}</td>
                   <td>{employee.firstName}</td>
                   <td>{employee.lastName}</td>
                   <td>{employee.preferredName}</td>
@@ -159,7 +161,7 @@ const fetchEmployees = () => {
                   <td>{formatDate(employee.hireDate)}</td>
                   <td>{formatDate(employee.terminationDate)}</td>
                   <td>{formatDate(employee.promotionDate)}</td>
-                  <td style={{ color: employee.isActive ? "green" : "red", fontWeight: "bold" }}>{employee.isActive ? "Active" : "Inactive"}</td>
+                  <td>{employee.allottedHours}</td>
                 </tr>
               ))}
             </tbody>

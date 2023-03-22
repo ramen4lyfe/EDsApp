@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 
 const ShiftSchema = new mongoose.Schema(
   {
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Employee",
+      // required: [true, "Please provide the owner's name."],
+    },
     date: {
       type: Date,
       // required: [true, "Please provide the shift date."],

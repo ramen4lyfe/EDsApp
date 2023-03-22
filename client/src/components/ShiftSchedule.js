@@ -236,9 +236,11 @@ const ShiftSchedule = () => {
                 Week {weekNumber} : {moment(shiftsInWeek[0].date).startOf('isoWeek').format('M/D/YY')} -{' '}
                 {moment(shiftsInWeek[0].date).endOf('isoWeek').format('M/D/YY')}
               </h4>
+
             </div>
+            
             <div className="card-body">
-              <Table hover responsive className='mb-5' style={{ fontSize: '14px' }}>
+              <Table Table striped hover responsive className='mb-5' style={{ fontSize: '14px' }}>
                 <thead>
                   <tr>
                     <th>Day</th>

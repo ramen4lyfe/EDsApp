@@ -40,14 +40,16 @@ const createShift = async (req, res) => {
     const {
         date,
         dayShift,
-        eveningShift
+        eveningShift,
+        owner,
     } = req.body;
 
     // Create a new Shift instance using the provided data
     const shift = new Shift({
         date,
         dayShift,
-        eveningShift
+        eveningShift,
+        owner,
     });
 
     try {
@@ -89,6 +91,10 @@ const updateShift = async (req, res) => {
 
         if (req.body.eveningShift) {
             shift.eveningShift = req.body.eveningShift;
+        }
+
+        if (req.body.owner) {
+            shift.owner = req.body.owner;
         }
 
         const updatedShift = await shift.save();

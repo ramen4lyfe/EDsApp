@@ -48,6 +48,10 @@ const EmployeeSchema = new mongoose.Schema({
     required: [true, "Please indicate employement activity"],
     // default: true,
   },
+  allottedHours: {
+    type: Number,
+    // required: [true, "Please enter the number of hours the employee is allotted"],
+  },
   createdAt: {
     type: Date,
     default: Date.now,

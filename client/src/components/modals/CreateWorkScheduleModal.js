@@ -6,6 +6,8 @@ import axios from 'axios';
 const CreateWorkScheduleModal = ({ show, handleClose }) => {
     const { employees } = useContext(EmployeeContext);
     const [selectedDate, setSelectedDate] = useState('');
+
+    // const [owner, setOwner] = useState('');
     const [dayShiftPic, setDayShiftPic] = useState('');
     const [dayShiftEmployee1, setDayShiftEmployee1] = useState('');
     const [dayShiftEmployee2, setDayShiftEmployee2] = useState('');
@@ -27,6 +29,7 @@ const CreateWorkScheduleModal = ({ show, handleClose }) => {
 
         const shiftData = {
             date: adjustedDate.toISOString(),
+            // owner: owner,
             dayShift: {
                 pic: dayShiftPic,
                 employees: [dayShiftEmployee1, dayShiftEmployee2, dayShiftEmployee3].filter(employee => employee !== ''),
@@ -58,6 +61,18 @@ const CreateWorkScheduleModal = ({ show, handleClose }) => {
                         <Form.Label>Select Date</Form.Label>
                         <Form.Control type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} required />
                     </Form.Group>
+                    
+                    {/* <Form.Group controlId="owner" className='mb-4'>
+                        <Form.Label>Select Owner of Week</Form.Label>
+                        <Form.Control type="select" value={owner} onChange={(e) => setOwner(e.target.value)} required>
+                            <option value="">Select Owner Of Week</option>
+                                    {employees.map((employee) => (
+                                        <option key={employee._id} value={employee._id}>
+                                            {employee.firstName} {employee.lastName}
+                                        </option>
+                                    ))}
+                        </Form.Control>
+                    </Form.Group> */}
                     
                     <Row>
                         <Col>

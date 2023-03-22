@@ -16,6 +16,7 @@ const UpdateEmployeeModal = ({ show, handleClose, employee, id , onEmployeeUpdat
     const [terminationDate, setTerminationDate] = useState('');
     const [promotionDate, setPromotionDate] = useState('');
     const [isActive, setIsActive] = useState(null);
+    const [allottedHours, setAllottedHours] = useState('');
 
     // const [errors, setErrors] = useState('');
 
@@ -36,6 +37,7 @@ const UpdateEmployeeModal = ({ show, handleClose, employee, id , onEmployeeUpdat
                     setTerminationDate(response.data.terminationDate);
                     setPromotionDate(response.data.promotionDate);
                     setIsActive(response.data.isActive);
+                    setAllottedHours(response.data.allottedHours);
                 })
                 .catch((err) => {
                     console.log(err.response.data.error.errors);
@@ -57,7 +59,8 @@ const UpdateEmployeeModal = ({ show, handleClose, employee, id , onEmployeeUpdat
             hireDate,
             terminationDate,
             promotionDate,
-            isActive
+            isActive,
+            allottedHours,
         })
             .then((response) => {
                 console.log(response);
@@ -199,6 +202,17 @@ const UpdateEmployeeModal = ({ show, handleClose, employee, id , onEmployeeUpdat
                                 type="date"
                                 value={promotionDate}
                                 onChange={(e) => setPromotionDate(e.target.value)}
+                            />
+                        </InputGroup>
+                    </Form.Group>
+
+                    <Form.Group controlId="formBasicAllottedHours" className='mb-4'>
+                        <InputGroup>
+                            <InputGroup.Text>Allotted Hours/ Week</InputGroup.Text>
+                            <Form.Control
+                                type="number"
+                                value={allottedHours}
+                                onChange={(e) => setAllottedHours(e.target.value)}
                             />
                         </InputGroup>
                     </Form.Group>

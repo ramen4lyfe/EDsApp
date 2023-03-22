@@ -69,25 +69,30 @@ const handleSearch = (event) => {
   );
 
 
-// // code to auto update the list of employees
-// const handleEmployeeCreated = () => {
-//   fetchEmployees();
-// };
+// code to auto update the list of employees
+const handleEmployeeCreated = () => {
+  fetchEmployees();
+};
 
-// const handleEmployeeUpdated = () => {
-//   fetchEmployees();
-// };
+const handleEmployeeUpdated = () => {
+  fetchEmployees();
+};
 
-// const fetchEmployees = () => {
-//   axios.get("http://localhost:8000/api/employees")
-//     .then((response) => {
-//       console.log(response.data);
-//       setEmployees(response.data);
-//     })
-//     .catch(err => {
-//       console.log(err);
-//     });
-// };
+// useEffect(() => {
+//   fetchEmployees();
+// }, []);
+
+
+const fetchEmployees = () => {
+  axios.get("http://localhost:8000/api/employees")
+    .then((response) => {
+      console.log(response.data);
+      setEmployees(response.data);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
 
   return (
     <Container fluid className='p-4'>
@@ -114,7 +119,7 @@ const handleSearch = (event) => {
                   show={showCreateModal} 
                   handleClose={handleCloseCreateModal} 
                   setEmployees={setEmployees}
-                  // onEmployeeCreated={handleEmployeeCreated} 
+                  onEmployeeCreated={fetchEmployees} 
                   />
               </Col>
             </Form.Group>
@@ -158,7 +163,7 @@ const handleSearch = (event) => {
                       employee={selectedEmployee} 
                       id={selectedEmployee._id} 
                       handleUpdateEmployee={handleUpdateEmployee} 
-                      // onEmployeeUpdated={handleEmployeeUpdated}
+                      onEmployeeUpdated={fetchEmployees}
                     />
                   </td>
                   <td>{employee.firstName}</td>

@@ -3,7 +3,7 @@ import { Modal, Button, Form, InputGroup, FormControl } from 'react-bootstrap';
 import axios from 'axios';
 import { EmployeeContext } from '../context/EmployeeContext';
 
-function CreateEmployeeModal ({ show, handleClose, setEmployees }) {
+function CreateEmployeeModal ({ show, handleClose, setEmployees, onEmployeeCreated }) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [preferredName, setPreferredName] = useState('');
@@ -68,6 +68,7 @@ function CreateEmployeeModal ({ show, handleClose, setEmployees }) {
         setPromotionDate("");
         setIsActive("");
         handleClose();
+        onEmployeeCreated();
         
         })
         .catch((err) => {
@@ -123,7 +124,7 @@ return (
                 <InputGroup>
                     <InputGroup.Text>Gender Name</InputGroup.Text>
                         <Form.Select value={genderName} onChange={(e) => setGenderName(e.target.value)}>
-                        <option value="">--Select gender--</option>
+                        <option value="">--Select--</option>
                         <option value="He/Him">He/Him</option>
                         <option value="She/Her">She/Her</option>
                         <option value="They/Them">They/Them</option>
@@ -140,7 +141,7 @@ return (
 
             <Form.Group controlId="formBasicEmail" className='mb-4'>
                 <InputGroup>
-                    <InputGroup.Text>Email</InputGroup.Text>
+                    <InputGroup.Text>Personal Email</InputGroup.Text>
                     <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </InputGroup>
             </Form.Group>
@@ -220,7 +221,7 @@ return (
 
         </Form>
     </Modal.Body>
-    <Modal.Footer>
+    <Modal.Footer className='d-flex justify-content-center'>
         <Button variant="secondary" onClick={handleClose}>
             Cancel
         </Button>

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, InputGroup, FormControl } from 'react-bootstrap';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
 
-const UpdateEmployeeModal = ({ show, handleClose, employee, id }) => {
-    // const { id } = useParams();
+
+const UpdateEmployeeModal = ({ show, handleClose, employee, id , onEmployeeUpdated}) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [preferredName, setPreferredName] = useState('');
@@ -21,216 +20,215 @@ const UpdateEmployeeModal = ({ show, handleClose, employee, id }) => {
     // const [errors, setErrors] = useState('');
 
     useEffect(() => {
-    if (id) {
-      axios.get(`http://localhost:8000/api/employees/${id}`)
-        .then((response) => {
-          console.log(response);
-          setFirstName(response.data.firstName);
-          setLastName(response.data.lastName);
-          setPreferredName(response.data.preferredName);
-          setGenderName(response.data.genderName);
-          setBirthday(response.data.birthday);
-          setEmail(response.data.email);
-          setCellPhone(response.data.cellPhone);
-          setBusinessTitle(response.data.businessTitle);
-          setHireDate(response.data.hireDate);
-          setTerminationDate(response.data.terminationDate);
-          setPromotionDate(response.data.promotionDate);
-          setIsActive(response.data.isActive);
-        })
-        .catch((err) => {
-          console.log(err.response.data.error.errors);
-        });
-    }
-  }, [id, employee]);
+        if (id) {
+            axios.get(`http://localhost:8000/api/employees/${id}`)
+                .then((response) => {
+                    console.log(response);
+                    setFirstName(response.data.firstName);
+                    setLastName(response.data.lastName);
+                    setPreferredName(response.data.preferredName);
+                    setGenderName(response.data.genderName);
+                    setBirthday(response.data.birthday);
+                    setEmail(response.data.email);
+                    setCellPhone(response.data.cellPhone);
+                    setBusinessTitle(response.data.businessTitle);
+                    setHireDate(response.data.hireDate);
+                    setTerminationDate(response.data.terminationDate);
+                    setPromotionDate(response.data.promotionDate);
+                    setIsActive(response.data.isActive);
+                })
+                .catch((err) => {
+                    console.log(err.response.data.error.errors);
+                });
+        }
+    }, [id, employee]);
 
     const handleSubmit = (e) => {
-    e.preventDefault();
-    axios.put(`http://localhost:8000/api/employees/update/${id}`, { 
-        firstName, 
-        lastName, 
-        preferredName, 
-        genderName, 
-        birthday, 
-        email, 
-        cellPhone, 
-        businessTitle, 
-        hireDate, 
-        terminationDate, 
-        promotionDate, 
-        isActive })
-        .then((response) => {
-            console.log(response);
-            handleClose();
+        e.preventDefault();
+        axios.put(`http://localhost:8000/api/employees/update/${id}`, {
+            firstName,
+            lastName,
+            preferredName,
+            genderName,
+            birthday,
+            email,
+            cellPhone,
+            businessTitle,
+            hireDate,
+            terminationDate,
+            promotionDate,
+            isActive
         })
-        .catch((err) => {
-            if (err.response) {
-                // Request made and server responded
-                console.log(err.response.data);
-                console.log(err.response.status);
-                console.log(err.response.headers);
-            } else if (err.request) {
-                // The request was made but no response was received
-                console.log(err.request);
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log('Error', err.message);
-            }
-            console.log(err.config);
-        });
-};
+            .then((response) => {
+                console.log(response);
+                handleClose();
+                onEmployeeUpdated();
+            })
+            .catch((err) => {
+                if (err.response) {
+                    // Request made and server responded
+                    console.log(err.response.data);
+                    console.log(err.response.status);
+                    console.log(err.response.headers);
+                } else if (err.request) {
+                    // The request was made but no response was received
+                    console.log(err.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', err.message);
+                }
+                console.log(err.config);
+            });
+    };
 
-return (
-    <Modal show={show} onHide={handleClose} size="md">
-        <Modal.Header closeButton>
-        <Modal.Title>Update info</Modal.Title>
-        </Modal.Header>
-    <Modal.Body>
-        <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="formBasicFirstName">
-            <Form.Label>First Name</Form.Label>
-            <Form.Control
-                type="text"
-                placeholder="Enter name"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-            />
-            {/* {errors.firstName ? <p className="text-danger">{errors.firstName.message}</p> : null} */}
+    return (
+        <Modal show={show} onHide={handleClose} size="md">
+            <Modal.Header closeButton>
+                <Modal.Title>Editing {firstName}'s Record</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group controlId="formBasicFirstName" className='mb-4'>
+                        <InputGroup>
+                            <InputGroup.Text>First Name<i className="fas fa-user"></i></InputGroup.Text>
+                            <FormControl
+                                type="text"
+                                placeholder=""
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                            />
+                        </InputGroup>
+                    </Form.Group>
 
-            </Form.Group>
-            
-            <Form.Group controlId="formBasicLastName">
-            <Form.Label>Last Name</Form.Label>
-            <Form.Control
-                type="text"
-                placeholder="Enter name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-            />
-            {/* {errors.lastName ? <p className="text-danger">{errors.lastName.message}</p> : null} */}
+                    <Form.Group controlId="formBasicLastName" className='mb-4'>
+                        <InputGroup>
+                            <InputGroup.Text>Last Name<i className="fas fa-user"></i></InputGroup.Text>
+                            <FormControl
+                                type="text"
+                                placeholder=""
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                            />
+                        </InputGroup>
+                    </Form.Group>
 
-            </Form.Group>
+                    <Form.Group controlId="formBasicPreferredName" className='mb-4'>
+                        <InputGroup>
+                            <InputGroup.Text>Preferred Name<i className="fas fa-user"></i></InputGroup.Text>
+                            <Form.Control type="text" value={preferredName} onChange={(e) => setPreferredName(e.target.value)} />
+                        </InputGroup>
+                    </Form.Group>
 
-            <Form.Group controlId="formBasicPreferredName">
-            <Form.Label>Preferred Name</Form.Label>
-            <Form.Control
-                type="text"
-                placeholder="Preferred Name"
-                value={preferredName}
-                onChange={(e) => setPreferredName(e.target.value)}
-            />
-            {/* {errors.prefferedName ? <p className="text-danger">{errors.preferredName.message}</p> : null} */}
+                    <Form.Group controlId="formBasicGender" className='mb-4'>
+                        <InputGroup>
+                            <InputGroup.Text>Gender Name</InputGroup.Text>
+                            <Form.Select value={genderName} onChange={(e) => setGenderName(e.target.value)}>
+                                <option value="">--Select--</option>
+                                <option value="He/Him">He/Him</option>
+                                <option value="She/Her">She/Her</option>
+                                <option value="They/Them">They/Them</option>
+                            </Form.Select>
+                        </InputGroup>
+                    </Form.Group>
 
-            </Form.Group>
+                    <Form.Group controlId="formBasicBirthday" className='mb-4'>
+                        <InputGroup>
+                            <InputGroup.Text>Birthday</InputGroup.Text>
+                            <Form.Control type="date" value={birthday} onChange={(e) => setBirthday(e.target.value)} />
+                        </InputGroup>
+                    </Form.Group>
 
-            <Form.Group controlId="formBasicGender">
-            <Form.Label>Gender</Form.Label>
-            <Form.Select value={genderName} onChange={(e) => setGenderName(e.target.value)}>
-                <option value="">Select gender</option>
-                <option value="He/Him">He/Him</option>
-                <option value="She/Her">She/Her</option>
-                <option value="They/Them">They/Them</option>
-            </Form.Select>
-            {/* {errors.genderName ? <p className="text-danger">{errors.genderName.message}</p> : null} */}
+                    <Form.Group controlId="formBasicEmail" className='mb-4'>
+                        <InputGroup>
+                            <InputGroup.Text>Personal Email</InputGroup.Text>
+                            <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        </InputGroup>
+                    </Form.Group>
 
-            </Form.Group>
+                    <Form.Group controlId="formBasicPhone" className='mb-4'>
+                        <InputGroup>
+                            <InputGroup.Text>Cell Phone</InputGroup.Text>
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter phone number"
+                                value={cellPhone}
+                                onChange={(e) => setCellPhone(e.target.value)}
+                            />
+                        </InputGroup>
+                    </Form.Group>
 
-            <Form.Group controlId="formBasicBirthday">
-            <Form.Label>Birthday</Form.Label>
-            <Form.Control
-                type="date"
-                value={birthday}
-                onChange={(e) => setBirthday(e.target.value)}
-            />
-            {/* {errors.birthday ? <p className="text-danger">{errors.birthday.message}</p> : null} */}
+                    <Form.Group controlId="formBasicBusinessTitle" className='mb-4'>
+                        <InputGroup>
+                            <InputGroup.Text>Business Title</InputGroup.Text>
+                            <Form.Control as="select" value={businessTitle} onChange={(e) => setBusinessTitle(e.target.value)}>
+                                <option value="">Select a Business Title</option>
+                                <option value="Employee">Employee</option>
+                                <option value="Manager">Manager</option>
+                                <option value="Stake Holder">Stake Holder</option>
+                                <option value="Owner">Owner</option>
+                            </Form.Control>
+                        </InputGroup>
+                    </Form.Group>
 
-            </Form.Group>
+                    <Form.Group controlId="formBasicHireDate" className='mb-4'>
+                        <InputGroup>
+                            <InputGroup.Text>Hire Date</InputGroup.Text>
+                            <Form.Control
+                                type="date"
+                                value={hireDate}
+                                onChange={(e) => setHireDate(e.target.value)}
+                            />
+                        </InputGroup>
+                    </Form.Group>
 
-            <Form.Group controlId="formBasicEmail">
-            <Form.Label>Personal Email</Form.Label>
-            <Form.Control
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            </Form.Group>
+                    <Form.Group controlId="formBasicTerminationDate" className='mb-4'>
+                        <InputGroup>
+                            <InputGroup.Text>Termination Date</InputGroup.Text>
+                            <Form.Control
+                                type="date"
+                                value={terminationDate}
+                                onChange={(e) => setTerminationDate(e.target.value)}
+                            />
+                        </InputGroup>
+                    </Form.Group>
 
-            <Form.Group controlId="formBasicPhone">
-            <Form.Label>Cell Phone</Form.Label>
-            <Form.Control
-                type="text"
-                placeholder="Enter phone number"
-                value={cellPhone}
-                onChange={(e) => setCellPhone(e.target.value)}
-            />
-            {/* {errors.cellPhone ? <p className="text-danger">{errors.cellPhone.message}</p> : null} */}
-            </Form.Group>
-            
-            <Form.Group controlId="formBasicBusinessTitle">
-            <Form.Label>Business Title</Form.Label>
-            <Form.Control as="select" value={businessTitle} onChange={(e) => setBusinessTitle(e.target.value)}>
-                <option value="">Select a Business Title</option>
-                <option value="Employee">Employee</option>
-                <option value="Manager">Manager</option>
-                <option value="Stake Holder">Stake Holder</option>
-                <option value="Owner">Owner</option>
-            </Form.Control>
-            {/* {errors.businessTitle ? <p className="text-danger">{errors.businessTitle.message}</p> : null} */}
-            </Form.Group>
-            
-            <Form.Group controlId="formBasicHireDate">
-            <Form.Label>Hire Date</Form.Label>
-            <Form.Control
-                type="date"
-                value={hireDate}
-                onChange={(e) => setHireDate(e.target.value)}
-            />
-            {/* {errors.hireDate ? <p className="text-danger">{errors.hireDate.message}</p> : null} */}
+                    <Form.Group controlId="formBasicPromotionDate" className='mb-4'>
+                        <InputGroup>
+                            <InputGroup.Text>Promotion Date</InputGroup.Text>
+                            <Form.Control
+                                type="date"
+                                value={promotionDate}
+                                onChange={(e) => setPromotionDate(e.target.value)}
+                            />
+                        </InputGroup>
+                    </Form.Group>
 
-            </Form.Group>
-            
-            <Form.Group controlId="formBasicTerminationDate">
-            <Form.Label>Termination Date</Form.Label>
-            <Form.Control
-                type="date"
-                value={terminationDate}
-                onChange={(e) => setTerminationDate(e.target.value)}
-            />
-            </Form.Group>
-            
-            <Form.Group controlId="formBasicPromotionDate">
-            <Form.Label>Promotion Date</Form.Label>
-            <Form.Control
-                type="date"
-                value={promotionDate}
-                onChange={(e) => setPromotionDate(e.target.value)}
-            />
-            </Form.Group>
+                    <Form.Group controlId="formBasicIsActive" className='mb-4'>
+                        <InputGroup>
+                            <InputGroup.Text>Is Active</InputGroup.Text>
+                            <Form.Control
+                                as="select"
+                                value={isActive}
+                                onChange={(e) => setIsActive(e.target.value === "true")}
+                            >
+                                <option value="">--Select--</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </Form.Control>
+                        </InputGroup>
+                    </Form.Group>
 
-            <Form.Group controlId="formBasicIsActive">
-            <Form.Label>Is Active</Form.Label>
-            <Form.Control
-                as="select"
-                value={isActive}
-                onChange={(e) => setIsActive(e.target.value === "true")}
-            >
-                <option value="">--Select--</option>
-                <option value="true">Yes</option>
-                <option value="false">No</option>
-            </Form.Control>
-            </Form.Group>
-
-        </Form>
-    </Modal.Body>
-    <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-            Cancel
-        </Button>
-        <Button variant="primary" type="submit" onClick={handleSubmit}>
-            Update Info
-        </Button>
-    </Modal.Footer>
-    </Modal>
+                </Form>
+            </Modal.Body>
+            <Modal.Footer className='d-flex justify-content-center'>
+                <Button variant="secondary" onClick={handleClose}>
+                    Cancel
+                </Button>
+                <Button variant="primary" type="submit" onClick={handleSubmit}>
+                    Update Info
+                </Button>
+            </Modal.Footer>
+        </Modal>
     );
 };
 

@@ -14,7 +14,10 @@ const ShiftSchedule = () => {
   const [currentDate, setCurrentDate] = useState(new Date().toISOString().substr(0, 10));
   const [showCreateModal, setShowCreateModal] = useState(false);
   const handleShowCreateModal = () => {setShowCreateModal(true)};
-  const handleCloseCreateModal = () => {setShowCreateModal(false)}
+  const handleCloseCreateModal = () => {
+    setShowCreateModal(false);
+    setModalKey((prevKey) => prevKey + 1); // update the key
+  };
   
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const handleShowUpdateModal = (shift) => {
@@ -24,12 +27,13 @@ const ShiftSchedule = () => {
   const handleCloseUpdateModal = () => {setShowUpdateModal(false)};
   const [selectedShift, setSelectedShift] = useState(null);
 
+  const [modalKey, setModalKey] = useState(0);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [shiftsPerPage] = useState(7); // Set the number of shifts per page
   const [searchDate, setSearchDate] = useState('')
   const handleSearchDateChange = (e) => { setSearchDate(e.target.value) };
   const handleCreateShift = () => {
-    // update shifts after creating a new shift
     axios
       .get(`http://localhost:8000/api/shifts?date=${currentDate}`)
       .then((response) => {
@@ -145,7 +149,7 @@ const ShiftSchedule = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [currentDate]);
+  }, [currentDate, showCreateModal]);
 
   const handleUpdateShift = (id, updatedShift) => {
     axios
@@ -202,28 +206,26 @@ const ShiftSchedule = () => {
             />
           </Form.Group>
           <Button
-            variant="secondary"
+            variant="outline-secondary"
             onClick={handleClearSearch}
             className="m-3"
           >
             Clear Search
           </Button>
-          <Button variant="primary" onClick={handleShowCreateModal}>
+
+          <ButtonGroup className="mx-3">
+            <Button variant="outline-secondary" onClick={handlePreviousMonth}> Previous Month</Button>
+            <Button variant="outline-secondary" onClick={handleCurrentWeek}>Current Month</Button>
+            <Button variant="outline-secondary" onClick={handleNextMonth}> Next Month </Button>
+          </ButtonGroup>
+          
+          <Button variant="outline-primary" onClick={handleShowCreateModal}>
             Create Schedule
           </Button>
         </Col>
       </Row>
       
       {/* buttons to view the current week, previous month, and next month */}
-      <Row>
-        <Col className="d-flex align-items-center justify-content-center ">
-          <ButtonGroup className="mx-3">
-            <Button variant="secondary" onClick={handleCurrentWeek}>Current Week</Button>
-            <Button variant="secondary" onClick={handleNextMonth}>View Next Month</Button>
-            <Button variant="secondary" onClick={handlePreviousMonth}>View Previous Month</Button>
-          </ButtonGroup>
-        </Col>
-      </Row>
 
       {/* display the number of the week on top of each table and separate the data into individual tables for each week */}
       {Object.entries(weeksShifts).map(([weekNumber, shiftsInWeek], index) => (
@@ -304,10 +306,11 @@ const ShiftSchedule = () => {
         </React.Fragment>
       ))}
 
-      <div className="d-flex justify-content-center mt-4">
+      {/* <div className="d-flex justify-content-center mt-4">
         <Pagination>{renderPaginationItems()}</Pagination>
-      </div>
+      </div> */}
       <CreateWorkScheduleModal
+        key={modalKey}
         show={showCreateModal}
         handleClose={handleCloseCreateModal}
         handleCreateShift={handleCreateShift}

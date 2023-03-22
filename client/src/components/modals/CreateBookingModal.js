@@ -4,14 +4,15 @@ import { EmployeeContext } from '../context/EmployeeContext';
 import axios from 'axios';
 
 const CreateBookingModal = ({ show, handleClose, handleCreate }) => {
-    const { employee } = useContext(EmployeeContext);
+    const { employees } = useContext(EmployeeContext);
     const [bookingDate, setBookingDate] = useState('');
     const [bookingTime, setBookingTime] = useState('');
     const [game, setGame] = useState('');
     const [numberOfPlayers, setNumberOfPlayers] = useState('');
-    const [price, setPrice] = useState('');
+    const [paid, setPaid] = useState('');
     const [host, setHost] = useState('');
     const [gameMaster, setGameMaster] = useState('');
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,7 +22,7 @@ const CreateBookingModal = ({ show, handleClose, handleCreate }) => {
                 bookingTime: bookingTime,
                 game: game,
                 numberOfPlayers: numberOfPlayers,
-                price: price,
+                paid: paid,
                 host: host,
                 gameMaster: gameMaster,
             });
@@ -33,7 +34,7 @@ const CreateBookingModal = ({ show, handleClose, handleCreate }) => {
             setBookingTime('');
             setGame('');
             setNumberOfPlayers('');
-            setPrice('');
+            setPaid('');
             setHost('');
             setGameMaster('');
 
@@ -78,9 +79,9 @@ const CreateBookingModal = ({ show, handleClose, handleCreate }) => {
                             required
                         >
                             <option value="">Select a game</option>
-                            <option value="Game 1">Game 1</option>
-                            <option value="Game 2">Game 2</option>
-                            <option value="Game 3">Game 3</option>
+                            <option value="hostage">Hostage</option>
+                            <option value="box">B.O.X</option>
+                            <option value="nursery">Nursery</option>
                         </Form.Control>
                     </Form.Group>
                     <Form.Group controlId="numberOfPlayers">
@@ -92,15 +93,30 @@ const CreateBookingModal = ({ show, handleClose, handleCreate }) => {
                             required
                         />
                     </Form.Group>
-                    <Form.Group controlId="price">
-                        <Form.Label>Price</Form.Label>
-                        <Form.Control
-                            type="number"
-                            value={price}
-                            onChange={(e) => setPrice(e.target.value)}
-                            required
-                        />
+                    
+                    <Form.Group controlId="host" className='mb-3'>
+                        <Form.Control as="select" value={host} onChange={(e) => setHost(e.target.value)} required>
+                            <option value="">--Select a Host--</option>
+                            {employees.map((employee) => (
+                                <option key={employee._id} value={employee._id}>
+                                    {employee.firstName} {employee.lastName}
+                                </option>
+                            ))}
+                        </Form.Control>
                     </Form.Group>
+                    {/* <Form.Group controlId="paid">
+                        <Form.Label>Paid</Form.Label>
+                        <Form.Control
+                            type="select"
+                            value={paid}
+                            onChange={(e) => setPaid(e.target.value)}
+                            required
+                        > 
+                            <option value="">Paid or not</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">Need to collect payment</option>
+                        </Form.Control>
+                    </Form.Group> */}
                     <Button variant="primary" type="submit">
                         Create Booking
                     </Button>

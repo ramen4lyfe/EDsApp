@@ -25,6 +25,10 @@ const BookingSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Employee",
   },
+  notes: {
+    type: String,
+    required: true
+  },
 });
 
 const Booking = mongoose.model("Booking", BookingSchema);

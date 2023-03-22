@@ -17,11 +17,16 @@ const CreateWorkScheduleModal = ({ show, handleClose }) => {
     const [eveningShiftEmployee3, setEveningShiftEmployee3] = useState('');
     // const [eveningShiftEmployee4, setEveningShiftEmployee4] = useState('');
 
+    
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        const date = new Date(selectedDate);
+        const offset = date.getTimezoneOffset() * 60 * 1000;
+        const adjustedDate = new Date(date.getTime() + offset);
+
         const shiftData = {
-            date: selectedDate,
+            date: adjustedDate.toISOString(),
             dayShift: {
                 pic: dayShiftPic,
                 employees: [dayShiftEmployee1, dayShiftEmployee2, dayShiftEmployee3].filter(employee => employee !== ''),
@@ -40,6 +45,8 @@ const CreateWorkScheduleModal = ({ show, handleClose }) => {
                 console.error(err);
             });
     };
+
+
 
 
     return (

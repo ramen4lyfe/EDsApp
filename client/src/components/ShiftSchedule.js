@@ -45,25 +45,68 @@ const ShiftSchedule = () => {
     return shifts.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
   };
 
-  const groupShiftsByWeek = (shifts) => {
+  const groupShiftsByWeek = (shifts, filter) => {
     const weeks = {};
+
+    let startDate, endDate;
+
+    // Get the start and end dates for the selected filter
+    switch (filter) {
+      case 'current':
+        startDate = moment().startOf('isoWeek').startOf('month');
+        endDate = moment().endOf('isoWeek').endOf('month');
+        break;
+      case 'next':
+        startDate = moment().add(1, 'month').startOf('isoWeek').startOf('month');
+        endDate = moment().add(1, 'month').endOf('isoWeek').endOf('month');
+        break;
+      case 'previous':
+        startDate = moment().subtract(1, 'month').startOf('isoWeek').startOf('month');
+        endDate = moment().subtract(1, 'month').endOf('isoWeek').endOf('month');
+        break;
+      default:
+        startDate = moment().startOf('isoWeek').startOf('month');
+        endDate = moment().endOf('isoWeek').endOf('month');
+    }
+
+    // iterate over the shifts and group them by week in the selected month
     shifts.forEach((shift) => {
-      const weekNumber = moment(shift.date).isoWeek();
-      if (!weeks[weekNumber]) {
-        weeks[weekNumber] = [];
+      const shiftDate = moment(shift.date);
+      const weekNumber = shiftDate.isoWeek();
+      if (shiftDate.isBetween(startDate, endDate, undefined, '[]')) {
+        if (!weeks[weekNumber]) {
+          weeks[weekNumber] = [];
+        }
+        weeks[weekNumber].push(shift);
       }
-      weeks[weekNumber].push(shift);
     });
+
     return weeks;
   };
 
   const sortedShifts = sortShiftsByDate(shifts).filter((shift) => {
     if (searchDate) {
+      // If a search date is provided, filter based on the week containing the search date
       const searchWeekStart = moment(searchDate).startOf('isoWeek');
       const searchWeekEnd = moment(searchDate).endOf('isoWeek');
       return moment(shift.date).isBetween(searchWeekStart, searchWeekEnd, undefined, '[]');
+    } else {
+      // Otherwise, filter based on the current or next 4 weeks
+      const currentWeekStart = moment().startOf('isoWeek');
+      const currentWeekEnd = moment().endOf('isoWeek');
+      const nextWeekStart = currentWeekEnd.clone().add(1, 'days').startOf('isoWeek');
+      const nextWeekEnd = currentWeekEnd.clone().add(1, 'days').endOf('isoWeek');
+      const next2WeekStart = nextWeekEnd.clone().add(1, 'days').startOf('isoWeek');
+      const next2WeekEnd = nextWeekEnd.clone().add(1, 'days').endOf('isoWeek');
+      const next3WeekStart = next2WeekEnd.clone().add(1, 'days').startOf('isoWeek');
+      const next3WeekEnd = next2WeekEnd.clone().add(1, 'days').endOf('isoWeek');
+      return (
+        moment(shift.date).isBetween(currentWeekStart, currentWeekEnd, undefined, '[]') ||
+        moment(shift.date).isBetween(nextWeekStart, nextWeekEnd, undefined, '[]') ||
+        moment(shift.date).isBetween(next2WeekStart, next2WeekEnd, undefined, '[]') ||
+        moment(shift.date).isBetween(next3WeekStart, next3WeekEnd, undefined, '[]')
+      );
     }
-    return true;
   });
 
   const handleClearSearch = () => {
@@ -92,6 +135,7 @@ const ShiftSchedule = () => {
     return items;
   };
 
+
   useEffect(() => {
     axios
       .get(`http://localhost:8000/api/shifts?date=${currentDate}`)
@@ -105,11 +149,13 @@ const ShiftSchedule = () => {
 
   const handleUpdateShift = (id, updatedShift) => {
     axios
-      .put(`http://localhost:8000/api/shifts/${id}`, updatedShift)
+      .put(`http://localhost:8000/api/shifts/update/${id}`, updatedShift)
       .then((response) => {
         console.log(response.data);
         // Update the state with the updated shift
-        // setShifts([...shifts]);
+        setShifts((prevShifts) =>
+          prevShifts.map((shift) => (shift._id === id ? response.data : shift))
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -126,6 +172,18 @@ const ShiftSchedule = () => {
     }
   };
 
+
+  const handleCurrentWeek = () => {
+    setSearchDate('');
+  };
+
+  const handlePreviousMonth = () => {
+    setSearchDate(moment().subtract(1, 'month').startOf('month').toISOString().substr(0, 10));
+  };
+
+  const handleNextMonth = () => {
+    setSearchDate(moment().add(1, 'month').startOf('month').toISOString().substr(0, 10));
+  };
 
   return (
     <Container >
@@ -151,10 +209,22 @@ const ShiftSchedule = () => {
             Clear Search
           </Button>
           <Button variant="primary" onClick={handleShowCreateModal}>
-            Create Shift
+            Create Schedule
           </Button>
         </Col>
       </Row>
+      
+      {/* buttons to view the current week, previous month, and next month */}
+      <Row>
+        <Col className="d-flex align-items-center justify-content-center ">
+          <ButtonGroup className="mx-3">
+            <Button variant="secondary" onClick={handleCurrentWeek}>Current Week</Button>
+            <Button variant="secondary" onClick={handleNextMonth}>View Next Month</Button>
+            <Button variant="secondary" onClick={handlePreviousMonth}>View Previous Month</Button>
+          </ButtonGroup>
+        </Col>
+      </Row>
+
       {/* display the number of the week on top of each table and separate the data into individual tables for each week */}
       {Object.entries(weeksShifts).map(([weekNumber, shiftsInWeek], index) => (
         <React.Fragment key={index} >

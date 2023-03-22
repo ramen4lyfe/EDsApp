@@ -130,6 +130,7 @@ const handleSearch = (event) => {
           >
             <thead className='align-top'>
               <tr>
+                <th> </th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Preferred Name</th>
@@ -142,24 +143,11 @@ const handleSearch = (event) => {
                 <th>Termination Date</th>
                 <th>Promotion Date</th>
                 <th>Active Status</th>
-                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {filteredEmployees.map((employee,index) => (
                 <tr key={employee._id}>
-                  <td>{employee.firstName}</td>
-                  <td>{employee.lastName}</td>
-                  <td>{employee.preferredName}</td>
-                  <td>{employee.genderName}</td>
-                  <td>{formatDate(employee.birthday)}</td>
-                  <td>{employee.email}</td>
-                  <td>{employee.cellPhone}</td>
-                  <td>{employee.businessTitle}</td>
-                  <td>{formatDate(employee.hireDate)}</td>
-                  <td>{formatDate(employee.terminationDate)}</td>
-                  <td>{formatDate(employee.promotionDate)}</td>
-                  <td style={{ color: employee.isActive ? "green" : "red", fontWeight: "bold" }}>{employee.isActive ? "Active" : "Inactive"}</td>
                   <td className=" justify-content-center">
                     <Button variant="light" size="sm" onClick={() => handleShowUpdateModal(employee)} >
                      < BiPencil / >
@@ -173,6 +161,18 @@ const handleSearch = (event) => {
                       // onEmployeeUpdated={handleEmployeeUpdated}
                     />
                   </td>
+                  <td>{employee.firstName}</td>
+                  <td>{employee.lastName}</td>
+                  <td>{employee.preferredName}</td>
+                  <td>{employee.genderName}</td>
+                  <td>{formatDate(employee.birthday)}</td>
+                  <td>{employee.email}</td>
+                  <td>{employee.cellPhone}</td>
+                  <td>{employee.businessTitle}</td>
+                  <td>{formatDate(employee.hireDate)}</td>
+                  <td>{formatDate(employee.terminationDate)}</td>
+                  <td>{formatDate(employee.promotionDate)}</td>
+                  <td style={{ color: employee.isActive ? "green" : "red", fontWeight: "bold" }}>{employee.isActive ? "Active" : "Inactive"}</td>
                 </tr>
               ))}
             </tbody>

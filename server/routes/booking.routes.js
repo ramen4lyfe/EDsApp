@@ -6,6 +6,6 @@ module.exports = (app) => {
     app.get('/api/bookings/:id', bookingController.getBookingById);
     app.post('/api/bookings', bookingController.createBooking);
     app.put('/api/bookings/update/:id', bookingController.updateBooking);
-    app.delete('/api/bookings/:id', bookingController.deleteBooking);
+    app.delete('/api/bookings/delete/:id', bookingController.deleteBooking);
 };
 

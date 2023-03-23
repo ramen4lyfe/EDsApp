@@ -3,34 +3,35 @@ const mongoose = require("mongoose");
 const EmployeeSchema = new mongoose.Schema({
   firstName: {
     type: String,
-    required: [true, "First Name is required"],
+    required: [true],
   },
   lastName: {
     type: String,
-    required: [true, "Last Name is required"],
+    required: [true],
   },
   preferredName: {
     type: String,
   },
   genderName: {
     type: String,
-    required: [true, "Please enter self-identified gender for the employee"],
+    required: [true],
     enum: ['He/Him', 'She/Her', 'They/Them'],
 },
   birthday: {
     type: Date,
-    required: [true, "Birthday is required"],
+    required: [true],
   },
   email: {
     type: String,
+    required: [true],
   },
   cellPhone: {
     type: Number,
-    required: [true, "Phone number is required"],
+    required: [true],
   },
   businessTitle: {
     type: String,
-    required: [true, "Business title is required"],
+    required: [true],
     enum: ['Employee', 'Manager', 'Stake Holder', 'Owner'],
   },
   hireDate: {
@@ -45,7 +46,7 @@ const EmployeeSchema = new mongoose.Schema({
   },
   isActive:{
     type: Boolean, 
-    required: [true, "Please indicate employement activity"],
+    required: [true],
     // default: true,
   },
   allottedHours: {

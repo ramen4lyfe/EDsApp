@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Modal, Form, Button } from 'react-bootstrap';
+import { Modal, Form, Button, InputGroup, FormControl } from 'react-bootstrap';
 import { EmployeeContext } from '../context/EmployeeContext';
 import axios from 'axios';
 
@@ -52,76 +52,99 @@ const CreateBookingModal = ({ show, handleClose, handleCreate }) => {
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="bookingDate">
+                    <Form.Group controlId="bookingDate" className='mb-3'>
                         <Form.Label>Booking Date</Form.Label>
-                        <Form.Control
-                            type="date"
-                            value={bookingDate}
-                            onChange={(e) => setBookingDate(e.target.value)}
-                            required
-                        />
+                        <InputGroup hasValidation>
+                            <Form.Control
+                                type="date"
+                                value={bookingDate}
+                                onChange={(e) => setBookingDate(e.target.value)}
+                                required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                Please provide a valid booking date.
+                            </Form.Control.Feedback>
+                        </InputGroup>
                     </Form.Group>
-                    <Form.Group controlId="bookingTime">
+                    <Form.Group controlId="bookingTime" className='mb-3'>
                         <Form.Label>Booking Time</Form.Label>
-                        <Form.Control
-                            type="time"
-                            value={bookingTime}
-                            onChange={(e) => setBookingTime(e.target.value)}
-                            required
-                        />
+                        <InputGroup hasValidation>
+                            <Form.Control
+                                type="time"
+                                value={bookingTime}
+                                onChange={(e) => setBookingTime(e.target.value)}
+                                required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                Please provide a valid booking time.
+                            </Form.Control.Feedback>
+                        </InputGroup>
                     </Form.Group>
-                    <Form.Group controlId="game">
+                    <Form.Group controlId="game" className='mb-3'>
                         <Form.Label>Game</Form.Label>
-                        <Form.Control
-                            as="select"
-                            value={game}
-                            onChange={(e) => setGame(e.target.value)}
-                            required
-                        >
-                            <option value="">Select a game</option>
-                            <option value="hostage">Hostage</option>
-                            <option value="box">B.O.X</option>
-                            <option value="nursery">Nursery</option>
-                        </Form.Control>
+                        <InputGroup hasValidation>
+                            <Form.Control
+                                as="select"
+                                value={game}
+                                onChange={(e) => setGame(e.target.value)}
+                                required
+                            >
+                                <option value="">Select a game</option>
+                                <option value="hostage">Hostage</option>
+                                <option value="box">B.O.X</option>
+                                <option value="nursery">Nursery</option>
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">
+                                Please select a game.
+                            </Form.Control.Feedback>
+                        </InputGroup>
                     </Form.Group>
-                    <Form.Group controlId="numberOfPlayers">
+                    <Form.Group controlId="numberOfPlayers" className='mb-3'>
                         <Form.Label>Number of Players</Form.Label>
-                        <Form.Control
-                            type="number"
-                            value={numberOfPlayers}
-                            onChange={(e) => setNumberOfPlayers(e.target.value)}
-                            required
-                        />
+                        <InputGroup hasValidation>
+                            <Form.Control
+                                type="number"
+                                value={numberOfPlayers}
+                                onChange={(e) => setNumberOfPlayers(e.target.value)}
+                                required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                Please provide a valid number of players.
+                            </Form.Control.Feedback>
+                        </InputGroup>
                     </Form.Group>
-                    
-                    <Form.Group controlId="host" className='mb-3'>
-                        <Form.Control as="select" value={host} onChange={(e) => setHost(e.target.value)} required>
-                            <option value="">--Select a Host--</option>
-                            {employees.map((employee) => (
-                                <option key={employee._id} value={employee._id}>
-                                    {employee.firstName} {employee.lastName}
-                                </option>
-                            ))}
-                        </Form.Control>
+
+                    <Form.Group controlId="host">
+                        <InputGroup hasValidation>
+                            <InputGroup.Text>Host</InputGroup.Text>
+                            <Form.Control
+                                as="select"
+                                value={host}
+                                onChange={(e) => setHost(e.target.value)}
+                                required
+                            >
+                                <option value="">--Select a Host--</option>
+                                {employees.map((employee) => (
+                                    <option key={employee._id} value={employee._id}>
+                                        {employee.firstName} {employee.lastName}
+                                    </option>
+                                ))}
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">
+                                Please select a host.
+                            </Form.Control.Feedback>
+                        </InputGroup>
                     </Form.Group>
-                    {/* <Form.Group controlId="paid">
-                        <Form.Label>Paid</Form.Label>
-                        <Form.Control
-                            type="select"
-                            value={paid}
-                            onChange={(e) => setPaid(e.target.value)}
-                            required
-                        > 
-                            <option value="">Paid or not</option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">Need to collect payment</option>
-                        </Form.Control>
-                    </Form.Group> */}
-                    <Button variant="primary" type="submit">
-                        Create Booking
-                    </Button>
                 </Form>
             </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                    Close
+                </Button>
+                < Button variant="primary" type="submit" onClick={handleCreate}>
+                    Create Booking
+                </Button>
+            </Modal.Footer>
         </Modal>
     );
 };

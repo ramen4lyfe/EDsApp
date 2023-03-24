@@ -1,5 +1,5 @@
-const { Booking } = require('../models/booking.model');
-const { Employee } = require('../models/employee.model');
+const Booking = require('../models/booking.model');
+const Employee  = require('../models/employee.model');
 
 // GET all bookings
 const getAllBookings = async (req, res) => {
@@ -26,24 +26,35 @@ try {
 
 // CREATE a new booking
 const createBooking = async (req, res) => {
-const employee = await Employee.findById(req.body.employeeId);
-if (!employee) {
-    return res.status(400).json({ message: 'Invalid employee ID' });
-}
+    const {
+        employeeId,
+        shiftId,
+        notes
+    } = req.body;
+    try {
+        const employee = await Employee.findById(employeeId);
+        if (!employee) {
+            return res.status(400).json({
+                message: 'Invalid employee ID'
+            });
+        }console.log("employeeId:", employeeId);
+console.log("employee:", employee);
 
-const booking = new Booking({
-    employee: req.body.employeeId,
-    shift: req.body.shiftId,
-    notes: req.body.notes,
-});
+        const booking = new Booking({
+            employee: employeeId,
+            shift: shiftId,
+            notes: notes,
+        });
 
-try {
-    const newBooking = await booking.save();
-    res.status(201).json(newBooking);
-} catch (err) {
-    res.status(400).json({ message: err.message });
-}
+        const newBooking = await booking.save();
+        res.status(201).json(newBooking);
+    } catch (err) {
+        res.status(400).json({
+            message: err.message
+        });
+    }
 };
+
 
 // UPDATE an existing booking by ID
 const updateBooking = async (req, res) => {

@@ -7,6 +7,7 @@ import CreateBookingModal from './modals/CreateBookingModal';
 
 const Bookings = () => {
     const { employee } = useContext(EmployeeContext);
+
     const [bookings, setBookings] = useState([]);
 
     function CurrentDateTime() {
@@ -24,25 +25,43 @@ const Bookings = () => {
 
         return <p>{dateTime}</p>;
     }
+//Get bookings from Resova API
+    // const apiKey = 'H0WhjRgnafAXjI20MFypJo3YQeSCoP04SNwSsnKUKMps9e01DUmpndsb2cfPZW'; // Resova API key
+    // const fetchBookings = async () => {
+    //     try {
+    //         const response = await axios.get('https://api.resova.us/v1/baskets/null/bookings/null', {
+    //             headers: {
+    //                 'Authorization': `Bearer ${apiKey}`,
+    //                 'Content-Type': 'application/json'
+    //             }
+    //         });
+    //         setBookings(response.data.data);
+    //     } catch (error) {
+    //         console.error('Error fetching data:', error);
+    //     }
+    // };
+    // // Call fetchBookings when the component mounts
+    // useEffect(() => {
+    //     fetchBookings();
+    // }, []);
 
-    const apiKey = 'H0WhjRgnafAXjI20MFypJo3YQeSCoP04SNwSsnKUKMps9e01DUmpndsb2cfPZW'; // Resova API key
-
+    // Get bookings from local API
     const fetchBookings = async () => {
         try {
-            const response = await axios.get('https://api.resova.us/v1/baskets/null/bookings/null', {
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-            setBookings(response.data.data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
+            const response = await axios.get("http://localhost:8000/api/bookings");
+            if (Array.isArray(response.data)) {
+                setBookings(response.data);
+            } else {
+                console.error('Error fetching data:', response.data);
+            }
+        } catch (err) {
+            console.error('Error fetching data:', err);
         }
     };
 
+
     // Call fetchBookings when the component mounts
-    useEffect(() => {
+    useEffect(() => {  
         fetchBookings();
     }, []);
 
@@ -91,14 +110,14 @@ const Bookings = () => {
                                 </tr>
                             ) : (
                                 bookings.map((booking) => (
-                                    <tr key={booking.id}>
-                                        <td>{booking.booking_date}</td>
-                                        <td>{booking.booking_time}</td>
-                                        <td>{booking.item.name}</td>
-                                        <td>{booking.total_quantity}</td>
-                                        <td>{booking.price}</td>
-                                        <td>{employee.firstName}</td>
-                                        <td>{employee.firstName}</td>
+                                    <tr key={booking._id}>
+                                        <td>{moment(booking.bookingDate).format('MMMM Do YYYY')}</td>
+                                        <td>{moment(booking.bookingTime, 'HH:mm').format('h:mm A')}</td>
+                                        <td>{booking.game}</td>
+                                        <td>{booking.numberOfPlayers}</td>
+                                        <td>{booking.paid ? 'Paid' : 'Not Paid'}</td>
+                                        <td>{booking.host.firstName} {booking.host.lastName}</td>
+                                        <td>{booking.gameMaster.firstName} {booking.gameMaster.lastName}</td>
                                     </tr>
                                 ))
                             )}

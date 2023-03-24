@@ -136,7 +136,7 @@ const CreateBookingModal = ({ show, handleClose, handleCreate }) => {
                                 value={host}
                                 onChange={(e) => setHost(e.target.value)}
                                 required
-                                // name = "employeeId"
+                            // name = "employeeId"
                             >
                                 <option value="">--Select a Host--</option>
                                 {employees.map((employee) => (
@@ -150,7 +150,7 @@ const CreateBookingModal = ({ show, handleClose, handleCreate }) => {
                             </Form.Control.Feedback>
                         </InputGroup>
                     </Form.Group>
-                    
+
                     <Form.Group controlId="gameMaster" className='mb-3'>
                         <InputGroup hasValidation>
                             <InputGroup.Text>Game Master</InputGroup.Text>
@@ -159,7 +159,7 @@ const CreateBookingModal = ({ show, handleClose, handleCreate }) => {
                                 value={gameMaster}
                                 onChange={(e) => setGameMaster(e.target.value)}
                                 required
-                                // name = "employeeId"
+                            // name = "employeeId"
                             >
                                 <option value="">--Select a GM--</option>
                                 {employees.map((employee) => (
@@ -173,16 +173,15 @@ const CreateBookingModal = ({ show, handleClose, handleCreate }) => {
                             </Form.Control.Feedback>
                         </InputGroup>
                     </Form.Group>
-                < Button variant="primary" type="submit" >
-                    Create Booking
-                </Button>
+                    < Button variant="primary" type="submit" >
+                        Create Booking
+                    </Button>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
                 </Form>
             </Modal.Body>
-            <Modal.Footer className='d-flex justify-content-center'>
-                <Button variant="secondary" onClick={handleClose}>
-                    Close
-                </Button>
-            </Modal.Footer>
+            
         </Modal>
     );
 };

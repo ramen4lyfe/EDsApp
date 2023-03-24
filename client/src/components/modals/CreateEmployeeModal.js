@@ -226,7 +226,6 @@ function CreateEmployeeModal({ show, handleClose, setEmployees, onEmployeeCreate
                         </InputGroup>
                     </Form.Group>
 
-
                     <Form.Group controlId="formBasicHireDate" className='mb-4'>
                         <InputGroup hasValidation>
                             <InputGroup.Text>Hire Date</InputGroup.Text>
@@ -295,7 +294,6 @@ function CreateEmployeeModal({ show, handleClose, setEmployees, onEmployeeCreate
                             </Form.Control.Feedback>
                         </InputGroup>
                     </Form.Group>
-
                 </Form>
             </Modal.Body>
             <Modal.Footer className='d-flex justify-content-center'>

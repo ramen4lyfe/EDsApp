@@ -1,75 +1,21 @@
-const Booking = require('../models/booking.model');
-const Employee = require('../models/employee.model');
+const Booking = require("../models/booking.model");
+const Shift = require("../models/shift.model");
+const Employee = require("../models/employee.model");
 
-// GET all bookings
-const getAllBookings = async (req, res) => {
-    try {
-        const bookings = await Booking.find()
-            .populate('shift')
-            .populate('host')
-            .populate('gameMaster');
-        res.json(bookings);
-    } catch (err) {
-        res.status(500).json({
-            message: err.message
-        });
-    }
-};
-
-// GET a specific booking by ID
-const getBookingById = async (req, res) => {
-    try {
-        const booking = await Booking.findById(req.params.id)
-            .populate('shift')
-            .populate('host')
-            .populate('gameMaster');
-        if (!booking) {
-            return res.status(404).json({
-                message: 'Booking not found'
-            });
-        }
-        res.json(booking);
-    } catch (err) {
-        res.status(500).json({
-            message: err.message
-        });
-    }
-};
-
-// CREATE a new booking
+// Create and save a new booking
 const createBooking = async (req, res) => {
-    const {
-        gameName,
-        time,
-        numberOfPeople,
-        shiftId,
-        hostId,
-        gameMasterId,
-        notes,
-    } = req.body;
     try {
-        const shift = await Shift.findById(shiftId);
-        if (!shift) {
-            return res.status(400).json({
-                message: 'Invalid shift ID'
-            });
-        }
+        const {
+            gameName,
+            time,
+            numberOfPeople,
+            shift,
+            host,
+            gameMaster,
+            notes
+        } = req.body;
 
-        const host = await Employee.findById(hostId);
-        if (!host) {
-            return res.status(400).json({
-                message: 'Invalid host ID'
-            });
-        }
-
-        const gameMaster = await Employee.findById(gameMasterId);
-        if (!gameMaster) {
-            return res.status(400).json({
-                message: 'Invalid game master ID'
-            });
-        }
-
-        const booking = new Booking({
+        const newBooking = new Booking({
             gameName,
             time,
             numberOfPeople,
@@ -79,83 +25,97 @@ const createBooking = async (req, res) => {
             notes,
         });
 
-        const newBooking = await booking.save();
-        res.status(201).json(newBooking);
+        const savedBooking = await newBooking.save();
+        res.status(201).json(savedBooking);
     } catch (err) {
-        res.status(400).json({
+        res.status(500).json({
             message: err.message
         });
     }
 };
 
+// Retrieve all bookings
+const getAllBookings = async (req, res) => {
+    try {
+        const bookings = await Booking.find().populate("shift host gameMaster");
+        res.status(200).json(bookings);
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        });
+    }
+};
+
+// Find a single booking by ID
+const getBookingById = async (req, res) => {
+    try {
+        const bookingId = req.params.id;
+        const booking = await Booking.findById(bookingId).populate("shift host gameMaster");
+
+        if (!booking) {
+            res.status(404).json({
+                message: "Booking not found"
+            });
+        } else {
+            res.status(200).json(booking);
+        }
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        });
+    }
+};
+
+// Update a booking by ID
 const updateBooking = async (req, res) => {
     try {
-        const booking = await Booking.findById(req.params.id);
-        if (!booking) {
-            return res.status(404).json({
-                message: 'Booking not found'
+        const bookingId = req.params.id;
+        const updatedBooking = await Booking.findByIdAndUpdate(bookingId, req.body, {
+            new: true,
+            runValidators: true
+        }).populate("shift host gameMaster");
+
+        if (!updatedBooking) {
+            res.status(404).json({
+                message: "Booking not found"
             });
+        } else {
+            res.status(200).json(updatedBooking);
         }
-
-        if (req.body.host) {
-            const host = await Employee.findOne({
-                _id: req.body.host
-            });
-            if (!host) {
-                return res.status(400).json({
-                    message: 'Invalid host ID'
-                });
-            }
-            booking.host = req.body.host;
-        }
-
-        if (req.body.gameMaster) {
-            const gameMaster = await Employee.findOne({
-                _id: req.body.gameMaster
-            });
-            if (!gameMaster) {
-                return res.status(400).json({
-                    message: 'Invalid game master ID'
-                });
-            }
-            booking.gameMaster = req.body.gameMaster;
-        }
-
-        if (req.body.shift) {
-            const shift = await Shift.findOne({
-                _id: req.body.shift
-            });
-            if (!shift) {
-                return res.status(400).json({
-                    message: 'Invalid shift ID'
-                });
-            }
-            booking.shift = req.body.shift;
-        }
-
-        if (req.body.gameName) {
-            booking.gameName = req.body.gameName;
-        }
-
-        if (req.body.time) {
-            booking.time = req.body.time;
-        }
-
-        if (req.body.numberOfPeople) {
-            booking.numberOfPeople = req.body.numberOfPeople;
-        }
-
-        if (req.body.notes) {
-            booking.notes = req.body.notes;
-        }
-
-        const updatedBooking = await booking.save();
-        res.json(updatedBooking);
     } catch (err) {
-        res.status(400).json({
+        res.status(500).json({
             message: err.message
         });
     }
 };
 
+// Delete a booking by ID
+const deleteBooking = async (req, res) => {
+    try {
+        const bookingId = req.params.id;
+        const deletedBooking = await Booking.findByIdAndDelete(bookingId);
 
+        if (!deletedBooking) {
+            res.status(404).json({
+                message: "Booking not found"
+            });
+        } else {
+            res.status(200).json({
+                message: "Booking deleted successfully",
+                data: deletedBooking
+            });
+        }
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        });
+    }
+};
+
+module.exports = {
+    createBooking,
+    getAllBookings,
+    getBookingById,
+    updateBooking,
+    deleteBooking
+};

@@ -3,15 +3,15 @@ const mongoose = require("mongoose");
 const BookingSchema = new mongoose.Schema({
   gameName: {
     type: String,
-    required: true,
+    // required: true,
   },
   time: {
     type: Date,
-    required: true,
+    // required: true,
   },
   numberOfPeople: {
     type: Number,
-    required: true,
+    // required: true,
   },
   shift: {
     type: mongoose.Schema.Types.ObjectId,

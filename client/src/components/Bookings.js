@@ -3,6 +3,7 @@ import { EmployeeContext } from './context/EmployeeContext'
 import axios from 'axios'
 import { Button, Form, Table, Modal, Col, Row, Container } from 'react-bootstrap'
 import CreateBookingModal from './modals/CreateBookingModal'
+import moment from 'moment'
 
 
 const Bookings = ( ) => {
@@ -26,6 +27,7 @@ const Bookings = ( ) => {
         setBookingData({ ...bookingData, [e.target.name]: e.target.value });
     };
 
+    
 
     // const handleSubmit = (e) => {
     //     e.preventDefault();
@@ -91,6 +93,7 @@ const Bookings = ( ) => {
             <Table striped hover>
                 <thead>
                     <tr>
+                        <th>Date</th>
                         <th>Game Name</th>
                         <th>Time</th>
                         <th>Number of People</th>
@@ -104,8 +107,9 @@ const Bookings = ( ) => {
                 <tbody>
                     {bookings.map((booking) => (
                         <tr key={booking._id}>
+                            <td>{moment(booking.date).format('dddd MM-DD')}</td>
                             <td>{booking.gameName}</td>
-                            <td>{booking.time}</td>
+                            <td>{moment(booking.time, 'HH:mm').format('hh:mm A')}</td>
                             <td>{booking.numberOfPeople}</td>
                             <td>{booking.shift}</td>
                             <td>{booking.host && `${booking.host.firstName} ${booking.host.lastName}`}</td>

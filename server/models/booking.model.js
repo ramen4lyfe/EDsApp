@@ -1,8 +1,12 @@
 const mongoose = require("mongoose");
 
 const BookingSchema = new mongoose.Schema({
-  datetime: {
+  date: {
     type: Date,
+    required: [true],
+  },
+  time: {
+    type: String,
     required: [true],
   },
   gameName: {

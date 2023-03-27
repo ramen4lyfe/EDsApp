@@ -7,6 +7,7 @@ import moment from 'moment';
 
 const CreateBookingModal = ({ show, onHide }) => {
     const { employees } = useContext(EmployeeContext);
+    const [date, setDate] = useState('');
     const [gameName, setGameName] = useState('');
     const [time, setTime] = useState('');
     const [numberOfPeople, setNumberOfPeople] = useState('');
@@ -23,15 +24,16 @@ const CreateBookingModal = ({ show, onHide }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const dateValue = moment(selectedDate).format("YYYY-MM-DD");
+        const dateValue = moment(date).format("YYYY-MM-DD");
         const timeValue = moment(time, "HH:mm").format("HH:mm:ss");
         const dateTimeValue = moment(`${dateValue}T${timeValue}`).toISOString();
 
         const hostValue = host ? host.value : '';
         const gameMasterValue = gameMaster ? gameMaster.value : '';
         const bookingData = {
-            datetime,
+            date,
             gameName,
+            time,
             numberOfPeople,
             shift,
             employees: [hostValue, gameMasterValue].filter(employee => employee !== ''),
@@ -60,8 +62,9 @@ const CreateBookingModal = ({ show, onHide }) => {
                 <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="date" className='mb-4'>
                         <Form.Label>Select Date</Form.Label>
-                        <Form.Control type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} required />
+                        <Form.Control type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
                     </Form.Group>
+
                     <Form.Group controlId="gameName">
                         <Form.Label>Game Name</Form.Label>
                         <Form.Control
@@ -77,6 +80,7 @@ const CreateBookingModal = ({ show, onHide }) => {
                             <option value="nursery">Nursery</option>
                         </Form.Control>
                     </Form.Group>
+
                     <Form.Group controlId="time">
                         <Form.Label>Time</Form.Label>
                         <Form.Control
@@ -87,6 +91,7 @@ const CreateBookingModal = ({ show, onHide }) => {
                             required
                         />
                     </Form.Group>
+
                     <Form.Group controlId="numberOfPeople">
                         <Form.Label>Number of People</Form.Label>
                         <Form.Control
@@ -108,6 +113,7 @@ const CreateBookingModal = ({ show, onHide }) => {
                             <option value="9">9</option>
                         </Form.Control>
                     </Form.Group>
+
                     <Form.Group controlId="shift">
                         <Form.Label>Shift</Form.Label>
                         <Form.Control
@@ -122,6 +128,7 @@ const CreateBookingModal = ({ show, onHide }) => {
                             <option value="evening">Evening Shift</option>
                         </Form.Control>
                     </Form.Group>
+
                     <Form.Group controlId="host">
                         <Form.Label>Host</Form.Label>
                         <Form.Control
@@ -135,6 +142,7 @@ const CreateBookingModal = ({ show, onHide }) => {
                             {hostOptions.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
                         </Form.Control>
                     </Form.Group>
+                    
                     <Form.Group controlId="gameMaster">
                         <Form.Label>Game Master</Form.Label>
                         <Form.Control
@@ -148,6 +156,7 @@ const CreateBookingModal = ({ show, onHide }) => {
                             {gameMasterOptions.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
                         </Form.Control>
                     </Form.Group>
+
                     <Form.Group controlId="notes">
                         <Form.Label>Notes</Form.Label>
                         <Form.Control
@@ -158,6 +167,7 @@ const CreateBookingModal = ({ show, onHide }) => {
                             onChange={(e) => setNotes(e.target.value)}
                         />
                     </Form.Group>
+                    
                     {/* <Button variant="primary" type="submit">
                         Create Booking
                     </Button> */}

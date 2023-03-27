@@ -1,28 +1,55 @@
 import React, { useState, useContext } from 'react';
-import { Modal, Button, Form,InputGroup } from 'react-bootstrap';
+import { Modal, Button, Form, InputGroup } from 'react-bootstrap';
 import { EmployeeContext } from '../context/EmployeeContext';
+import axios from 'axios';
+import mongoose from 'mongoose';
+import moment from 'moment';
 
-const CreateBookingModal = ({ show, onHide, handleCreateBooking }) => {
+const CreateBookingModal = ({ show, onHide }) => {
     const { employees } = useContext(EmployeeContext);
-    const [bookingData, setBookingData] = useState({
-        gameName: '',
-        time: '',
-        numberOfPeople: '',
-        shift: '',
-        host: '',
-        gameMaster: '',
-        notes: '',
-    });
+    const [gameName, setGameName] = useState('');
+    const [time, setTime] = useState('');
+    const [numberOfPeople, setNumberOfPeople] = useState('');
+    const [shift, setShift] = useState('');
+    const [host, setHost] = useState('');
+    const [gameMaster, setGameMaster] = useState('');
+    const [notes, setNotes] = useState('');
+    const [selectedDate, setSelectedDate] = useState('');
 
-    const handleChange = (e) => {
-        setBookingData({ ...bookingData, [e.target.name]: e.target.value });
-    };
+
+    const [errors, setErrors] = useState('');
+
+    const datetime = moment(`${selectedDate} ${time}`, "YYYY-MM-DD HH:mm").toISOString();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        handleCreateBooking(bookingData);
-        onHide();
+        const dateValue = moment(selectedDate).format("YYYY-MM-DD");
+        const timeValue = moment(time, "HH:mm").format("HH:mm:ss");
+        const dateTimeValue = moment(`${dateValue}T${timeValue}`).toISOString();
+
+        const hostValue = host ? host.value : '';
+        const gameMasterValue = gameMaster ? gameMaster.value : '';
+        const bookingData = {
+            datetime,
+            gameName,
+            numberOfPeople,
+            shift,
+            employees: [hostValue, gameMasterValue].filter(employee => employee !== ''),
+            notes,
+        };
+
+        axios.post('http://localhost:8000/api/bookings', bookingData)
+            .then(() => {
+                onHide();
+            })
+            .catch((err) => {
+                console.error(err);
+            });
     };
+
+    const hostOptions = employees.map(employee => ({ value: employee._id, label: `${employee.firstName} ${employee.lastName}` }));
+
+    const gameMasterOptions = employees.map(employee => ({ value: employee._id, label: `${employee.firstName} ${employee.lastName}` }));
 
     return (
         <Modal show={show} onHide={onHide} centered>
@@ -31,23 +58,32 @@ const CreateBookingModal = ({ show, onHide, handleCreateBooking }) => {
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
+                    <Form.Group controlId="date" className='mb-4'>
+                        <Form.Label>Select Date</Form.Label>
+                        <Form.Control type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} required />
+                    </Form.Group>
                     <Form.Group controlId="gameName">
                         <Form.Label>Game Name</Form.Label>
                         <Form.Control
-                            type="text"
+                            as="select"
                             name="gameName"
-                            value={bookingData.gameName}
-                            onChange={handleChange}
+                            value={gameName}
+                            onChange={(e) => setGameName(e.target.value)}
                             required
-                        />
+                        >
+                            <option value="">Select game name</option>
+                            <option value="hostage">Hostage</option>
+                            <option value="box">B.O.X</option>
+                            <option value="nursery">Nursery</option>
+                        </Form.Control>
                     </Form.Group>
                     <Form.Group controlId="time">
                         <Form.Label>Time</Form.Label>
                         <Form.Control
                             type="time"
                             name="time"
-                            value={bookingData.time}
-                            onChange={handleChange}
+                            value={time}
+                            onChange={(e) => setTime(e.target.value)}
                             required
                         />
                     </Form.Group>
@@ -56,8 +92,8 @@ const CreateBookingModal = ({ show, onHide, handleCreateBooking }) => {
                         <Form.Control
                             as="select"
                             name="numberOfPeople"
-                            value={bookingData.numberOfPeople}
-                            onChange={handleChange}
+                            value={numberOfPeople}
+                            onChange={(e) => setNumberOfPeople(e.target.value)}
                             required
                         >
                             <option value="">Select number of people</option>
@@ -77,8 +113,8 @@ const CreateBookingModal = ({ show, onHide, handleCreateBooking }) => {
                         <Form.Control
                             as="select"
                             name="shift"
-                            value={bookingData.shift}
-                            onChange={handleChange}
+                            value={shift}
+                            onChange={(e) => setShift(e.target.value)}
                             required
                         >
                             <option value="">Select shift</option>
@@ -91,16 +127,12 @@ const CreateBookingModal = ({ show, onHide, handleCreateBooking }) => {
                         <Form.Control
                             as="select"
                             name="host"
-                            value={bookingData.host}
-                            onChange={handleChange}
+                            value={host}
+                            onChange={(e) => setHost(e.target.value)}
                             required
                         >
                             <option value="">Select host</option>
-                            {employees.map((employee) => (
-                                <option key={employee.id} value={employee.id}>
-                                    {employee.firstName} {employee.lastName}
-                                </option>
-                            ))}
+                            {hostOptions.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
                         </Form.Control>
                     </Form.Group>
                     <Form.Group controlId="gameMaster">
@@ -108,16 +140,12 @@ const CreateBookingModal = ({ show, onHide, handleCreateBooking }) => {
                         <Form.Control
                             as="select"
                             name="gameMaster"
-                            value={bookingData.gameMaster}
-                            onChange={handleChange}
+                            value={gameMaster}
+                            onChange={(e) => setGameMaster(e.target.value)}
                             required
                         >
                             <option value="">Select game master</option>
-                            {employees.map((employee) => (
-                                <option key={employee.id} value={employee.id}>
-                                    {employee.firstName} {employee.lastName}
-                                </option>
-                            ))}
+                            {gameMasterOptions.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
                         </Form.Control>
                     </Form.Group>
                     <Form.Group controlId="notes">
@@ -126,15 +154,23 @@ const CreateBookingModal = ({ show, onHide, handleCreateBooking }) => {
                             as="textarea"
                             rows={3}
                             name="notes"
-                            value={bookingData.notes}
-                            onChange={handleChange}
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
                         />
                     </Form.Group>
-                    <Button variant="primary" type="submit">
+                    {/* <Button variant="primary" type="submit">
                         Create Booking
-                    </Button>
+                    </Button> */}
                 </Form>
             </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={onHide}>
+                    Close
+                </Button>
+                <Button variant="primary" onClick={handleSubmit}>
+                    Create Booking
+                </Button>
+            </Modal.Footer>
         </Modal>
     );
 };

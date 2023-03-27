@@ -1,13 +1,14 @@
 const Booking = require("../models/booking.model");
 const Shift = require("../models/shift.model");
 const Employee = require("../models/employee.model");
+const mongoose = require("mongoose");
 
 // Create and save a new booking
 const createBooking = async (req, res) => {
     try {
         const {
             gameName,
-            time,
+            datetime,
             numberOfPeople,
             shift,
             host,
@@ -17,22 +18,27 @@ const createBooking = async (req, res) => {
 
         const newBooking = new Booking({
             gameName,
-            time,
+            datetime,
             numberOfPeople,
             shift,
-            host,
-            gameMaster,
-            notes,
+            host: mongoose.Types.ObjectId(host),
+            gameMaster: mongoose.Types.ObjectId(gameMaster),
+            notes
         });
 
         const savedBooking = await newBooking.save();
-        res.status(201).json(savedBooking);
+
+        // Populate host and gameMaster fields before sending the response
+        const populatedBooking = await Booking.findById(savedBooking._id).populate("shift host gameMaster");
+
+        res.status(201).json(populatedBooking);
     } catch (err) {
         res.status(500).json({
             message: err.message
         });
     }
 };
+
 
 // Retrieve all bookings
 const getAllBookings = async (req, res) => {
@@ -70,17 +76,38 @@ const getBookingById = async (req, res) => {
 const updateBooking = async (req, res) => {
     try {
         const bookingId = req.params.id;
-        const updatedBooking = await Booking.findByIdAndUpdate(bookingId, req.body, {
-            new: true,
-            runValidators: true
-        }).populate("shift host gameMaster");
+        const {
+            gameName,
+            datetime,
+            numberOfPeople,
+            shift,
+            host,
+            gameMaster,
+            notes
+        } = req.body;
+        const updatedBooking = await Booking.findByIdAndUpdate(
+            bookingId, {
+                gameName,
+                datetime,
+                numberOfPeople,
+                shift,
+                host: mongoose.Types.ObjectId(host),
+                gameMaster: mongoose.Types.ObjectId(gameMaster),
+                notes
+            }, {
+                new: true,
+                runValidators: true
+            }
+        );
 
         if (!updatedBooking) {
             res.status(404).json({
                 message: "Booking not found"
             });
         } else {
-            res.status(200).json(updatedBooking);
+            // Populate host and gameMaster fields before sending the response
+            const populatedBooking = await Booking.findById(updatedBooking._id).populate("shift host gameMaster");
+            res.status(200).json(populatedBooking);
         }
     } catch (err) {
         res.status(500).json({
@@ -111,6 +138,7 @@ const deleteBooking = async (req, res) => {
         });
     }
 };
+
 
 module.exports = {
     createBooking,

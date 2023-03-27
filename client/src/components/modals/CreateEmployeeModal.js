@@ -33,9 +33,9 @@ function CreateEmployeeModal({ show, handleClose, setEmployees, onEmployeeCreate
 
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        axios.post("http://localhost:8000/api/employees", {
+        e.preventDefault(); // prevents the page from refreshing
+        e.stopPropagation(); // stops the form from submitting twice
+        axios.post("http://localhost:8000/api/employees", { // post to the backend
             firstName,
             lastName,
             preferredName,

@@ -240,7 +240,7 @@ const ShiftSchedule = () => {
             </div>
             
             <div className="card-body">
-              <Table Table striped hover responsive className='mb-5' style={{ fontSize: '14px' }}>
+              <Table table striped hover responsive className='mb-5' style={{ fontSize: '14px' }}>
                 <thead>
                   <tr>
                     <th>Day</th>

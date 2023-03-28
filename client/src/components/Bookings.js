@@ -6,6 +6,7 @@ import CreateBookingModal from './modals/CreateBookingModal'
 import moment from 'moment'
 import { BiPencil, BiTrash } from 'react-icons/bi';
 import { useParams } from 'react-router-dom';
+import UpdateBookingModal from './modals/UpdateBookingModal';
 
 const Bookings = () => {
     const { employees, setEmployees } = useContext(EmployeeContext);
@@ -82,7 +83,7 @@ const Bookings = () => {
                                 <th>Game</th>
                                 <th>Time</th>
                                 <th>Players</th>
-                                <th>Shift</th>
+                                {/* <th>Shift</th> */}
                                 <th>Host</th>
                                 <th>Game Master</th>
                                 <th>Notes</th>
@@ -95,11 +96,19 @@ const Bookings = () => {
                                         <ButtonGroup size="sm">
                                             <Button
                                                 variant='light'
-                                                onClick={() => handleShowUpdateBookingModal(booking._id)}
+                                                onClick={() => handleShowUpdateBookingModal(booking)}
                                             >
                                                 <BiPencil />
                                             </Button>
-                                            {/* insert the update booking modal here with it's props and condition */}
+                                            {selectedBooking && showUpdateBookingModal && (
+                                                <UpdateBookingModal
+                                                    key={booking._id}
+                                                    show={showUpdateBookingModal}
+                                                    onHide={handleCloseUpdateBookingModal}
+                                                    booking={selectedBooking}
+                                                    fetchBookings={fetchBookings}
+                                                />
+                                            )}
                                             <Button
                                                 variant="light"
                                                 onClick={() => handleDeleteBooking(booking._id)}
@@ -113,7 +122,7 @@ const Bookings = () => {
                                     <td>{booking.gameName}</td>
                                     <td>{moment(booking.time, 'HH:mm').format('hh:mm A')}</td>
                                     <td>{booking.numberOfPeople}</td>
-                                    <td>{booking.shift}</td>
+                                    {/* <td>{booking.shift}</td> */}
                                     <td>{booking.host && `${booking.host.firstName} ${booking.host.lastName}`}</td>
                                     <td>{booking.gameMaster && `${booking.gameMaster.firstName} ${booking.gameMaster.lastName}`}</td>
                                     <td>{booking.notes}</td>
@@ -138,7 +147,7 @@ const Bookings = () => {
                                 <th>Game</th>
                                 <th>Time</th>
                                 <th>Players</th>
-                                <th>Shift</th>
+                                {/* <th>Shift</th> */}
                                 <th>Host</th>
                                 <th>Game Master</th>
                                 <th>Notes</th>
@@ -151,11 +160,19 @@ const Bookings = () => {
                                         <ButtonGroup size="sm">
                                             <Button
                                                 variant='light'
-                                                onClick={() => handleShowUpdateBookingModal(booking._id)}
+                                                onClick={() => handleShowUpdateBookingModal(booking)}
                                             >
                                                 <BiPencil />
                                             </Button>
-                                            {/* insert the update booking modal here with it's props and condition */}
+                                            {selectedBooking && showUpdateBookingModal && (
+                                                <UpdateBookingModal
+                                                    key={booking._id}
+                                                    show={showUpdateBookingModal}
+                                                    onHide={handleCloseUpdateBookingModal}
+                                                    booking={selectedBooking}
+                                                    fetchBookings={fetchBookings}
+                                                />
+                                            )}
                                             <Button
                                                 variant="light"
                                                 onClick={() => handleDeleteBooking(booking._id)}
@@ -169,7 +186,7 @@ const Bookings = () => {
                                     <td>{booking.gameName}</td>
                                     <td>{moment(booking.time, 'HH:mm').format('hh:mm A')}</td>
                                     <td>{booking.numberOfPeople}</td>
-                                    <td>{booking.shift}</td>
+                                    {/* <td>{booking.shift}</td> */}
                                     <td>{booking.host && `${booking.host.firstName} ${booking.host.lastName}`}</td>
                                     <td>{booking.gameMaster && `${booking.gameMaster.firstName} ${booking.gameMaster.lastName}`}</td>
                                     <td>{booking.notes}</td>

@@ -112,12 +112,6 @@ const Bookings = ( ) => {
                                     <td>{moment(booking.time, 'HH:mm').format('hh:mm A')}</td>
                                     <td>{booking.numberOfPeople}</td>
                                     <td>{booking.shift}</td>
-                                    {/* <td>
-                                        {booking.host && `${employees.find(employee => employee._id === booking.host._id)?.firstName} ${employees.find(employee => employee._id === booking.host._id)?.lastName}`}
-                                    </td>
-                                    <td>
-                                        {booking.gameMaster && `${employees.find(employee => employee._id === booking.gameMaster._id)?.firstName} ${employees.find(employee => employee._id === booking.gameMaster._id)?.lastName}`}
-                                    </td> */}
                                     <td>{booking.host && `${booking.host.firstName} ${booking.host.lastName}`}</td>
                                     <td>{booking.gameMaster && `${booking.gameMaster.firstName} ${booking.gameMaster.lastName}`}</td>
                                     <td>{booking.notes}</td>

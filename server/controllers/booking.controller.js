@@ -23,8 +23,8 @@ const createBooking = async (req, res) => {
             time,
             numberOfPeople,
             shift,
-            host: mongoose.Types.ObjectId(host),
-            gameMaster: mongoose.Types.ObjectId(gameMaster),
+            host,
+            gameMaster,
             notes
         });
 
@@ -38,7 +38,9 @@ const createBooking = async (req, res) => {
             path: "gameMaster",
             model: "Employee"
         });
-        res.json({ populatedBooking });
+        res.json({
+            populatedBooking
+        });
 
         // res.status(201).json(populatedBooking);
     } catch (err) {
@@ -51,24 +53,9 @@ const createBooking = async (req, res) => {
 
 // Retrieve all bookings
 const getAllBookings = async (req, res) => {
-    // try {
-    //     const bookings = await Booking.find().populate({
-    //         path: "host",
-    //         model: "Employee"
-    //     }).populate({
-    //         path: "gameMaster",
-    //         model: "Employee"
-    //     });
-    //     res.status(200).json(bookings);
-    // } catch (err) {
-    //     res.status(500).json({
-    //         message: err.message
-    //     });
-    // }
-
     try {
         const bookings= await Booking.find()
-            .populate('host.firstName')
+            .populate('host')
             .populate('gameMaster')
             .populate('shift');
         res.json(bookings);
@@ -142,7 +129,7 @@ const updateBooking = async (req, res) => {
             });
         } else {
             // Populate host and gameMaster fields before sending the response
-            const populatedBooking = await Booking.findById(savedBooking._id).populate({
+            const populatedBooking = await Booking.findById(updatedBooking._id).populate({
                 path: "host",
                 model: "Employee"
             }).populate({

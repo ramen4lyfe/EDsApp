@@ -28,15 +28,14 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
         const timeValue = moment(time, "HH:mm").format("HH:mm:ss");
         const dateTimeValue = moment(`${dateValue}T${timeValue}`).toISOString();
 
-        const hostValue = host ? host.value : '';
-        const gameMasterValue = gameMaster ? gameMaster.value : '';
         const bookingData = {
             date,
             gameName,
             time,
             numberOfPeople,
             shift,
-            employees: [hostValue, gameMasterValue].filter(employee => employee !== ''),
+            host: host.value, // Changed this line
+            gameMaster: gameMaster.value, // Changed this line
             notes,
         };
 
@@ -44,7 +43,6 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
             .then(() => {
                 onHide();
                 fetchBookings();
-
             })
             .catch((err) => {
                 console.error(err);
@@ -136,28 +134,35 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
                         <Form.Control
                             as="select"
                             name="host"
-                            value={host}
-                            onChange={(e) => setHost(e.target.value)}
+                            value={host.value}
+                            onChange={(e) => {
+                                const selectedHost = hostOptions.find((option) => option.value === e.target.value);
+                                setHost(selectedHost);
+                            }}
                             required
                         >
                             <option value="">Select host</option>
                             {hostOptions.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
                         </Form.Control>
                     </Form.Group>
-                    
+
                     <Form.Group controlId="gameMaster">
                         <Form.Label>Game Master</Form.Label>
                         <Form.Control
                             as="select"
                             name="gameMaster"
-                            value={gameMaster}
-                            onChange={(e) => setGameMaster(e.target.value)}
+                            value={gameMaster.value}
+                            onChange={(e) => {
+                                const selectedGameMaster = gameMasterOptions.find((option) => option.value === e.target.value);
+                                setGameMaster(selectedGameMaster);
+                            }}
                             required
                         >
                             <option value="">Select game master</option>
                             {gameMasterOptions.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
                         </Form.Control>
                     </Form.Group>
+
 
                     <Form.Group controlId="notes">
                         <Form.Label>Notes</Form.Label>

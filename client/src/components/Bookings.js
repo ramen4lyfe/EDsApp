@@ -7,9 +7,9 @@ import moment from 'moment'
 import { BiPencil, BiTrash } from 'react-icons/bi';
 import { useParams } from 'react-router-dom';
 
-const Bookings = ( ) => {
+const Bookings = () => {
     const { employees, setEmployees } = useContext(EmployeeContext);
-    const {id} = useParams();
+    const { id } = useParams();
     const [bookings, setBookings] = useState([]);
     const [show, setShow] = useState(false);
 
@@ -41,7 +41,7 @@ const Bookings = ( ) => {
     };
 
     const [selectedBooking, setSelectedBooking] = useState(null);
-    const [ showUpdateBookingModal, setShowUpdateBookingModal ] =useState(false);
+    const [showUpdateBookingModal, setShowUpdateBookingModal] = useState(false);
     const handleShowUpdateBookingModal = (booking) => {
         setSelectedBooking(booking);
         setShowUpdateBookingModal(true)
@@ -50,6 +50,9 @@ const Bookings = ( ) => {
     const handleCloseUpdateBookingModal = () => {
         setShowUpdateBookingModal(false)
     };
+
+    const dayShiftBookings = bookings.filter(booking => booking.shift === "Day");
+    const eveningShiftBookings = bookings.filter(booking => booking.shift === "Evening");
 
     return (
         <Container>
@@ -63,11 +66,11 @@ const Bookings = ( ) => {
                     </Button>
                 </Col>
             </Row>
-            
+
             <CreateBookingModal show={show} onHide={handleClose} fetchBookings={fetchBookings} />
 
             <Card className='mb-4'>
-                <Card.Header className='text-center h3'> 
+                <Card.Header className='text-center h3'>
                     Day Shift
                 </Card.Header>
                 <Card.Body>
@@ -86,7 +89,7 @@ const Bookings = ( ) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {bookings.map((booking) => (
+                            {dayShiftBookings.map((booking) => (
                                 <tr key={booking._id}>
                                     <td>
                                         <ButtonGroup size="sm">
@@ -114,7 +117,7 @@ const Bookings = ( ) => {
                                     <td>{booking.host && `${booking.host.firstName} ${booking.host.lastName}`}</td>
                                     <td>{booking.gameMaster && `${booking.gameMaster.firstName} ${booking.gameMaster.lastName}`}</td>
                                     <td>{booking.notes}</td>
-                                    
+
                                 </tr>
                             ))}
                         </tbody>
@@ -127,7 +130,54 @@ const Bookings = ( ) => {
                     Evening Shift
                 </Card.Header>
                 <Card.Body>
-                        asdfadsf
+                    <Table striped hover>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Date</th>
+                                <th>Game</th>
+                                <th>Time</th>
+                                <th>Players</th>
+                                <th>Shift</th>
+                                <th>Host</th>
+                                <th>Game Master</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {eveningShiftBookings.map((booking) => (
+                                <tr key={booking._id}>
+                                    <td>
+                                        <ButtonGroup size="sm">
+                                            <Button
+                                                variant='light'
+                                                onClick={() => handleShowUpdateBookingModal(booking._id)}
+                                            >
+                                                <BiPencil />
+                                            </Button>
+                                            {/* insert the update booking modal here with it's props and condition */}
+                                            <Button
+                                                variant="light"
+                                                onClick={() => handleDeleteBooking(booking._id)}
+                                            >
+                                                <BiTrash />
+                                            </Button>
+                                        </ButtonGroup>
+
+                                    </td>
+                                    <td>{moment(booking.date).format('ddd MM-DD')}</td>
+                                    <td>{booking.gameName}</td>
+                                    <td>{moment(booking.time, 'HH:mm').format('hh:mm A')}</td>
+                                    <td>{booking.numberOfPeople}</td>
+                                    <td>{booking.shift}</td>
+                                    <td>{booking.host && `${booking.host.firstName} ${booking.host.lastName}`}</td>
+                                    <td>{booking.gameMaster && `${booking.gameMaster.firstName} ${booking.gameMaster.lastName}`}</td>
+                                    <td>{booking.notes}</td>
+
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
                 </Card.Body>
             </Card>
         </Container>

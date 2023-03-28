@@ -1,82 +1,52 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { EmployeeContext } from './context/EmployeeContext'
 import axios from 'axios'
-import { Button, Form, Table, Modal, Col, Row, Container } from 'react-bootstrap'
+import { Button, Form, Table, Modal, Col, Row, Container, Card, CardGroup, ButtonGroup } from 'react-bootstrap'
 import CreateBookingModal from './modals/CreateBookingModal'
 import moment from 'moment'
-
+import { BiPencil, BiTrash } from 'react-icons/bi';
+import { useParams } from 'react-router-dom';
 
 const Bookings = ( ) => {
     const { employees, setEmployees } = useContext(EmployeeContext);
+    const {id} = useParams();
     const [bookings, setBookings] = useState([]);
     const [show, setShow] = useState(false);
-    const [bookingData, setBookingData] = useState({
-        gameName: '',
-        time: '',
-        numberOfPeople: '',
-        shift: '',
-        host: '',
-        gameMaster: '',
-        notes: '',
-    });
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const handleChange = (e) => {
-        setBookingData({ ...bookingData, [e.target.name]: e.target.value });
-    };
-
-    
-
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     // handleCreateBooking(bookingData);
-    //     handleClose();
-    // };
-
-    // const handleCreateBooking = async (bookingData) => {
-    //     try {
-    //         const response = await axios.post('http://localhost:8000/api/bookings', bookingData);
-    //         setBookings([...bookings, response.data]);
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
+    useEffect(() => {
+        Promise.all([
+            axios.get(`http://localhost:8000/api/bookings`),
+            axios.get(`http://localhost:8000/api/employees`)
+        ]).then(([bookingsResponse, employeesResponse]) => {
+            setBookings(bookingsResponse.data);
+            setEmployees(employeesResponse.data);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }, []);
 
     const handleDeleteBooking = async (id) => {
         try {
-            await axios.delete(`http://localhost:8000/api/bookings/${id}`);
+            await axios.delete(`http://localhost:8000/api/bookings/delete/${id}`);
             setBookings(bookings.filter((booking) => booking._id !== id));
         } catch (error) {
             console.log(error);
         }
     };
 
-    useEffect(() => {
-        const fetchBookings = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/api/bookings');
-                setBookings(response.data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        fetchBookings();
-    }, []);
+    const [selectedBooking, setSelectedBooking] = useState(null);
+    const [ showUpdateBookingModal, setShowUpdateBookingModal ] =useState(false);
+    const handleShowUpdateBookingModal = (booking) => {
+        setSelectedBooking(booking);
+        setShowUpdateBookingModal(true)
+    }
 
-    useEffect(() => {
-        const fetchEmployees = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/api/employees');
-                setEmployees(response.data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        fetchEmployees();
-    }, []);
-
+    const handleCloseUpdateBookingModal = () => {
+        setShowUpdateBookingModal(false)
+    };
 
     return (
         <Container>
@@ -85,56 +55,88 @@ const Bookings = ( ) => {
                     <h1>Bookings</h1>
                 </Col>
                 <Col className='d-flex justify-content-end'>
-                    <Button variant="primary" onClick={handleShow}>
+                    <Button variant="primary" onClick={handleShow} >
                         Create Booking
                     </Button>
                 </Col>
             </Row>
-            <Table striped hover>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Game Name</th>
-                        <th>Time</th>
-                        <th>Number of People</th>
-                        <th>Shift</th>
-                        <th>Host</th>
-                        <th>Game Master</th>
-                        <th>Notes</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {bookings.map((booking) => (
-                        <tr key={booking._id}>
-                            <td>{moment(booking.date).format('dddd MM-DD')}</td>
-                            <td>{booking.gameName}</td>
-                            <td>{moment(booking.time, 'HH:mm').format('hh:mm A')}</td>
-                            <td>{booking.numberOfPeople}</td>
-                            <td>{booking.shift}</td>
-                            {/* <td>{employees.firstName}</td> */}
-                            <td>{employees.find(emp => emp._id === booking.host)?.firstName}</td>
-
-                            <td>{booking.host && `${booking.host.firstName} ${booking.host.lastName}`}</td>
-                            <td>{booking.gameMaster && `${booking.gameMaster.firstName} ${booking.gameMaster.lastName}`}</td>
-                            <td>{booking.notes}</td>
-                            <td>
-                                <Button
-                                    variant="danger"
-                                    onClick={() => handleDeleteBooking(booking._id)}
-                                >
-                                    Delete
-                                </Button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </Table>
+            
             <CreateBookingModal
                 show={show}
                 onHide={handleClose}
                 // handleCreateBooking={handleCreateBooking}
             />
+
+            <Card className='mb-4'>
+                <Card.Header className='text-center h3'> 
+                    Day Shift
+                </Card.Header>
+                <Card.Body>
+                    <Table striped hover >
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Date</th>
+                                <th>Game</th>
+                                <th>Time</th>
+                                <th>Players</th>
+                                <th>Shift</th>
+                                <th>Host</th>
+                                <th>Game Master</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {bookings.map((booking) => (
+                                <tr key={booking._id}>
+                                    <td>
+                                        <ButtonGroup size="sm">
+                                            <Button
+                                                variant='light'
+                                                onClick={() => handleShowUpdateBookingModal(booking._id)}
+                                            >
+                                                <BiPencil />
+                                            </Button>
+                                            {/* insert the update booking modal here with it's props and condition */}
+                                            <Button
+                                                variant="light"
+                                                onClick={() => handleDeleteBooking(booking._id)}
+                                            >
+                                                <BiTrash />
+                                            </Button>
+                                        </ButtonGroup>
+
+                                    </td>
+                                    <td>{moment(booking.date).format('ddd MM-DD')}</td>
+                                    <td>{booking.gameName}</td>
+                                    <td>{moment(booking.time, 'HH:mm').format('hh:mm A')}</td>
+                                    <td>{booking.numberOfPeople}</td>
+                                    <td>{booking.shift}</td>
+                                    {/* <td>
+                                        {booking.host && `${employees.find(employee => employee._id === booking.host._id)?.firstName} ${employees.find(employee => employee._id === booking.host._id)?.lastName}`}
+                                    </td>
+                                    <td>
+                                        {booking.gameMaster && `${employees.find(employee => employee._id === booking.gameMaster._id)?.firstName} ${employees.find(employee => employee._id === booking.gameMaster._id)?.lastName}`}
+                                    </td> */}
+                                    <td>{booking.host && `${booking.host.firstName} ${booking.host.lastName}`}</td>
+                                    <td>{booking.gameMaster && `${booking.gameMaster.firstName} ${booking.gameMaster.lastName}`}</td>
+                                    <td>{booking.notes}</td>
+                                    
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </Card.Body>
+            </Card>
+
+            <Card>
+                <Card.Header className='text-center h3'>
+                    Evening Shift
+                </Card.Header>
+                <Card.Body>
+                        asdfadsf
+                </Card.Body>
+            </Card>
         </Container>
     )
 }

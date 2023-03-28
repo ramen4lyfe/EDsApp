@@ -5,7 +5,7 @@ import axios from 'axios';
 import mongoose from 'mongoose';
 import moment from 'moment';
 
-const CreateBookingModal = ({ show, onHide }) => {
+const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
     const { employees } = useContext(EmployeeContext);
     const [date, setDate] = useState('');
     const [gameName, setGameName] = useState('');
@@ -43,6 +43,8 @@ const CreateBookingModal = ({ show, onHide }) => {
         axios.post('http://localhost:8000/api/bookings', bookingData)
             .then(() => {
                 onHide();
+                fetchBookings();
+
             })
             .catch((err) => {
                 console.error(err);
@@ -75,9 +77,9 @@ const CreateBookingModal = ({ show, onHide }) => {
                             required
                         >
                             <option value="">Select game name</option>
-                            <option value="hostage">Hostage</option>
-                            <option value="box">B.O.X</option>
-                            <option value="nursery">Nursery</option>
+                            <option value="Hostage">Hostage</option>
+                            <option value="BOX">B.O.X</option>
+                            <option value="Nursery">Nursery</option>
                         </Form.Control>
                     </Form.Group>
 
@@ -124,8 +126,8 @@ const CreateBookingModal = ({ show, onHide }) => {
                             required
                         >
                             <option value="">Select shift</option>
-                            <option value="day">Day Shift</option>
-                            <option value="evening">Evening Shift</option>
+                            <option value="Day">Day Shift</option>
+                            <option value="Evening">Evening Shift</option>
                         </Form.Control>
                     </Form.Group>
 
@@ -186,3 +188,8 @@ const CreateBookingModal = ({ show, onHide }) => {
 };
 
 export default CreateBookingModal;
+
+
+// Todo
+// depends on the time selected upon createConnection, it should auto filter into day or evening shift 
+// actually better to populate available employees based on the date of the shift schedule. 

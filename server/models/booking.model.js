@@ -12,7 +12,7 @@ const BookingSchema = new mongoose.Schema({
   gameName: {
     type: String,
     // required: [true, "Game name is required."],
-    enum: ['hostage', 'box', 'nursery']
+    enum: ['Hostage', 'BOX', 'Nursery']
   },
   numberOfPeople: {
     type: Number,
@@ -22,7 +22,7 @@ const BookingSchema = new mongoose.Schema({
   shift: {
     type: String,
     required: [true, "Shift is required."],
-    enum: ['day', 'evening']
+    enum: ['Day', 'Evening']
   },
   // shift: {
   //   type: mongoose.Schema.Types.ObjectId,

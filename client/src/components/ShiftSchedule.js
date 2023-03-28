@@ -12,6 +12,7 @@ const ShiftSchedule = () => {
   const { employees, setEmployees } = useContext(EmployeeContext);
   const [shifts, setShifts] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date().toISOString().substr(0, 10));
+  
   const [showCreateModal, setShowCreateModal] = useState(false);
   const handleShowCreateModal = () => {setShowCreateModal(true)};
   const handleCloseCreateModal = () => {

@@ -38,8 +38,9 @@ const createBooking = async (req, res) => {
             path: "gameMaster",
             model: "Employee"
         });
+        res.json({ populatedBooking });
 
-        res.status(201).json(populatedBooking);
+        // res.status(201).json(populatedBooking);
     } catch (err) {
         res.status(500).json({
             message: err.message
@@ -50,20 +51,33 @@ const createBooking = async (req, res) => {
 
 // Retrieve all bookings
 const getAllBookings = async (req, res) => {
+    // try {
+    //     const bookings = await Booking.find().populate({
+    //         path: "host",
+    //         model: "Employee"
+    //     }).populate({
+    //         path: "gameMaster",
+    //         model: "Employee"
+    //     });
+    //     res.status(200).json(bookings);
+    // } catch (err) {
+    //     res.status(500).json({
+    //         message: err.message
+    //     });
+    // }
+
     try {
-        const bookings = await Booking.find().populate({
-            path: "host",
-            model: "Employee"
-        }).populate({
-            path: "gameMaster",
-            model: "Employee"
-        });
-        res.status(200).json(bookings);
+        const bookings= await Booking.find()
+            .populate('host.firstName')
+            .populate('gameMaster')
+            .populate('shift');
+        res.json(bookings);
     } catch (err) {
         res.status(500).json({
             message: err.message
         });
     }
+
 };
 
 // Find a single booking by ID

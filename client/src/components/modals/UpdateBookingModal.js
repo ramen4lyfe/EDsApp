@@ -6,36 +6,79 @@ import axios from 'axios';
 const UpdateBookingModal = ({ show, onHide, booking, fetchBookings }) => {
     const { employees } = useContext(EmployeeContext);
 
-    const [updatedBooking, setUpdatedBooking] = useState({});
+    const [updatedBooking, setUpdatedBooking] = useState(null);
 
     useEffect(() => {
         if (booking) {
-        setUpdatedBooking({ ...booking });
+            setUpdatedBooking({ ...booking });
         }
     }, [booking]);
 
+    if (!updatedBooking) {
+        return null;
+    }
+
+
+    const createEmployeeSelect = (label, controlId, value, onChange) => (
+        <Form.Group controlId={controlId}>
+            <Form.Label>{label}</Form.Label>
+            <Form.Control as="select" value={value} onChange={onChange}>
+                <option value="">Select Employee</option>
+                {employees.map(employee => (
+                    <option key={employee._id} value={employee._id}>
+                        {employee.name}
+                    </option>
+                ))}
+            </Form.Control>
+        </Form.Group>
+    );
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUpdatedBooking({
-            ...updatedBooking,
+        setUpdatedBooking(prevState => ({
+            ...prevState,
             [name]: value
-        });
+        }));
     };
+
+    const handleEmployeeChange = (e) => {
+    const { name, value } = e.target;
+    const employee = employees.find(emp => emp._id === value);
+    setUpdatedBooking(prevState => ({
+        ...prevState,
+        [name]: employee ? employee : ''
+    }));
+};
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await axios.put(`http://localhost:8000/api/bookings/update/${booking._id}`, updatedBooking);
-            fetchBookings();
-            onHide();
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    e.preventDefault();
+    try {
+        const { _id, date, gameName, time, numberOfPeople, shift, host, gameMaster, notes } = updatedBooking;
+
+        const bookingData = {
+        date,
+        gameName,
+        time,
+        numberOfPeople,
+        shift,
+        host: host ? host._id : null,
+        gameMaster: gameMaster ? gameMaster._id : null,
+        notes,
+        };
+
+        await axios.put(`http://localhost:8000/api/bookings/update/${booking._id}`, bookingData);
+        fetchBookings();
+        onHide();
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 
-    return (
+    const hostOptions = employees.map(employee => ({ value: employee._id, label: `${employee.firstName} ${employee.lastName}` }));
+
+    const gameMasterOptions = employees.map(employee => ({ value: employee._id, label: `${employee.firstName} ${employee.lastName}` }));
+return (
         <Modal show={show} onHide={onHide} centered>
             <Modal.Header closeButton>
                 <Modal.Title>Update Booking</Modal.Title>
@@ -43,10 +86,10 @@ const UpdateBookingModal = ({ show, onHide, booking, fetchBookings }) => {
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
                     
-                    <Form.Group controlId="date">
+                    {/* <Form.Group controlId="date">
                         <Form.Label>Select Date</Form.Label>
                         <Form.Control type="date" name="date" value={updatedBooking.date} onChange={handleChange} required />
-                    </Form.Group>
+                    </Form.Group> */}
 
                     <Form.Group controlId="gameName">
                         <Form.Label>Game Name</Form.Label>
@@ -113,40 +156,40 @@ const UpdateBookingModal = ({ show, onHide, booking, fetchBookings }) => {
                     </Form.Group>
 
                     <Form.Group controlId="host">
-                        <Form.Label>Host</Form.Label>
-                        <Form.Control
-                            as="select"
-                            name="host"
-                            value={updatedBooking.host}
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="">Select host</option>
-                            {employees.map(employee => (
-                                <option key={employee._id} value={employee.name}>
-                                    {employee.name}
-                                </option>
-                            ))}
-                        </Form.Control>
-                    </Form.Group>
+                    <Form.Label>Host</Form.Label>
+                    <Form.Control
+                        as="select"
+                        name="host"
+                        value={updatedBooking.host ? updatedBooking.host._id : ''}
+                        onChange={handleEmployeeChange}
+                        required
+                    >
+                        <option value="">Select host</option>
+                        {employees.map(employee => (
+                            <option key={employee._id} value={employee._id}>
+                                {`${employee.firstName} ${employee.lastName}`}
+                            </option>
+                        ))}
+                    </Form.Control>
+                </Form.Group>
 
-                    <Form.Group controlId="gameMaster">
-                        <Form.Label>Game Master</Form.Label>
-                        <Form.Control
-                            as="select"
-                            name="gameMaster"
-                            value={updatedBooking.gameMaster}
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="">Select game master</option>
-                            {employees.map(employee => (
-                                <option key={employee._id} value={employee.name}>
-                                    {employee.name}
-                                </option>
-                            ))}
-                        </Form.Control>
-                    </Form.Group>
+                <Form.Group controlId="gameMaster">
+                    <Form.Label>Game Master</Form.Label>
+                    <Form.Control
+                        as="select"
+                        name="gameMaster"
+                        value={updatedBooking.gameMaster ? updatedBooking.gameMaster._id : ''}
+                        onChange={handleEmployeeChange}
+                        required
+                    >
+                        <option value="">Select game master</option>
+                        {employees.map(employee => (
+                            <option key={employee._id} value={employee._id}>
+                                {`${employee.firstName} ${employee.lastName}`}
+                            </option>
+                        ))}
+                    </Form.Control>
+                </Form.Group>
 
                     <Form.Group controlId="notes">
                         <Form.Label>Notes</Form.Label>

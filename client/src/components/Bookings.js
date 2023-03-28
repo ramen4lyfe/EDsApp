@@ -105,7 +105,7 @@ const Bookings = () => {
                                                     key={booking._id}
                                                     show={showUpdateBookingModal}
                                                     onHide={handleCloseUpdateBookingModal}
-                                                    booking={selectedBooking}
+                                                    booking={{ ...booking, host: booking.host, gameMaster: booking.gameMaster }}
                                                     fetchBookings={fetchBookings}
                                                 />
                                             )}
@@ -169,7 +169,7 @@ const Bookings = () => {
                                                     key={booking._id}
                                                     show={showUpdateBookingModal}
                                                     onHide={handleCloseUpdateBookingModal}
-                                                    booking={selectedBooking}
+                                                    booking={{ ...booking, host: booking.host, gameMaster: booking.gameMaster }}
                                                     fetchBookings={fetchBookings}
                                                 />
                                             )}

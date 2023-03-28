@@ -17,16 +17,19 @@ const Bookings = ( ) => {
     const handleShow = () => setShow(true);
 
     useEffect(() => {
-        Promise.all([
-            axios.get(`http://localhost:8000/api/bookings`),
-            axios.get(`http://localhost:8000/api/employees`)
-        ]).then(([bookingsResponse, employeesResponse]) => {
-            setBookings(bookingsResponse.data);
-            setEmployees(employeesResponse.data);
-        }).catch((err) => {
-            console.log(err);
-        });
-    }, []);
+        fetchBookings();
+    }, [show]);
+
+    const fetchBookings = () => {
+        axios
+            .get('http://localhost:8000/api/bookings')
+            .then((res) => {
+                setBookings(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
 
     const handleDeleteBooking = async (id) => {
         try {
@@ -61,11 +64,7 @@ const Bookings = ( ) => {
                 </Col>
             </Row>
             
-            <CreateBookingModal
-                show={show}
-                onHide={handleClose}
-                // handleCreateBooking={handleCreateBooking}
-            />
+            <CreateBookingModal show={show} onHide={handleClose} fetchBookings={fetchBookings} />
 
             <Card className='mb-4'>
                 <Card.Header className='text-center h3'> 

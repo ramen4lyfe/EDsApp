@@ -18,21 +18,6 @@ const UpdateBookingModal = ({ show, onHide, booking, fetchBookings }) => {
         return null;
     }
 
-
-    const createEmployeeSelect = (label, controlId, value, onChange) => (
-        <Form.Group controlId={controlId}>
-            <Form.Label>{label}</Form.Label>
-            <Form.Control as="select" value={value} onChange={onChange}>
-                <option value="">Select Employee</option>
-                {employees.map(employee => (
-                    <option key={employee._id} value={employee._id}>
-                        {employee.name}
-                    </option>
-                ))}
-            </Form.Control>
-        </Form.Group>
-    );
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUpdatedBooking(prevState => ({
@@ -74,10 +59,6 @@ const UpdateBookingModal = ({ show, onHide, booking, fetchBookings }) => {
     }
 };
 
-
-    const hostOptions = employees.map(employee => ({ value: employee._id, label: `${employee.firstName} ${employee.lastName}` }));
-
-    const gameMasterOptions = employees.map(employee => ({ value: employee._id, label: `${employee.firstName} ${employee.lastName}` }));
 return (
         <Modal show={show} onHide={onHide} centered>
             <Modal.Header closeButton>

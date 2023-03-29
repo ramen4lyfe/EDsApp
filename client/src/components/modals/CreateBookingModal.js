@@ -210,6 +210,3 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
 export default CreateBookingModal;
 
 
-// Todo
-// depends on the time selected upon createConnection, it should auto filter into day or evening shift 
-// actually better to populate available employees based on the date of the shift schedule. 

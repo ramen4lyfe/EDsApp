@@ -22,7 +22,9 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const dateTimeValue = moment(`${date} ${time.value}`, "YYYY-MM-DD HH:mm");
+        const localDate = new Date(`${date}T${time.value}`);
+        const timezoneOffsetInMinutes = localDate.getTimezoneOffset();
+        const dateTimeValue = moment(localDate).add(timezoneOffsetInMinutes, 'minutes');
         const dateValue = dateTimeValue.format("YYYY-MM-DD");
         const timeValue = dateTimeValue.format("HH:mm");
 
@@ -187,7 +189,7 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
                         <Form.Label className='h5'>Notes</Form.Label>
                         <Form.Control
                             as="textarea"
-                            rows={3}
+                            rows={2}
                             name="notes"
                             value={notes}
                             onChange={(e) => setNotes(e.target.value)}

@@ -147,7 +147,6 @@ const Bookings = () => {
                                 <th>Game</th>
                                 <th>Time</th>
                                 <th>Players</th>
-                                {/* <th>Shift</th> */}
                                 <th>Host</th>
                                 <th>Game Master</th>
                                 <th>Notes</th>
@@ -180,13 +179,11 @@ const Bookings = () => {
                                                 <BiTrash />
                                             </Button>
                                         </ButtonGroup>
-
                                     </td>
                                     <td>{moment(booking.date).format('ddd MM-DD')}</td>
                                     <td>{booking.gameName}</td>
                                     <td>{moment(booking.time, 'HH:mm').format('hh:mm A')}</td>
                                     <td>{booking.numberOfPeople}</td>
-                                    {/* <td>{booking.shift}</td> */}
                                     <td>{booking.host && `${booking.host.firstName} ${booking.host.lastName}`}</td>
                                     <td>{booking.gameMaster && `${booking.gameMaster.firstName} ${booking.gameMaster.lastName}`}</td>
                                     <td>{booking.notes}</td>

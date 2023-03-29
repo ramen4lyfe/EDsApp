@@ -70,9 +70,9 @@ const Bookings = () => {
     
     return (
         <Container>
-            <Row className='align-items-center'>
+            <Row className='align-items-center mb-4'>
                 <Col>
-                    <h1>Bookings</h1>
+                    <h2>Today's Bookings</h2>
                 </Col>
                 <Col>
                     <Form.Group controlId="dateFilter" className=''>
@@ -222,7 +222,7 @@ const Bookings = () => {
             
             <div className='d-flex justify-content-center '>
                 {/* Add pagination */}
-                <Pagination className="mb-3">
+                <Pagination className="mb-3" variant='light'>
                     <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} />
                     <Pagination.Item onClick={() => {
                         setCurrentPage(0);

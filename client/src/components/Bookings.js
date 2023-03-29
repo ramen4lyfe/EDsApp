@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { EmployeeContext } from './context/EmployeeContext'
 import axios from 'axios'
-import { Button, Form, Table, Modal, Col, Row, Container, Card, CardGroup, ButtonGroup } from 'react-bootstrap'
+import { Button, Form, Table, Modal, Col, Row, Container, Card, CardGroup, ButtonGroup, Pagination, } from 'react-bootstrap'
 import CreateBookingModal from './modals/CreateBookingModal'
 import moment from 'moment'
 import { BiPencil, BiTrash } from 'react-icons/bi';
@@ -13,25 +13,23 @@ const Bookings = () => {
     const { id } = useParams();
     const [bookings, setBookings] = useState([]);
     const [show, setShow] = useState(false);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [selectedDate, setSelectedDate] = useState(moment().startOf('day'));
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    useEffect(() => {
-        fetchBookings();
-    }, [show]);
-
     const fetchBookings = () => {
         axios
-            .get('http://localhost:8000/api/bookings')
-            .then((res) => {
-                setBookings(res.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        .get('http://localhost:8000/api/bookings')
+        .then((res) => {
+            setBookings(res.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     };
-
+    
     const handleDeleteBooking = async (id) => {
         try {
             await axios.delete(`http://localhost:8000/api/bookings/delete/${id}`);
@@ -40,21 +38,37 @@ const Bookings = () => {
             console.log(error);
         }
     };
-
+    
+    
     const [selectedBooking, setSelectedBooking] = useState(null);
     const [showUpdateBookingModal, setShowUpdateBookingModal] = useState(false);
     const handleShowUpdateBookingModal = (booking) => {
         setSelectedBooking(booking);
         setShowUpdateBookingModal(true)
     }
-
+    
     const handleCloseUpdateBookingModal = () => {
         setShowUpdateBookingModal(false)
     };
+    
+    const filterBookingsByDate = (booking) =>
+        moment(booking.date).isSame(selectedDate, 'day');
+    const dayShiftBookings = bookings
+        .filter(filterBookingsByDate)
+        .filter((booking) => booking.shift === 'Day');
+    const eveningShiftBookings = bookings
+        .filter(filterBookingsByDate)
+        .filter((booking) => booking.shift === 'Evening');
 
-    const dayShiftBookings = bookings.filter(booking => booking.shift === "Day");
-    const eveningShiftBookings = bookings.filter(booking => booking.shift === "Evening");
+    const handlePageChange = (pageNum) => {
+        setCurrentPage(pageNum);
+        setSelectedDate(moment().startOf('day').add(pageNum, 'days'));
+    };
 
+    useEffect(() => {
+        fetchBookings();
+    }, [show, currentPage, selectedDate]);
+    
     return (
         <Container>
             <Row className='mb-2 mt-2'>
@@ -70,11 +84,30 @@ const Bookings = () => {
 
             <CreateBookingModal show={show} onHide={handleClose} fetchBookings={fetchBookings} />
 
+            {/* Add date filter input */}
+            <Form.Group controlId="dateFilter" className="mb-3">
+                <Form.Label>Filter by date</Form.Label>
+                <Form.Control
+                    type="date"
+                    value={selectedDate.format('YYYY-MM-DD')}
+                    onChange={(e) => setSelectedDate(moment(e.target.value))}
+                />
+            </Form.Group>
+
+            {/* Add pagination */}
+            <Pagination className="mb-3">
+                <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} />
+                <Pagination.Item active>{`Day ${currentPage + 1}`}</Pagination.Item>
+                <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} />
+            </Pagination>
+
+
             <Card className='mb-4'>
                 <Card.Header className='text-center h3'>
                     Day Shift
                 </Card.Header>
                 <Card.Body>
+                    
                     <Table striped hover >
                         <thead>
                             <tr>

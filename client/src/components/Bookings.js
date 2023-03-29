@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { EmployeeContext } from './context/EmployeeContext'
 import axios from 'axios'
-import { Button, Form, Table, Modal, Col, Row, Container, Card, CardGroup, ButtonGroup, Pagination, } from 'react-bootstrap'
+import { Button, Form, Table, Modal, Col, Row, Container, Card, CardGroup, ButtonGroup, Pagination, InputGroup, } from 'react-bootstrap'
 import CreateBookingModal from './modals/CreateBookingModal'
 import moment from 'moment'
 import { BiPencil, BiTrash } from 'react-icons/bi';
@@ -39,7 +39,6 @@ const Bookings = () => {
         }
     };
     
-    
     const [selectedBooking, setSelectedBooking] = useState(null);
     const [showUpdateBookingModal, setShowUpdateBookingModal] = useState(false);
     const handleShowUpdateBookingModal = (booking) => {
@@ -71,9 +70,21 @@ const Bookings = () => {
     
     return (
         <Container>
-            <Row className='mb-2 mt-2'>
+            <Row className='align-items-center'>
                 <Col>
                     <h1>Bookings</h1>
+                </Col>
+                <Col>
+                    <Form.Group controlId="dateFilter" className=''>
+                        <InputGroup>
+                        <InputGroup.Text>Date Filter</InputGroup.Text>
+                        <Form.Control
+                            type="date"
+                            value={selectedDate.format('YYYY-MM-DD')}
+                            onChange={(e) => setSelectedDate(moment(e.target.value))}
+                        />
+                        </InputGroup>
+                    </Form.Group>
                 </Col>
                 <Col className='d-flex justify-content-end p-2'>
                     <Button variant="primary" onClick={handleShow} >
@@ -83,24 +94,6 @@ const Bookings = () => {
             </Row>
 
             <CreateBookingModal show={show} onHide={handleClose} fetchBookings={fetchBookings} />
-
-            {/* Add date filter input */}
-            <Form.Group controlId="dateFilter" className="mb-3">
-                <Form.Label>Filter by date</Form.Label>
-                <Form.Control
-                    type="date"
-                    value={selectedDate.format('YYYY-MM-DD')}
-                    onChange={(e) => setSelectedDate(moment(e.target.value))}
-                />
-            </Form.Group>
-
-            {/* Add pagination */}
-            <Pagination className="mb-3">
-                <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} />
-                <Pagination.Item active>{`Day ${currentPage + 1}`}</Pagination.Item>
-                <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} />
-            </Pagination>
-
 
             <Card className='mb-4'>
                 <Card.Header className='text-center h3'>
@@ -167,7 +160,7 @@ const Bookings = () => {
                 </Card.Body>
             </Card>
 
-            <Card>
+            <Card className='mb-4'>
                 <Card.Header className='text-center h3'>
                     Evening Shift
                 </Card.Header>
@@ -220,13 +213,27 @@ const Bookings = () => {
                                     <td>{booking.host && `${booking.host.firstName} ${booking.host.lastName}`}</td>
                                     <td>{booking.gameMaster && `${booking.gameMaster.firstName} ${booking.gameMaster.lastName}`}</td>
                                     <td>{booking.notes}</td>
-
                                 </tr>
                             ))}
                         </tbody>
                     </Table>
                 </Card.Body>
             </Card>
+            
+            <div className='d-flex justify-content-center '>
+                {/* Add pagination */}
+                <Pagination className="mb-3">
+                    <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} />
+                    <Pagination.Item onClick={() => {
+                        setCurrentPage(0);
+                        setSelectedDate(moment().startOf('day'));
+                    }}
+                    >
+                        {`Day ${currentPage + 0}`}
+                    </Pagination.Item>
+                    <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} />
+                </Pagination>
+            </div>
         </Container>
     )
 }

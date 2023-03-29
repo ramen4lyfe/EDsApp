@@ -1,9 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { Modal, Button, Form, InputGroup } from 'react-bootstrap';
+import { Modal, Button, Form, InputGroup, ToggleButton, ToggleButtonGroup, ButtonGroup } from 'react-bootstrap';
 import { EmployeeContext } from '../context/EmployeeContext';
 import axios from 'axios';
 import mongoose from 'mongoose';
 import moment from 'moment';
+import Select from 'react-select';
 
 const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
     const { employees } = useContext(EmployeeContext);
@@ -24,18 +25,18 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const dateValue = moment(date).format("YYYY-MM-DD");
-        const timeValue = moment(time, "HH:mm").format("HH:mm:ss");
-        const dateTimeValue = moment(`${dateValue}T${timeValue}`).toISOString();
+        const dateTimeValue = moment(`${date} ${time.value}`, "YYYY-MM-DD HH:mm");
+        const dateValue = dateTimeValue.format("YYYY-MM-DD");
+        const timeValue = dateTimeValue.format("HH:mm");
 
         const bookingData = {
-            date,
+            date: dateValue,
             gameName,
-            time,
+            time: timeValue,
             numberOfPeople,
             shift,
-            host: host.value, // Changed this line
-            gameMaster: gameMaster.value, // Changed this line
+            host: host.value,
+            gameMaster: gameMaster.value,
             notes,
         };
 
@@ -53,6 +54,20 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
 
     const gameMasterOptions = employees.map(employee => ({ value: employee._id, label: `${employee.firstName} ${employee.lastName}` }));
 
+    // const [dateTime, setDateTime] = useState('');
+
+    const generateTimeOptions = () => {
+        const options = [];
+        for (let i = 12; i < 23; i++) { // Start loop from 12
+            const hour24 = i % 24;
+            const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
+            const amPm = hour24 < 12 ? 'AM' : 'PM';
+            options.push({ value: `${hour24.toString().padStart(2, '0')}:00`, label: `${hour12}:00 ${amPm}` });
+            options.push({ value: `${hour24.toString().padStart(2, '0')}:30`, label: `${hour12}:30 ${amPm}` });
+        }
+        return options;
+    };
+
     return (
         <Modal show={show} onHide={onHide} centered>
             <Modal.Header closeButton>
@@ -60,112 +75,133 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="date" className='mb-4'>
-                        <Form.Label>Select Date</Form.Label>
-                        <Form.Control type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
-                    </Form.Group>
-
-                    <Form.Group controlId="gameName">
-                        <Form.Label>Game Name</Form.Label>
+                    
+                    {/* <Form.Group controlId="dateTime" className='mb-4'>
+                        <Form.Label className='h5'>Select Date and Time</Form.Label>
                         <Form.Control
-                            as="select"
-                            name="gameName"
-                            value={gameName}
-                            onChange={(e) => setGameName(e.target.value)}
+                            type="datetime-local"
+                            value={dateTime}
+                            onChange={(e) => setDateTime(e.target.value)}
                             required
-                        >
-                            <option value="">Select game name</option>
-                            <option value="Hostage">Hostage</option>
-                            <option value="BOX">B.O.X</option>
-                            <option value="Nursery">Nursery</option>
-                        </Form.Control>
+                        />
+                    </Form.Group> */}
+                    
+                    <Form.Group controlId="gameName" className='mb-4'>
+                        <Form.Label className='h5'>Select Game</Form.Label>
+                        <div>
+                        <ButtonGroup size='md' className='w-100'>
+                            {['Hostage', 'BOX', 'Nursery'].map((game, idx) => (
+                                <Button
+                                    key={idx}
+                                    variant={gameName === game ? "primary" : "outline-secondary"}
+                                    onClick={() => setGameName(game)}
+                                    className='flex-grow-1'
+                                >
+                                    {game}
+                                </Button>
+                            ))}
+                        </ButtonGroup>
+                        </div>
                     </Form.Group>
 
-                    <Form.Group controlId="time">
-                        <Form.Label>Time</Form.Label>
+                    <Form.Group controlId="date" className='mb-4'>
+                        <Form.Label className='h5'>Select Date</Form.Label>
                         <Form.Control
-                            type="time"
-                            name="time"
-                            value={time}
-                            onChange={(e) => setTime(e.target.value)}
+                            type="date"
+                            value={date}
+                            onChange={(e) => setDate(e.target.value)}
                             required
                         />
                     </Form.Group>
 
-                    <Form.Group controlId="numberOfPeople">
-                        <Form.Label>Number of People</Form.Label>
-                        <Form.Control
-                            as="select"
-                            name="numberOfPeople"
-                            value={numberOfPeople}
-                            onChange={(e) => setNumberOfPeople(e.target.value)}
+                    <Form.Group controlId="time" className='mb-4'>
+                        <Form.Label className='h5'>Select Time</Form.Label>
+                        <Select
+                            value={time}
+                            onChange={(selectedTime) => setTime(selectedTime)}
+                            options={generateTimeOptions()}
                             required
-                        >
-                            <option value="">Select number of people</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                        </Form.Control>
+                        />
                     </Form.Group>
 
-                    <Form.Group controlId="shift">
-                        <Form.Label>Shift</Form.Label>
-                        <Form.Control
-                            as="select"
-                            name="shift"
-                            value={shift}
-                            onChange={(e) => setShift(e.target.value)}
-                            required
-                        >
-                            <option value="">Select shift</option>
-                            <option value="Day">Day Shift</option>
-                            <option value="Evening">Evening Shift</option>
-                        </Form.Control>
+                    <Form.Group controlId="numberOfPeople" className="mb-4">
+                        <Form.Label className='h5'>Number of Players</Form.Label>
+                        <div>
+                            <ButtonGroup size="md" className="w-100 d-flex mb-2">
+                                {Array.from({ length: 5 }, (_, i) => i + 1).map((number) => (
+                                    <Button
+                                        key={number}
+                                        variant={numberOfPeople === number ? "primary" : "outline-secondary"}
+                                        onClick={() => setNumberOfPeople(number)}
+                                        className="flex-grow-1"
+                                        style={{ width: '20%' }}
+                                    >
+                                        {number}
+                                    </Button>
+                                ))}
+                            </ButtonGroup>
+                            <ButtonGroup size="md" className="w-100 d-flex">
+                                {Array.from({ length: 5 }, (_, i) => i + 6).map((number) => (
+                                    <Button
+                                        key={number}
+                                        variant={numberOfPeople === number ? "primary" : "outline-secondary"}
+                                        onClick={() => setNumberOfPeople(number)}
+                                        className="flex-grow-1"
+                                        style={{ width: '20%' }}
+                                    >
+                                        {number}
+                                    </Button>
+                                ))}
+                            </ButtonGroup>
+                        </div>
                     </Form.Group>
 
-                    <Form.Group controlId="host">
-                        <Form.Label>Host</Form.Label>
-                        <Form.Control
-                            as="select"
+                    <Form.Group controlId="shift" className='mb-4'>
+                        <Form.Label className='h5'>Shift</Form.Label>
+                        <div>
+                            <ButtonGroup size="md" className='w-100'>
+                                {['Day', 'Evening'].map((shiftOption, idx) => (
+                                    <Button
+                                        key={idx}
+                                        variant={shift === shiftOption ? "primary" : "outline-secondary"}
+                                        onClick={() => setShift(shiftOption)}
+                                        className='flex-grow-1'
+                                    >
+                                        {shiftOption} Shift
+                                    </Button>
+                                ))}
+                            </ButtonGroup>
+                        </div>
+                    </Form.Group>
+
+
+                    <Form.Group controlId="host" className='mb-4'>
+                        <Form.Label className='h5'>Host</Form.Label>
+                        <Select
                             name="host"
-                            value={host.value}
-                            onChange={(e) => {
-                                const selectedHost = hostOptions.find((option) => option.value === e.target.value);
-                                setHost(selectedHost);
-                            }}
+                            value={host}
+                            onChange={setHost}
+                            options={hostOptions}
                             required
-                        >
-                            <option value="">Select host</option>
-                            {hostOptions.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
-                        </Form.Control>
+                            placeholder="Select Host/ Keeper..."
+                        />
                     </Form.Group>
 
-                    <Form.Group controlId="gameMaster">
-                        <Form.Label>Game Master</Form.Label>
-                        <Form.Control
-                            as="select"
+                    <Form.Group controlId="gameMaster" className='mb-4'>
+                        <Form.Label className='h5'>Game Master</Form.Label>
+                        <Select
                             name="gameMaster"
-                            value={gameMaster.value}
-                            onChange={(e) => {
-                                const selectedGameMaster = gameMasterOptions.find((option) => option.value === e.target.value);
-                                setGameMaster(selectedGameMaster);
-                            }}
+                            value={gameMaster}
+                            onChange={setGameMaster}
+                            options={gameMasterOptions}
                             required
-                        >
-                            <option value="">Select game master</option>
-                            {gameMasterOptions.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
-                        </Form.Control>
+                            placeholder="Select Game Master..."
+                        />
                     </Form.Group>
 
 
                     <Form.Group controlId="notes">
-                        <Form.Label>Notes</Form.Label>
+                        <Form.Label className='h5'>Notes</Form.Label>
                         <Form.Control
                             as="textarea"
                             rows={3}

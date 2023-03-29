@@ -5,6 +5,7 @@ import axios from 'axios';
 import mongoose from 'mongoose';
 import moment from 'moment';
 import Select from 'react-select';
+import 'moment-timezone';
 
 const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
     const { employees } = useContext(EmployeeContext);
@@ -22,11 +23,12 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const localDate = new Date(`${date}T${time.value}`);
-        const timezoneOffsetInMinutes = localDate.getTimezoneOffset();
-        const dateTimeValue = moment(localDate).add(timezoneOffsetInMinutes, 'minutes');
-        const dateValue = dateTimeValue.format("YYYY-MM-DD");
-        const timeValue = dateTimeValue.format("HH:mm");
+
+        const dateObj = new Date(`${date}T${time.value}`);
+        const dateFormatter = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+        const timeFormatter = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+        const dateValue = dateFormatter.format(dateObj).replaceAll("/", "-");
+        const timeValue = timeFormatter.format(dateObj);
 
         const bookingData = {
             date: dateValue,
@@ -48,6 +50,9 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
                 console.error(err);
             });
     };
+
+
+
 
     const hostOptions = employees.map(employee => ({ value: employee._id, label: `${employee.firstName} ${employee.lastName}` }));
 

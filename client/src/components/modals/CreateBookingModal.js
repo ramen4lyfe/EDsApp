@@ -18,10 +18,7 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
     const [notes, setNotes] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
 
-
     const [errors, setErrors] = useState('');
-
-    const datetime = moment(`${selectedDate} ${time}`, "YYYY-MM-DD HH:mm").toISOString();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -54,8 +51,6 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
 
     const gameMasterOptions = employees.map(employee => ({ value: employee._id, label: `${employee.firstName} ${employee.lastName}` }));
 
-    // const [dateTime, setDateTime] = useState('');
-
     const generateTimeOptions = () => {
         const options = [];
         for (let i = 12; i < 23; i++) { // Start loop from 12
@@ -75,16 +70,6 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
-                    
-                    {/* <Form.Group controlId="dateTime" className='mb-4'>
-                        <Form.Label className='h5'>Select Date and Time</Form.Label>
-                        <Form.Control
-                            type="datetime-local"
-                            value={dateTime}
-                            onChange={(e) => setDateTime(e.target.value)}
-                            required
-                        />
-                    </Form.Group> */}
                     
                     <Form.Group controlId="gameName" className='mb-4'>
                         <Form.Label className='h5'>Select Game</Form.Label>
@@ -176,26 +161,24 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
 
 
                     <Form.Group controlId="host" className='mb-4'>
-                        <Form.Label className='h5'>Host</Form.Label>
+                        <Form.Label className='h5'>Select Host/ Keeper</Form.Label>
                         <Select
                             name="host"
                             value={host}
                             onChange={setHost}
                             options={hostOptions}
                             required
-                            placeholder="Select Host/ Keeper..."
                         />
                     </Form.Group>
 
                     <Form.Group controlId="gameMaster" className='mb-4'>
-                        <Form.Label className='h5'>Game Master</Form.Label>
+                        <Form.Label className='h5'>Select Game Master</Form.Label>
                         <Select
                             name="gameMaster"
                             value={gameMaster}
                             onChange={setGameMaster}
                             options={gameMasterOptions}
                             required
-                            placeholder="Select Game Master..."
                         />
                     </Form.Group>
 
@@ -210,10 +193,6 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
                             onChange={(e) => setNotes(e.target.value)}
                         />
                     </Form.Group>
-                    
-                    {/* <Button variant="primary" type="submit">
-                        Create Booking
-                    </Button> */}
                 </Form>
             </Modal.Body>
             <Modal.Footer>

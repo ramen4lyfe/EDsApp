@@ -57,13 +57,13 @@ const Bookings = () => {
 
     return (
         <Container>
-            <Row>
+            <Row className='mb-2 mt-2'>
                 <Col>
                     <h1>Bookings</h1>
                 </Col>
-                <Col className='d-flex justify-content-end'>
+                <Col className='d-flex justify-content-end p-2'>
                     <Button variant="primary" onClick={handleShow} >
-                        Create Booking
+                        + Booking
                     </Button>
                 </Col>
             </Row>

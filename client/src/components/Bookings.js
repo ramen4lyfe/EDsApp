@@ -21,13 +21,13 @@ const Bookings = () => {
 
     const fetchBookings = () => {
         axios
-        .get('http://localhost:8000/api/bookings')
-        .then((res) => {
-            setBookings(res.data);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+            .get('http://localhost:8000/api/bookings?sort=time')
+            .then((res) => {
+                setBookings(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
     
     const handleDeleteBooking = async (id) => {
@@ -100,8 +100,7 @@ const Bookings = () => {
                     Day Shift
                 </Card.Header>
                 <Card.Body>
-                    
-                    <Table striped hover >
+                    <Table striped hover>
                         <thead>
                             <tr>
                                 <th></th>
@@ -116,50 +115,49 @@ const Bookings = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {dayShiftBookings.map((booking) => (
-                                <tr key={booking._id}>
-                                    <td>
-                                        <ButtonGroup size="sm">
-                                            <Button
-                                                variant='light'
-                                                onClick={() => handleShowUpdateBookingModal(booking)}
-                                            >
-                                                <BiPencil />
-                                            </Button>
-                                            {selectedBooking && showUpdateBookingModal && (
-                                                <UpdateBookingModal
-                                                    key={booking._id}
-                                                    show={showUpdateBookingModal}
-                                                    onHide={handleCloseUpdateBookingModal}
-                                                    booking={{ ...booking, host: booking.host, gameMaster: booking.gameMaster }}
-                                                    fetchBookings={fetchBookings}
-                                                />
-                                            )}
-                                            <Button
-                                                variant="light"
-                                                onClick={() => handleDeleteBooking(booking._id)}
-                                            >
-                                                <BiTrash />
-                                            </Button>
-                                        </ButtonGroup>
-
-                                    </td>
-                                    <td>{moment(booking.date).format('ddd MM-DD')}</td>
-                                    <td>{booking.gameName}</td>
-                                    <td>{moment(booking.time, 'HH:mm').format('hh:mm A')}</td>
-                                    <td>{booking.numberOfPeople}</td>
-                                    {/* <td>{booking.shift}</td> */}
-                                    <td>{booking.host && `${booking.host.firstName} ${booking.host.lastName}`}</td>
-                                    <td>{booking.gameMaster && `${booking.gameMaster.firstName} ${booking.gameMaster.lastName}`}</td>
-                                    <td>{booking.notes}</td>
-
-                                </tr>
-                            ))}
+                            {dayShiftBookings
+                                .sort((a, b) => moment(a.time, 'HH:mm') - moment(b.time, 'HH:mm')) // sort by time
+                                .map((booking) => (
+                                    <tr key={booking._id}>
+                                        <td>
+                                            <ButtonGroup size="sm">
+                                                <Button
+                                                    variant='light'
+                                                    onClick={() => handleShowUpdateBookingModal(booking)}
+                                                >
+                                                    <BiPencil />
+                                                </Button>
+                                                {selectedBooking && showUpdateBookingModal && (
+                                                    <UpdateBookingModal
+                                                        key={booking._id}
+                                                        show={showUpdateBookingModal}
+                                                        onHide={handleCloseUpdateBookingModal}
+                                                        booking={{ ...booking, host: booking.host, gameMaster: booking.gameMaster }}
+                                                        fetchBookings={fetchBookings}
+                                                    />
+                                                )}
+                                                <Button
+                                                    variant="light"
+                                                    onClick={() => handleDeleteBooking(booking._id)}
+                                                >
+                                                    <BiTrash />
+                                                </Button>
+                                            </ButtonGroup>
+                                        </td>
+                                        <td>{moment(booking.date).format('ddd MM-DD')}</td>
+                                        <td>{booking.gameName}</td>
+                                        <td>{moment(booking.time, 'HH:mm').format('hh:mm A')}</td>
+                                        <td>{booking.numberOfPeople}</td>
+                                        {/* <td>{booking.shift}</td> */}
+                                        <td>{booking.host && `${booking.host.firstName} ${booking.host.lastName}`}</td>
+                                        <td>{booking.gameMaster && `${booking.gameMaster.firstName} ${booking.gameMaster.lastName}`}</td>
+                                        <td>{booking.notes}</td>
+                                    </tr>
+                                ))}
                         </tbody>
                     </Table>
                 </Card.Body>
             </Card>
-
             <Card className='mb-4'>
                 <Card.Header className='text-center h3'>
                     Evening Shift
@@ -179,42 +177,44 @@ const Bookings = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {eveningShiftBookings.map((booking) => (
-                                <tr key={booking._id}>
-                                    <td>
-                                        <ButtonGroup size="sm">
-                                            <Button
-                                                variant='light'
-                                                onClick={() => handleShowUpdateBookingModal(booking)}
-                                            >
-                                                <BiPencil />
-                                            </Button>
-                                            {selectedBooking && showUpdateBookingModal && (
-                                                <UpdateBookingModal
-                                                    key={booking._id}
-                                                    show={showUpdateBookingModal}
-                                                    onHide={handleCloseUpdateBookingModal}
-                                                    booking={{ ...booking, host: booking.host, gameMaster: booking.gameMaster }}
-                                                    fetchBookings={fetchBookings}
-                                                />
-                                            )}
-                                            <Button
-                                                variant="light"
-                                                onClick={() => handleDeleteBooking(booking._id)}
-                                            >
-                                                <BiTrash />
-                                            </Button>
-                                        </ButtonGroup>
-                                    </td>
-                                    <td>{moment(booking.date).format('ddd MM-DD')}</td>
-                                    <td>{booking.gameName}</td>
-                                    <td>{moment(booking.time, 'HH:mm').format('hh:mm A')}</td>
-                                    <td>{booking.numberOfPeople}</td>
-                                    <td>{booking.host && `${booking.host.firstName} ${booking.host.lastName}`}</td>
-                                    <td>{booking.gameMaster && `${booking.gameMaster.firstName} ${booking.gameMaster.lastName}`}</td>
-                                    <td>{booking.notes}</td>
-                                </tr>
-                            ))}
+                            {eveningShiftBookings
+                                .sort((a, b) => moment(a.time, 'HH:mm') - moment(b.time, 'HH:mm')) // sort by time
+                                .map((booking) => (
+                                    <tr key={booking._id}>
+                                        <td>
+                                            <ButtonGroup size="sm">
+                                                <Button
+                                                    variant='light'
+                                                    onClick={() => handleShowUpdateBookingModal(booking)}
+                                                >
+                                                    <BiPencil />
+                                                </Button>
+                                                {selectedBooking && showUpdateBookingModal && (
+                                                    <UpdateBookingModal
+                                                        key={booking._id}
+                                                        show={showUpdateBookingModal}
+                                                        onHide={handleCloseUpdateBookingModal}
+                                                        booking={{ ...booking, host: booking.host, gameMaster: booking.gameMaster }}
+                                                        fetchBookings={fetchBookings}
+                                                    />
+                                                )}
+                                                <Button
+                                                    variant="light"
+                                                    onClick={() => handleDeleteBooking(booking._id)}
+                                                >
+                                                    <BiTrash />
+                                                </Button>
+                                            </ButtonGroup>
+                                        </td>
+                                        <td>{moment(booking.date).format('ddd MM-DD')}</td>
+                                        <td>{booking.gameName}</td>
+                                        <td>{moment(booking.time, 'HH:mm').format('hh:mm A')}</td>
+                                        <td>{booking.numberOfPeople}</td>
+                                        <td>{booking.host && `${booking.host.firstName} ${booking.host.lastName}`}</td>
+                                        <td>{booking.gameMaster && `${booking.gameMaster.firstName} ${booking.gameMaster.lastName}`}</td>
+                                        <td>{booking.notes}</td>
+                                    </tr>
+                                ))}
                         </tbody>
                     </Table>
                 </Card.Body>

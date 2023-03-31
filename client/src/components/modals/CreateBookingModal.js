@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { Modal, Button, Form, InputGroup, ToggleButton, ToggleButtonGroup, ButtonGroup } from 'react-bootstrap';
+import React, { useState, useContext, useEffect } from 'react';
+import { Modal, Button, Form, InputGroup, ToggleButton, ToggleButtonGroup, ButtonGroup, Row, Col } from 'react-bootstrap';
 import { EmployeeContext } from '../context/EmployeeContext';
 import axios from 'axios';
 import mongoose from 'mongoose';
@@ -51,8 +51,10 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
             });
     };
 
-
-
+    useEffect(() => {
+        const currentDate = moment().format('YYYY-MM-DD');
+        setDate(currentDate);
+    }, []);
 
     const hostOptions = employees.map(employee => ({ value: employee._id, label: `${employee.firstName} ${employee.lastName}` }));
 
@@ -95,32 +97,39 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
                         </ButtonGroup>
                         </div>
                     </Form.Group>
+                                
+                    <Row>
+                        <Form.Label className="h5">Select Date and Time</Form.Label>
+                        <Col xs={6}>
+                            <Form.Group controlId="date" className="mb-4">
+                                <Form.Control
+                                    type="date"
+                                    value={date}
+                                    onChange={(e) => setDate(e.target.value)}
+                                    defaultValue={moment().format("YYYY-MM-DD")}
+                                    required
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col xs={6}>
+                            <Form.Group controlId="time" className="mb-4">
 
-                    <Form.Group controlId="date" className='mb-4'>
-                        <Form.Label className='h5'>Select Date</Form.Label>
-                        <Form.Control
-                            type="date"
-                            value={date}
-                            onChange={(e) => setDate(e.target.value)}
-                            required
-                        />
-                    </Form.Group>
-
-                    <Form.Group controlId="time" className='mb-4'>
-                        <Form.Label className='h5'>Select Time</Form.Label>
-                        <Select
-                            value={time}
-                            onChange={(selectedTime) => setTime(selectedTime)}
-                            options={generateTimeOptions()}
-                            required
-                        />
-                    </Form.Group>
+                                <Select
+                                    value={time}
+                                    onChange={(selectedTime) => setTime(selectedTime)}
+                                    options={generateTimeOptions()}
+                                    placeholder="Select Time"
+                                    required
+                                />
+                            </Form.Group>
+                        </Col>
+                    </Row>
 
                     <Form.Group controlId="numberOfPeople" className="mb-4">
                         <Form.Label className='h5'>Number of Players</Form.Label>
                         <div>
                             <ButtonGroup size="md" className="w-100 d-flex mb-2">
-                                {Array.from({ length: 5 }, (_, i) => i + 1).map((number) => (
+                                {Array.from({ length: 10 }, (_, i) => i + 1).map((number) => (
                                     <Button
                                         key={number}
                                         variant={numberOfPeople === number ? "primary" : "outline-secondary"}
@@ -132,7 +141,7 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
                                     </Button>
                                 ))}
                             </ButtonGroup>
-                            <ButtonGroup size="md" className="w-100 d-flex">
+                            {/* <ButtonGroup size="md" className="w-100 d-flex">
                                 {Array.from({ length: 5 }, (_, i) => i + 6).map((number) => (
                                     <Button
                                         key={number}
@@ -144,7 +153,7 @@ const CreateBookingModal = ({ show, onHide, fetchBookings }) => {
                                         {number}
                                     </Button>
                                 ))}
-                            </ButtonGroup>
+                            </ButtonGroup> */}
                         </div>
                     </Form.Group>
 

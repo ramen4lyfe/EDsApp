@@ -7,6 +7,8 @@ import moment from 'moment'
 import { BiPencil, BiTrash } from 'react-icons/bi';
 import { useParams } from 'react-router-dom';
 import UpdateBookingModal from './modals/UpdateBookingModal';
+import classnames from 'classnames';
+
 
 const Bookings = () => {
     const { employees, setEmployees } = useContext(EmployeeContext);
@@ -15,7 +17,7 @@ const Bookings = () => {
     const [show, setShow] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
     const [selectedDate, setSelectedDate] = useState(moment().startOf('day'));
-
+    
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
@@ -68,6 +70,8 @@ const Bookings = () => {
         fetchBookings();
     }, [show, currentPage, selectedDate]);
     
+    const currentTime = moment().format('HH:mm');
+
     return (
         <Container>
             <Row className='align-items-center mb-4'>
@@ -105,8 +109,8 @@ const Bookings = () => {
                             <tr>
                                 <th></th>
                                 <th>Date</th>
-                                <th>Game</th>
                                 <th>Time</th>
+                                <th>Game</th>
                                 <th>Players</th>
                                 {/* <th>Shift</th> */}
                                 <th>Host</th>
@@ -118,7 +122,9 @@ const Bookings = () => {
                             {dayShiftBookings
                                 .sort((a, b) => moment(a.time, 'HH:mm') - moment(b.time, 'HH:mm')) // sort by time
                                 .map((booking) => (
-                                    <tr key={booking._id}>
+                                    <tr key={booking._id}
+                                        className={classnames({ 'table-active': booking.time === currentTime })}
+                                        >
                                         <td>
                                             <ButtonGroup size="sm">
                                                 <Button
@@ -145,8 +151,8 @@ const Bookings = () => {
                                             </ButtonGroup>
                                         </td>
                                         <td>{moment(booking.date).format('ddd MM-DD')}</td>
-                                        <td>{booking.gameName}</td>
                                         <td>{moment(booking.time, 'HH:mm').format('hh:mm A')}</td>
+                                        <td>{booking.gameName}</td>
                                         <td>{booking.numberOfPeople}</td>
                                         {/* <td>{booking.shift}</td> */}
                                         <td>{booking.host && `${booking.host.firstName} ${booking.host.lastName}`}</td>
@@ -167,9 +173,9 @@ const Bookings = () => {
                         <thead>
                             <tr>
                                 <th></th>
+                                <th>Time</th>
                                 <th>Date</th>
                                 <th>Game</th>
-                                <th>Time</th>
                                 <th>Players</th>
                                 <th>Host</th>
                                 <th>Game Master</th>
@@ -207,8 +213,8 @@ const Bookings = () => {
                                             </ButtonGroup>
                                         </td>
                                         <td>{moment(booking.date).format('ddd MM-DD')}</td>
-                                        <td>{booking.gameName}</td>
                                         <td>{moment(booking.time, 'HH:mm').format('hh:mm A')}</td>
+                                        <td>{booking.gameName}</td>
                                         <td>{booking.numberOfPeople}</td>
                                         <td>{booking.host && `${booking.host.firstName} ${booking.host.lastName}`}</td>
                                         <td>{booking.gameMaster && `${booking.gameMaster.firstName} ${booking.gameMaster.lastName}`}</td>

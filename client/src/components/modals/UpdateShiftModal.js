@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Modal, Button, Form, Col, Row } from 'react-bootstrap';
 import { EmployeeContext } from '../context/EmployeeContext';
 import axios from 'axios';
+import Select from 'react-select';
 
 const UpdateShiftModal = ({ shift, show, handleClose, handleUpdateShift }) => {
     const { employees } = useContext(EmployeeContext);
@@ -30,6 +31,7 @@ const UpdateShiftModal = ({ shift, show, handleClose, handleUpdateShift }) => {
                     <option key={employee._id} value={employee._id}>{employee.firstName} {employee.lastName}</option>
                 ))}
             </Form.Control>
+
         </Form.Group>
     );
 

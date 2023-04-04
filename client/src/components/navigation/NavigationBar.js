@@ -37,6 +37,16 @@ return (
             Employees
             </NavLink>
         </Nav.Item>
+        <Nav.Item>
+            <NavLink
+            to="/timesheets"
+            className="nav-link"
+            activeclassname="active"
+            >
+            Time Sheet
+            </NavLink>
+        </Nav.Item>
+        
         </Nav>
     </Navbar.Collapse>
     </Navbar>

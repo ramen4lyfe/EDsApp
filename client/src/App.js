@@ -6,6 +6,7 @@ import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import UpdateEmployeeModal from './components/modals/UpdateEmployeeModal';
 import NavigationBar from './components/navigation/NavigationBar';
 import { EmployeeProvider } from './components/context/EmployeeContext';
+import Timesheets from './components/Timesheets';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/shifts" element={<ShiftSchedule />} />
           <Route path="/bookings" element={<Bookings />} />
           <Route path="/employees" element={<EmployeeList />} />
+          <Route path="/timesheets" element={<Timesheets />} />
           <Route path="/update/:id" element={<UpdateEmployeeModal />} />
         </Routes>
       </EmployeeProvider>

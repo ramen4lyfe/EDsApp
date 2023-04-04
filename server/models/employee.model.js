@@ -34,6 +34,9 @@ const EmployeeSchema = new mongoose.Schema({
     required: [true],
     enum: ['Employee', 'Manager', 'Stake Holder', 'Owner'],
   },
+  payRate:{
+    type: Number,
+  },
   hireDate: {
     type: Date,
     required: [true, "Hire date is required"],

@@ -12,6 +12,7 @@ function CreateEmployeeModal({ show, handleClose, setEmployees, onEmployeeCreate
     const [email, setEmail] = useState('');
     const [cellPhone, setCellPhone] = useState('');
     const [businessTitle, setBusinessTitle] = useState('');
+    const [payRate, setPayRate] = useState('');
     const [hireDate, setHireDate] = useState('');
     const [terminationDate, setTerminationDate] = useState('');
     const [promotionDate, setPromotionDate] = useState('');
@@ -44,6 +45,7 @@ function CreateEmployeeModal({ show, handleClose, setEmployees, onEmployeeCreate
             email,
             cellPhone,
             businessTitle,
+            payRate,
             hireDate,
             terminationDate,
             promotionDate,
@@ -65,6 +67,7 @@ function CreateEmployeeModal({ show, handleClose, setEmployees, onEmployeeCreate
                 setEmail("");
                 setCellPhone("");
                 setBusinessTitle("");
+                setPayRate("");
                 setHireDate("");
                 setTerminationDate("");
                 setPromotionDate("");
@@ -222,6 +225,24 @@ function CreateEmployeeModal({ show, handleClose, setEmployees, onEmployeeCreate
                             </Form.Control>
                             <Form.Control.Feedback type="invalid">
                                 Please select a Business Title.
+                            </Form.Control.Feedback>
+                        </InputGroup>
+                    </Form.Group>
+
+                    <Form.Group controlId="formBasicPayRate" className='mb-4'>
+                        <InputGroup hasValidation>
+                            <InputGroup.Text>Pay Rate</InputGroup.Text>
+                            <InputGroup.Text>$</InputGroup.Text>
+                            <Form.Control
+                                type="number"
+                                placeholder="Enter pay rate"
+                                value={payRate}
+                                onChange={(e) => setPayRate(e.target.value)}
+                                required
+                                isInvalid={errors.payRate}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                Please enter Pay Rate.
                             </Form.Control.Feedback>
                         </InputGroup>
                     </Form.Group>

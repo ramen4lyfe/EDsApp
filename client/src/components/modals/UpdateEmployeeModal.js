@@ -12,6 +12,7 @@ const UpdateEmployeeModal = ({ show, handleClose, employee, id , onEmployeeUpdat
     const [email, setEmail] = useState('');
     const [cellPhone, setCellPhone] = useState('');
     const [businessTitle, setBusinessTitle] = useState('');
+    const [payRate, setPayRate] = useState('');
     const [hireDate, setHireDate] = useState('');
     const [terminationDate, setTerminationDate] = useState('');
     const [promotionDate, setPromotionDate] = useState('');
@@ -33,6 +34,7 @@ const UpdateEmployeeModal = ({ show, handleClose, employee, id , onEmployeeUpdat
                     setEmail(response.data.email);
                     setCellPhone(response.data.cellPhone);
                     setBusinessTitle(response.data.businessTitle);
+                    setPayRate(response.data.payRate);
                     setHireDate(response.data.hireDate);
                     setTerminationDate(response.data.terminationDate);
                     setPromotionDate(response.data.promotionDate);
@@ -56,6 +58,7 @@ const UpdateEmployeeModal = ({ show, handleClose, employee, id , onEmployeeUpdat
             email,
             cellPhone,
             businessTitle,
+            payRate,
             hireDate,
             terminationDate,
             promotionDate,
@@ -170,6 +173,24 @@ const UpdateEmployeeModal = ({ show, handleClose, employee, id , onEmployeeUpdat
                                 <option value="Stake Holder">Stake Holder</option>
                                 <option value="Owner">Owner</option>
                             </Form.Control>
+                        </InputGroup>
+                    </Form.Group>
+
+                    <Form.Group controlId="formBasicPayRate" className='mb-4'>
+                        <InputGroup hasValidation>
+                            <InputGroup.Text>Pay Rate</InputGroup.Text>
+                            <InputGroup.Text>$</InputGroup.Text>
+                            <Form.Control
+                                type="number"
+                                placeholder="Enter pay rate"
+                                value={payRate}
+                                onChange={(e) => setPayRate(e.target.value)}
+                                required
+                                // isInvalid={errors.payRate}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                Please enter Pay Rate.
+                            </Form.Control.Feedback>
                         </InputGroup>
                     </Form.Group>
 

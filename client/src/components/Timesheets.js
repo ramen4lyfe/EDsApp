@@ -5,6 +5,7 @@ import moment from "moment";
 import { EmployeeContext } from "./context/EmployeeContext";
 
 
+
 const TimeSheet = () => {
     const { employees } = useContext(EmployeeContext);
     const employeeOptions = employees.map(employee => ({ value: employee._id, label: `${employee.firstName} ${employee.lastName}` }));
@@ -144,7 +145,7 @@ const TimeSheet = () => {
                             <td>
                                 <Form.Control type="time" name="timeOut" value={day.timeOut} onChange={(event) => handleInputChange(event, index)} onBlur={() => calculateTotalHours(index)} />
                             </td>
-                            <td>
+                            <td className="alpha-code-cell">
                                 <Select
                                     options={alphaCodeOptions}
                                     value={day.alphaCode}
@@ -153,6 +154,7 @@ const TimeSheet = () => {
                                         updatedTimeSheet[index].alphaCode = selectedOption;
                                         setTimeSheet(updatedTimeSheet);
                                     }}
+                                    className="w-100"
                                 />
                             </td>
                             <td>{day.totalHours}</td>
@@ -160,6 +162,13 @@ const TimeSheet = () => {
                     ))}
                 </tbody>
             </Table>
+
+            <Row>
+                <Col>
+                
+                </Col>
+            </Row>
+
             <ButtonGroup className="d-flex justify-content-end">
                 <Button variant="primary" type="submit" onClick={handleSubmit}>Submit</Button>
             </ButtonGroup>

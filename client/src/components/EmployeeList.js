@@ -159,7 +159,7 @@ const fetchEmployees = () => {
                   <td>{employee.email}</td>
                   <td>{employee.cellPhone}</td>
                   <td>{employee.businessTitle}</td>
-                  <td>{employee.payRate}</td>
+                  <td>$ {employee.payRate}</td>
                   <td>{formatDate(employee.hireDate)}</td>
                   <td>{formatDate(employee.terminationDate)}</td>
                   <td>{formatDate(employee.promotionDate)}</td>

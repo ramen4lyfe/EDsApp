@@ -4,12 +4,10 @@ import Select from "react-select";
 import moment from "moment";
 import { EmployeeContext } from "./context/EmployeeContext";
 
-
-
 const TimeSheet = () => {
     const { employees } = useContext(EmployeeContext);
     const employeeOptions = employees.map(employee => ({ value: employee._id, label: `${employee.firstName} ${employee.lastName}` }));
-    const [employee, setEmployee] = useState(employeeOptions[0]);
+    const [employee, setEmployee] = useState("");
     const [businessTitle, setBusinessTitle] = useState("");
     const [timeSheet, setTimeSheet] = useState([]);
     const [monthYear, setMonthYear] = useState(moment().format("YYYY-MM"));
@@ -22,15 +20,8 @@ const TimeSheet = () => {
         { value: "F", label: "Training" },
     ];
 
-    
-    const handleEmployeeChange = (selectedOption) => {
-        setEmployee(selectedOption);
-    };
-
-    const handleMonthYearChange = (event) => {
-        const { value } = event.target;
-        setMonthYear(value);
-        const selectedDate = moment(value);
+    const initTimeSheet = (selectedMonthYear) => {
+        const selectedDate = moment(selectedMonthYear);
         const daysInMonth = selectedDate.daysInMonth();
         const initialTimeSheet = [];
         for (let i = 1; i <= daysInMonth; i++) {
@@ -38,20 +29,23 @@ const TimeSheet = () => {
                 day: moment(`${i}-${selectedDate.format("MM-YYYY")}`, "DD-MM-YYYY").format("ddd, DD-MM-YYYY"),
                 timeIn: "",
                 timeOut: "",
-                alphaCode: alphaCodeOptions[0],
                 totalHours: ""
             });
         }
         setTimeSheet(initialTimeSheet);
     };
-    
+
+    const handleEmployeeChange = (selectedOption) => {
+        setEmployee(selectedOption);
+    };
+
     const handleInputChange = (event, index) => {
         const { name, value } = event.target;
         const updatedTimeSheet = [...timeSheet];
         updatedTimeSheet[index][name] = value;
         setTimeSheet(updatedTimeSheet);
     };
-    
+
     const calculateTotalHours = (index) => {
         const { timeIn, timeOut } = timeSheet[index];
         const timeInMinutes = timeIn ? getTimeInMinutes(timeIn) : 0;
@@ -62,49 +56,54 @@ const TimeSheet = () => {
         updatedTimeSheet[index].totalHours = totalHours;
         setTimeSheet(updatedTimeSheet);
     };
-    
+
     const getTimeInMinutes = (timeString) => {
         const [hours, minutes] = timeString.split(":").map(Number);
         return hours * 60 + minutes;
     };
-    
+
     const convertMinutesToHours = (totalMinutes) => {
         const hours = Math.floor(totalMinutes / 60);
         const minutes = totalMinutes % 60;
         return `${hours}:${minutes < 10 ? "0" + minutes : minutes}`;
     };
-    
+
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(timeSheet);
     };
-    
+
+    const handleMonthYearChange = (event) => {
+        const { value } = event.target;
+        setMonthYear(value);
+        initTimeSheet(value);
+    };
+
     useEffect(() => {
-            const handleMonthYearChange = (event) => {
-                const { value } = event.target;
-                setMonthYear(value);
-                const selectedDate = moment(value);
-                const daysInMonth = selectedDate.daysInMonth();
-                const initialTimeSheet = [];
-                for (let i = 1; i <= daysInMonth; i++) {
-                    initialTimeSheet.push({
-                        day: moment(`${i}-${selectedDate.format("MM-YYYY")}`, "DD-MM-YYYY").format("ddd, DD-MM-YYYY"),
-                        timeIn: "",
-                        timeOut: "",
-                        totalHours: ""
-                    });
-                }
-                setTimeSheet(initialTimeSheet);
-            };
+        const initTimeSheet = (selectedMonthYear) => {
+            const selectedDate = moment(selectedMonthYear);
+            const daysInMonth = selectedDate.daysInMonth();
+            const initialTimeSheet = [];
+            for (let i = 1; i <= daysInMonth; i++) {
+                initialTimeSheet.push({
+                    day: moment(`${i}-${selectedDate.format("MM-YYYY")}`, "DD-MM-YYYY").format("ddd, DD-MM-YYYY"),
+                    timeIn: "",
+                    timeOut: "",
+                    totalHours: ""
+                });
+            }
+            setTimeSheet(initialTimeSheet);
+        };
 
-        if (employee.value && employees.length > 0) {
-            const selectedEmployee = employees.find(emp => emp._id === employee.value);
-            setBusinessTitle(selectedEmployee.businessTitle);
-
-            handleMonthYearChange({ target: { value: monthYear } });
-        
+        if (employees.length > 0) {
+            if (employee.value) {
+                const selectedEmployee = employees.find(emp => emp._id === employee.value);
+                setBusinessTitle(selectedEmployee.businessTitle);
+            }
+            initTimeSheet(monthYear);
         }
     }, [employee, employees, monthYear]);
+
 
 
     return (
@@ -122,7 +121,12 @@ const TimeSheet = () => {
                     </Form.Group>
                 </Col>
                 <Col>
-                    <Select options={employeeOptions} value={employee} onChange={handleEmployeeChange} />
+                    <Select
+                        options={employeeOptions}
+                        value={employee}
+                        onChange={handleEmployeeChange}
+                        placeholder="Select Employee..."
+                    />
                 </Col>
             </Row>
             <Table striped bordered hover size='sm' className="fixed-height-table">
@@ -165,35 +169,35 @@ const TimeSheet = () => {
 
             <Row>
                 <Col md={{ span: 5, offset: 7 }}>
-                <Table  bordered hover>
-                    <thead>
-                        <tr>
-                            <th>Alpha Code</th>
-                            <th>Hours</th>
-                            <th>Pay Rate</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>A</td>
-                            <td>40</td>
-                            <td>{employee.payRate}</td>
-                            <td>$ 60</td>
-                        </tr>
-                        
-                    </tbody>
-                    
-                </Table>
-                <Table >
+                    <Table bordered hover>
+                        <thead>
+                            <tr>
+                                <th>Alpha Code</th>
+                                <th>Hours</th>
+                                <th>Pay Rate</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>A</td>
+                                <td>40</td>
+                                <td>payrate place holder</td>
+                                <td>$ 60</td>
+                            </tr>
+
+                        </tbody>
+
+                    </Table>
+                    <Table >
                         <tbody>
                             <tr>
                                 <th>Total Earning</th>
                                 <td>60</td>
                             </tr>
                         </tbody>
-                </Table>
-                
+                    </Table>
+
                 </Col>
             </Row>
 

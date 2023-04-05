@@ -40,3 +40,8 @@
 .alpha-code-cell {
   width: 250px;
 }
+
+.fixed-height-table {
+    height: 400px; /* Adjust the height value according to your needs */
+    overflow-y: auto;
+}

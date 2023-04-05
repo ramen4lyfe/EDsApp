@@ -125,7 +125,7 @@ const TimeSheet = () => {
                     <Select options={employeeOptions} value={employee} onChange={handleEmployeeChange} />
                 </Col>
             </Row>
-            <Table striped bordered hover>
+            <Table striped bordered hover size='sm' className="fixed-height-table">
                 <thead>
                     <tr>
                         <th>Date</th>
@@ -164,7 +164,35 @@ const TimeSheet = () => {
             </Table>
 
             <Row>
-                <Col>
+                <Col md={{ span: 5, offset: 7 }}>
+                <Table  bordered hover>
+                    <thead>
+                        <tr>
+                            <th>Alpha Code</th>
+                            <th>Hours</th>
+                            <th>Pay Rate</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>A</td>
+                            <td>40</td>
+                            <td>{employee.payRate}</td>
+                            <td>$ 60</td>
+                        </tr>
+                        
+                    </tbody>
+                    
+                </Table>
+                <Table >
+                        <tbody>
+                            <tr>
+                                <th>Total Earning</th>
+                                <td>60</td>
+                            </tr>
+                        </tbody>
+                </Table>
                 
                 </Col>
             </Row>

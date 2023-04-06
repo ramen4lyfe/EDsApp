@@ -12,12 +12,16 @@ const TimeSheet = () => {
     const [timeSheet, setTimeSheet] = useState([]);
     const [monthYear, setMonthYear] = useState(moment().format("YYYY-MM"));
     const alphaCodeOptions = [
-        { value: "A", label: "Host/GM (training)" },
-        { value: "B", label: "Host/GM I" },
-        { value: "C", label: "Manager" },
-        { value: "D", label: "Overtime/Holiday" },
-        { value: "E", label: "Double Time" },
-        { value: "F", label: "Training" },
+        { value: "A", label: "A. Host/GM (in training)" },
+        { value: "B", label: "B. Host/GM I" },
+        { value: "G", label: "G. Host/GM II" },
+        { value: "H", label: "H. Host/GM III" },
+        { value: "I", label: "I. Host/GM VI" },
+        { value: "J", label: "J. Host/GM V" },
+        { value: "C", label: "C. Manager" },
+        { value: "D", label: "D. Overtime/Holiday" },
+        { value: "E", label: "E. Double Time" },
+        { value: "F", label: "F. Trainer" },
     ];
 
     const initTimeSheet = (selectedMonthYear) => {

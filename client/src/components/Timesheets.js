@@ -112,8 +112,8 @@ const TimeSheet = () => {
 
 
     return (
-        <Container className="d-flex justify-content-between">
-            <Col sm={2} >
+        <Container fluid className="d-flex justify-content-between" style={{ fontSize: '0.8rem' }}>
+            <Col sm={2} className="vertical-navbar-shadow mr-4">
                 <PayrollNav />
             </Col>
 

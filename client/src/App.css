@@ -45,3 +45,7 @@
     height: 400px; /* Adjust the height value according to your needs */
     overflow-y: auto;
 }
+
+.vertical-navbar-shadow {
+  box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.1);
+}

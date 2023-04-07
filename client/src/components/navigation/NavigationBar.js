@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 
 const NavigationBar = () => {
 return (
-<Container fluid className='mb-3'>
+<Container fluid>
     <Navbar sticky="top" expand="lg" variant="light" bg="light" className="p-2">
     <Navbar.Brand href="#">EDs App</Navbar.Brand>
     <Navbar.Toggle aria-controls="basic-navbar-nav" />

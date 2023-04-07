@@ -3,6 +3,7 @@ import { Table, Form, Button, Container, Row, Col, ButtonGroup, InputGroup } fro
 import Select from "react-select";
 import moment from "moment";
 import { EmployeeContext } from "./context/EmployeeContext";
+import PayrollNav from "./navigation/payrollNav";
 
 const TimeSheet = () => {
     const { employees } = useContext(EmployeeContext);
@@ -111,103 +112,105 @@ const TimeSheet = () => {
 
 
     return (
-        <Container>
-            <Row className="mb-4 align-items-center">
-                <Col>
-                    <h3>Timesheet</h3>
-                </Col>
-                <Col>
-                    <Form.Group>
-                        <InputGroup hasValidation>
-                            <InputGroup.Text> Month <i className="fas fa-calendar-alt"></i></InputGroup.Text>
-                            <Form.Control type="month" value={monthYear} onChange={handleMonthYearChange} required />
-                        </InputGroup>
-                    </Form.Group>
-                </Col>
-                <Col>
-                    <Select
-                        options={employeeOptions}
-                        value={employee}
-                        onChange={handleEmployeeChange}
-                        placeholder="Select Employee..."
-                    />
-                </Col>
-            </Row>
-            <Table striped bordered hover size='sm' className="fixed-height-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Time In</th>
-                        <th>Time Out</th>
-                        <th>Alpha Code</th>
-                        <th>Total Hours</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {timeSheet.map((day, index) => (
-                        <tr key={index}>
-                            <td>{day.day}</td>
-                            <td>
-                                <Form.Control type="time" name="timeIn" value={day.timeIn} onChange={(event) => handleInputChange(event, index)} onBlur={() => calculateTotalHours(index)} />
-                            </td>
-                            <td>
-                                <Form.Control type="time" name="timeOut" value={day.timeOut} onChange={(event) => handleInputChange(event, index)} onBlur={() => calculateTotalHours(index)} />
-                            </td>
-                            <td className="alpha-code-cell">
-                                <Select
-                                    options={alphaCodeOptions}
-                                    value={day.alphaCode}
-                                    onChange={(selectedOption) => {
-                                        const updatedTimeSheet = [...timeSheet];
-                                        updatedTimeSheet[index].alphaCode = selectedOption;
-                                        setTimeSheet(updatedTimeSheet);
-                                    }}
-                                    className="w-100"
-                                />
-                            </td>
-                            <td>{day.totalHours}</td>
+        <Container className="d-flex justify-content-between">
+            <Col sm={2} >
+                <PayrollNav />
+            </Col>
+
+            <Col sm={10}>
+                <Row className="mb-4 align-items-center ">
+                    <Col>
+                        <h3>Timesheet</h3>
+                    </Col>
+                    <Col>
+                        <Form.Group>
+                            <InputGroup hasValidation>
+                                <InputGroup.Text> Month <i className="fas fa-calendar-alt"></i></InputGroup.Text>
+                                <Form.Control type="month" value={monthYear} onChange={handleMonthYearChange} required />
+                            </InputGroup>
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                        <Select
+                            options={employeeOptions}
+                            value={employee}
+                            onChange={handleEmployeeChange}
+                            placeholder="Select Employee..."
+                        />
+                    </Col>
+                </Row>
+                <Table bordered hover size='sm' className="mt-4" >
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time In</th>
+                            <th>Time Out</th>
+                            <th>Alpha Code</th>
+                            <th>Total Hours</th>
                         </tr>
-                    ))}
-                </tbody>
-            </Table>
-
-            <Row>
-                <Col md={{ span: 5, offset: 7 }}>
-                    <Table bordered hover>
-                        <thead>
-                            <tr>
-                                <th>Alpha Code</th>
-                                <th>Hours</th>
-                                <th>Pay Rate</th>
-                                <th>Total</th>
+                    </thead>
+                    <tbody>
+                        {timeSheet.map((day, index) => (
+                            <tr key={index}>
+                                <td>{day.day}</td>
+                                <td>
+                                    <Form.Control type="time" name="timeIn" value={day.timeIn} onChange={(event) => handleInputChange(event, index)} onBlur={() => calculateTotalHours(index)} />
+                                </td>
+                                <td>
+                                    <Form.Control type="time" name="timeOut" value={day.timeOut} onChange={(event) => handleInputChange(event, index)} onBlur={() => calculateTotalHours(index)} />
+                                </td>
+                                <td className="alpha-code-cell">
+                                    <Select
+                                        options={alphaCodeOptions}
+                                        value={day.alphaCode}
+                                        onChange={(selectedOption) => {
+                                            const updatedTimeSheet = [...timeSheet];
+                                            updatedTimeSheet[index].alphaCode = selectedOption;
+                                            setTimeSheet(updatedTimeSheet);
+                                        }}
+                                        className="w-100"
+                                    />
+                                </td>
+                                <td>{day.totalHours}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>A</td>
-                                <td>40</td>
-                                <td>payrate place holder</td>
-                                <td>$ 60</td>
-                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+                <Row>
+                    <Col md={{ span: 6, offset: 6 }}>
+                        <Table bordered hover>
+                            <thead>
+                                <tr>
+                                    <th>Alpha Code</th>
+                                    <th>Hours</th>
+                                    <th>Pay Rate</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>A</td>
+                                    <td>40</td>
+                                    <td>payrate place holder</td>
+                                    <td>$ 60</td>
+                                </tr>
+                            </tbody>
+                        </Table>
+                        <Table >
+                            <tbody>
+                                <tr>
+                                    <th>Total Earning</th>
+                                    <td>60</td>
+                                </tr>
+                            </tbody>
+                        </Table>
 
-                        </tbody>
-
-                    </Table>
-                    <Table >
-                        <tbody>
-                            <tr>
-                                <th>Total Earning</th>
-                                <td>60</td>
-                            </tr>
-                        </tbody>
-                    </Table>
-
-                </Col>
-            </Row>
-
-            <ButtonGroup className="d-flex justify-content-end">
-                <Button variant="primary" type="submit" onClick={handleSubmit}>Submit</Button>
-            </ButtonGroup>
+                    </Col>
+                </Row>
+                <ButtonGroup className="d-flex justify-content-end">
+                    <Button variant="primary" type="submit" onClick={handleSubmit}>Submit</Button>
+                </ButtonGroup>
+            </Col>
         </Container>
     );
 };

@@ -6,7 +6,7 @@ import { FcViewDetails, FcDataSheet, FcDocument, FcCurrencyExchange  } from 'rea
 
 const PayrollNav = () => {
     return (
-        <Navbar expand="md" className="flex-column text-center " style={{ fontSize: '0.8rem' }}>
+        <Navbar expand="md" className="flex-column text-center " style={{ fontSize: '0.8rem' }} >
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto flex-column">

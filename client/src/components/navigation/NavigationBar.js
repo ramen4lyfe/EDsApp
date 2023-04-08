@@ -43,7 +43,7 @@ return (
             className="nav-link"
             activeclassname="active"
             >
-            Time Sheet
+            Payroll
             </NavLink>
         </Nav.Item>
         

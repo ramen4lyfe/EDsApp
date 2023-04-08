@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: #FAFAFA;
 }
 
 .App-logo {
@@ -46,6 +47,8 @@
     overflow-y: auto;
 }
 
-.vertical-navbar-shadow {
-  box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.1);
+.vertical-navbar {
+  background-color: #fafafa;
+  box-shadow: inset -2px 0px 4px rgba(0, 0, 0, 0.1);
+
 }

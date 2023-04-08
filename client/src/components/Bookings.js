@@ -173,8 +173,8 @@ const Bookings = () => {
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Time</th>
                                 <th>Date</th>
+                                <th>Time</th>
                                 <th>Game</th>
                                 <th>Players</th>
                                 <th>Host</th>

@@ -5,9 +5,9 @@ import { FcConferenceCall, FcCalendar, FcOvertime, FcMoneyTransfer } from 'react
 
 const NavigationBar = () => {
     return (
-        <Container fluid className='px-0'>
-            <Navbar sticky="top" expand="lg" variant="light" bg="light" className='py-0 ' >
-                <Navbar.Brand href="#" className='mt-4'>EDs App</Navbar.Brand>
+        <Container fluid>
+            <Navbar sticky="top" expand="lg" variant="light" bg="" className='pb-0' >
+                <Navbar.Brand href="#" className=''>EDs App</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className=" full-width-tabs" variant="tabs">
@@ -30,7 +30,7 @@ const NavigationBar = () => {
                             </Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={NavLink} to="/timesheets" activeClassName="active">
+                            <Nav.Link as={NavLink} to="/payroll/timesheets" activeClassName="active">
                                 <FcMoneyTransfer className="nav-icon-size" />
                                 Payroll
                             </Nav.Link>

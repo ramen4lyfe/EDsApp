@@ -7,6 +7,7 @@ import UpdateEmployeeModal from './components/modals/UpdateEmployeeModal';
 import NavigationBar from './components/navigation/NavigationBar';
 import { EmployeeProvider } from './components/context/EmployeeContext';
 import Timesheets from './components/Timesheets';
+import AlphaCodes from './components/AlphaCodes';
 
 function App() {
   return (
@@ -18,8 +19,9 @@ function App() {
           <Route path="/shifts" element={<ShiftSchedule />} />
           <Route path="/bookings" element={<Bookings />} />
           <Route path="/employees" element={<EmployeeList />} />
-          <Route path="/timesheets" element={<Timesheets />} />
+          <Route path="/payroll/timesheets" element={<Timesheets />} />
           <Route path="/update/:id" element={<UpdateEmployeeModal />} />
+          <Route path="/payroll/alphacodes" element={<AlphaCodes />} />
         </Routes>
       </EmployeeProvider>
     </BrowserRouter>

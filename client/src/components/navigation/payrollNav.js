@@ -12,7 +12,7 @@ const PayrollNav = () => {
                 <Nav className="mr-auto flex-column">
                     <Nav.Item>
                         <NavLink
-                            to="/timesheets"
+                            to="/payroll/timesheets"
                             className="nav-link mb-2"
                             activeclassname="active"
                         >
@@ -22,7 +22,7 @@ const PayrollNav = () => {
                     </Nav.Item>
                     <Nav.Item>
                         <NavLink
-                            to="/alpha-codes"
+                            to="/payroll/alphacodes"
                             className="nav-link mb-2"
                             activeclassname="active"
                         >
@@ -31,7 +31,7 @@ const PayrollNav = () => {
                     </Nav.Item>
                     <Nav.Item>
                         <NavLink
-                            to="/pay-rate"
+                            to="/payroll/payrate"
                             className="nav-link mb-2"
                             activeclassname="active"
                         >

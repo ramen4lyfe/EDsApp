@@ -6,7 +6,23 @@ const alphaCodeSchema = new mongoose.Schema({
         required: [true],
         unique: true,
     },
+    description: {
+        type: String,
+        required: [true],
+    },
     payRate: {
+        type: Number,
+        required: [true],
+    },
+    overtimeRate: {
+        type: Number,
+        required: [true],
+    },
+    doubleTimeRate: {
+        type: Number,
+        required: [true],
+    },
+    trainingRate: {
         type: Number,
         required: [true],
     },

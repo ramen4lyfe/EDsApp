@@ -6,7 +6,11 @@ const createAlphaCode = async (req, res) => {
     try {
         const {
             alphaCode,
+            description,
             payRate,
+            overtimeRate,
+            doubleTimeRate,
+            trainingRate,
         } = req.body;
 
         const newAlphaCode = new AlphaCode({
@@ -53,7 +57,11 @@ const updateAlphaCodeById = async (req, res) => {
         const alphaCode = await AlphaCode.findById(req.params.id);
         if (alphaCode) {
             alphaCode.alphaCode = req.body.alphaCode;
+            alphaCode.description = req.body.description;
             alphaCode.payRate = req.body.payRate;
+            alphaCode.overtimeRate = req.body.overtimeRate;
+            alphaCode.doubleTimeRate = req.body.doubleTimeRate;
+            alphaCode.trainingRate = req.body.trainingRate;
             const updatedAlphaCode = await alphaCode.save();
             res.json(updatedAlphaCode);
         } else {

@@ -12,6 +12,7 @@ require("./routes/shift.routes")(app);
 require("./routes/booking.routes")(app);
 require("./routes/timelog.routes")(app);
 require("./routes/payRatePerAlphaCode.routes")(app);
+require("./routes/alphaCode.routes")(app);
 app.listen(8000, () => {
     console.log("Listening at Port 8000");
 });

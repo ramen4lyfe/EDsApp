@@ -13,25 +13,25 @@ const NavigationBar = () => {
                     <Nav className=" full-width-tabs" variant="tabs">
                         <Nav.Item>
                             <Nav.Link as={NavLink} to="/shifts" activeClassName="active">
-                                <FcCalendar className="nav-icon-size" />
+                                {/* <FcCalendar className="nav-icon-size" /> */}
                                 Schedule
                             </Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
                             <Nav.Link as={NavLink} to="/bookings" activeClassName="active">
-                                <FcOvertime className="nav-icon-size" />
+                                {/* <FcOvertime className="nav-icon-size" /> */}
                                 Bookings
                             </Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
                             <Nav.Link as={NavLink} to="/employees" activeClassName="active">
-                                <FcConferenceCall className="nav-icon-size" />
+                                {/* <FcConferenceCall className="nav-icon-size" /> */}
                                 Employees
                             </Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
                             <Nav.Link as={NavLink} to="/payroll/timesheets" activeClassName="active">
-                                <FcMoneyTransfer className="nav-icon-size" />
+                                {/* <FcMoneyTransfer className="nav-icon-size" /> */}
                                 Payroll
                             </Nav.Link>
                         </Nav.Item>

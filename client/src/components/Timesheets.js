@@ -114,7 +114,7 @@ const TimeSheet = () => {
     return (
         <Container fluid style={{ fontSize: '0.8rem' }}>
             <Row>
-                <Col sm={1} className="vertical-navbar ">
+                <Col sm={1.5} className="vertical-navbar ">
                     <PayrollNav />
                 </Col>
 

@@ -6,7 +6,7 @@ import { FcViewDetails, FcDataSheet, FcDocument, FcCurrencyExchange  } from 'rea
 
 const PayrollNav = () => {
     return (
-        <Navbar expand="md" className="flex-column text-center " style={{ fontSize: '0.8rem' }} >
+        <Navbar expand="md" className="flex-column  " style={{ fontSize: '1rem' }} >
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto flex-column">
@@ -16,7 +16,7 @@ const PayrollNav = () => {
                             className="nav-link mb-2"
                             activeclassname="active"
                         >
-                            <FcDocument className='nav-icon-size' />
+                            {/* <FcDocument className='nav-icon-size' /> */}
                             Timesheet
                         </NavLink>
                     </Nav.Item>
@@ -26,7 +26,8 @@ const PayrollNav = () => {
                             className="nav-link mb-2"
                             activeclassname="active"
                         >
-                            <FcDataSheet className='nav-icon-size' /> Alpha Codes
+                            {/* <FcDataSheet className='nav-icon-size' />  */}
+                            Alpha Codes
                         </NavLink>
                     </Nav.Item>
                     <Nav.Item>
@@ -35,7 +36,8 @@ const PayrollNav = () => {
                             className="nav-link mb-2"
                             activeclassname="active"
                         >
-                            < FcCurrencyExchange className='nav-icon-size' /> Pay Rate
+                            {/* < FcCurrencyExchange className='nav-icon-size' />  */}
+                            Pay Rate
                         </NavLink>
                     </Nav.Item>
                 </Nav>

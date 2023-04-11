@@ -10,7 +10,7 @@ const AlphaCodes = () => {
     return (
         <Container fluid>
             <Row>
-                <Col md={1} className="vertical-navbar">
+                <Col md={1.5} className="vertical-navbar">
                     <PayrollNav />
                 </Col>
                 <Col md={10} className="p-3">

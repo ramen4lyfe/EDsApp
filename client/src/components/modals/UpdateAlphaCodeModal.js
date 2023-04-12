@@ -1,35 +1,53 @@
-import React, { useState } from 'react';
-import { Button, Modal, Form, InputGroup } from 'react-bootstrap';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { Button, Modal, Form, InputGroup } from 'react-bootstrap'
+import axios from 'axios'
 
-const CreateAlphaCodeModal = ({ show, onHide, onSubmit }) => {
-    const [alphaCode, setAlphaCode] = useState([])
+const UpdateAlphaCodeModal = ({ show, onHide, alphaCodeId }) => {
+    const [alphaCode, setAlphaCode] = useState('')
     const [description, setDescription] = useState('')
-    const [payRate, setPayRate] = useState([])
-    const [overtimeRate, setOvertimeRate] = useState([1.5])//overtime rate is 1.5 times pay rate
-    const [doubleTimeRate, setDoubleTimeRate] = useState([2])//double time rate is 2 times pay rate
-    // const [trainingRate, setTrainingRate] = useState([0.5])//training rate is base + 1
+    const [payRate, setPayRate] = useState('')
+    const [overtimeRate, setOvertimeRate] = useState('')
+    const [doubleTimeRate, setDoubleTimeRate] = useState('')
+    const [trainingRate, setTrainingRate] = useState('')
+    const [error, setError] = useState('')
+    
+    useEffect(() => {
+        const fetchAlphaCode = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8000/api/alphaCodes/${alphaCodeId}`);
+                const { alphaCode, description, payRate, overtimeRate, doubleTimeRate, trainingRate } = response.data;
+                setAlphaCode(alphaCode);
+                setDescription(description);
+                setPayRate(payRate);
+                setOvertimeRate(overtimeRate);
+                setDoubleTimeRate(doubleTimeRate);
+                setTrainingRate(trainingRate);
+            } catch (error) {
+                console.error('Error fetching alpha code:', error);
+            }
+        };
+        fetchAlphaCode();
+    }, [alphaCodeId]);
 
     const handleSubmit = async () => {
         try {
-            const response = await axios.post('http://localhost:8000/api/alphaCodes', {
+            const response = await axios.put(`http://localhost:8000/api/alphaCodes/${alphaCodeId}`, {
                 alphaCode,
                 description,
                 payRate,
                 overtimeRate,
                 doubleTimeRate,
-                // trainingRate,
-
+                trainingRate,
             });
 
             // if (response.status === 200) {
-            //     alert('Alpha code created successfully');
+            //     alert('Alpha code updated successfully');
             // } else {
-            //     alert('Failed to create alpha code');
+            //     alert('Failed to update alpha code');
             // }
         } catch (error) {
-            console.error('Error creating alpha code:', error);
-            alert('Failed to create alpha code');
+            console.error('Error updating alpha code:', error);
+            alert('Failed to update alpha code');
         }
 
         setAlphaCode('');
@@ -37,37 +55,36 @@ const CreateAlphaCodeModal = ({ show, onHide, onSubmit }) => {
         setPayRate('');
         setOvertimeRate('');
         setDoubleTimeRate('');
-        // setTrainingRate('');
+        setTrainingRate('');
         onHide();
     };
 
     return (
         <Modal show={show} onHide={onHide}>
             <Modal.Header closeButton>
-                <Modal.Title>Create Alpha Code</Modal.Title>
+                <Modal.Title>Update Alpha Code</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form>
-                        <InputGroup className='mb-3'>
+                    <InputGroup className='mb-3'>
                         <InputGroup.Text>Alpha Code</InputGroup.Text>
                         <Form.Control
-                            // type="text"
                             value={alphaCode}
                             onChange={(e) => setAlphaCode(e.target.value)}
                             required
                         />
-                        </InputGroup>
+                    </InputGroup>
 
-                        <InputGroup className='mb-3'>
+                    <InputGroup className='mb-3'>
                         <InputGroup.Text>Description</InputGroup.Text>
                         <Form.Control
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             required
                         />
-                        </InputGroup>
+                    </InputGroup>
 
-                        <InputGroup>
+                    <InputGroup>
                         <InputGroup.Text>Pay Rate</InputGroup.Text>
                         <InputGroup.Text>$</InputGroup.Text>
                         <Form.Control
@@ -76,39 +93,37 @@ const CreateAlphaCodeModal = ({ show, onHide, onSubmit }) => {
                             onChange={(e) => setPayRate(e.target.value)}
                             required
                         />
-                        </InputGroup>
+                    </InputGroup>
 
-                        {/* <InputGroup>
+                    <InputGroup>
                         <InputGroup.Text>Overtime Rate</InputGroup.Text>
                         <InputGroup.Text>$</InputGroup.Text>
                         <Form.Control
-
+                            type="number"
                             value={overtimeRate}
                             onChange={(e) => setOvertimeRate(e.target.value)}
-                            required
                         />
-                        </InputGroup>
+                    </InputGroup>
 
-                        <InputGroup>
+                    <InputGroup>
                         <InputGroup.Text>Double Time Rate</InputGroup.Text>
                         <InputGroup.Text>$</InputGroup.Text>
                         <Form.Control
-
+                            type="number"
                             value={doubleTimeRate}
                             onChange={(e) => setDoubleTimeRate(e.target.value)}
-                            required
                         />
-                        </InputGroup> */}
+                    </InputGroup>
 
-                        {/* <InputGroup>
+                    <InputGroup>
                         <InputGroup.Text>Training Rate</InputGroup.Text>
                         <InputGroup.Text>$</InputGroup.Text>
                         <Form.Control
+                            type="number"
                             value={trainingRate}
                             onChange={(e) => setTrainingRate(e.target.value)}
-                            required
                         />
-                        </InputGroup> */}
+                    </InputGroup>
                 </Form>
             </Modal.Body>
             <Modal.Footer>
@@ -116,11 +131,12 @@ const CreateAlphaCodeModal = ({ show, onHide, onSubmit }) => {
                     Close
                 </Button>
                 <Button variant="primary" onClick={handleSubmit}>
-                    Create
+                    Save Changes
                 </Button>
             </Modal.Footer>
         </Modal>
-    );
-};
+    )
+}
 
-export default CreateAlphaCodeModal;
+export default UpdateAlphaCodeModal;
+

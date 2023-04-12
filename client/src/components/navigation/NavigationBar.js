@@ -12,28 +12,28 @@ const NavigationBar = () => {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className=" full-width-tabs" variant="tabs">
                         <Nav.Item>
-                            <Nav.Link as={NavLink} to="/shifts" activeClassName="active">
+                            <NavLink className="nav-link" to="/shifts" activeclassname="active">
                                 {/* <FcCalendar className="nav-icon-size" /> */}
                                 Schedule
-                            </Nav.Link>
+                            </NavLink>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={NavLink} to="/bookings" activeClassName="active">
+                            <NavLink className="nav-link" to="/bookings" activeclassname="active">
                                 {/* <FcOvertime className="nav-icon-size" /> */}
                                 Bookings
-                            </Nav.Link>
+                            </NavLink>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={NavLink} to="/employees" activeClassName="active">
+                            <NavLink className="nav-link" to="/employees" activeclassname="active">
                                 {/* <FcConferenceCall className="nav-icon-size" /> */}
                                 Employees
-                            </Nav.Link>
+                            </NavLink>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={NavLink} to="/payroll/timesheets" activeClassName="active">
+                            <NavLink className="nav-link" to="/payroll/timesheets" activeclassname="active">
                                 {/* <FcMoneyTransfer className="nav-icon-size" /> */}
                                 Payroll
-                            </Nav.Link>
+                            </NavLink>
                         </Nav.Item>
                     </Nav>
                 </Navbar.Collapse>

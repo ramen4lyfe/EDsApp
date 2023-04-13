@@ -16,17 +16,7 @@ const CreateAlphaCodeModal = ({ show, onHide, onSubmit }) => {
                 alphaCode,
                 description,
                 payRate,
-                overtimeRate,
-                doubleTimeRate,
-                // trainingRate,
-
             });
-
-            // if (response.status === 200) {
-            //     alert('Alpha code created successfully');
-            // } else {
-            //     alert('Failed to create alpha code');
-            // }
         } catch (error) {
             console.error('Error creating alpha code:', error);
             alert('Failed to create alpha code');
@@ -35,9 +25,6 @@ const CreateAlphaCodeModal = ({ show, onHide, onSubmit }) => {
         setAlphaCode('');
         setDescription('');
         setPayRate('');
-        setOvertimeRate('');
-        setDoubleTimeRate('');
-        // setTrainingRate('');
         onHide();
     };
 
@@ -51,13 +38,11 @@ const CreateAlphaCodeModal = ({ show, onHide, onSubmit }) => {
                         <InputGroup className='mb-3'>
                         <InputGroup.Text>Alpha Code</InputGroup.Text>
                         <Form.Control
-                            // type="text"
                             value={alphaCode}
                             onChange={(e) => setAlphaCode(e.target.value)}
                             required
                         />
                         </InputGroup>
-
                         <InputGroup className='mb-3'>
                         <InputGroup.Text>Description</InputGroup.Text>
                         <Form.Control
@@ -66,7 +51,6 @@ const CreateAlphaCodeModal = ({ show, onHide, onSubmit }) => {
                             required
                         />
                         </InputGroup>
-
                         <InputGroup>
                         <InputGroup.Text>Pay Rate</InputGroup.Text>
                         <InputGroup.Text>$</InputGroup.Text>
@@ -77,38 +61,6 @@ const CreateAlphaCodeModal = ({ show, onHide, onSubmit }) => {
                             required
                         />
                         </InputGroup>
-
-                        {/* <InputGroup>
-                        <InputGroup.Text>Overtime Rate</InputGroup.Text>
-                        <InputGroup.Text>$</InputGroup.Text>
-                        <Form.Control
-
-                            value={overtimeRate}
-                            onChange={(e) => setOvertimeRate(e.target.value)}
-                            required
-                        />
-                        </InputGroup>
-
-                        <InputGroup>
-                        <InputGroup.Text>Double Time Rate</InputGroup.Text>
-                        <InputGroup.Text>$</InputGroup.Text>
-                        <Form.Control
-
-                            value={doubleTimeRate}
-                            onChange={(e) => setDoubleTimeRate(e.target.value)}
-                            required
-                        />
-                        </InputGroup> */}
-
-                        {/* <InputGroup>
-                        <InputGroup.Text>Training Rate</InputGroup.Text>
-                        <InputGroup.Text>$</InputGroup.Text>
-                        <Form.Control
-                            value={trainingRate}
-                            onChange={(e) => setTrainingRate(e.target.value)}
-                            required
-                        />
-                        </InputGroup> */}
                 </Form>
             </Modal.Body>
             <Modal.Footer>

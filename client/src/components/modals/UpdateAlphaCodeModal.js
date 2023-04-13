@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Modal, Form, InputGroup } from 'react-bootstrap'
 import axios from 'axios'
 
-const UpdateAlphaCodeModal = ({ show, onHide, alphaCodeId }) => {
+const UpdateAlphaCodeModal = ({ show, onHide, alphaCodeId, alphaCode: initialAlphaCode }) => {
     const [alphaCode, setAlphaCode] = useState('')
     const [description, setDescription] = useState('')
     const [payRate, setPayRate] = useState('')
@@ -15,14 +15,11 @@ const UpdateAlphaCodeModal = ({ show, onHide, alphaCodeId }) => {
         const fetchAlphaCode = async () => {
             try {
                 const response = await axios.get(`http://localhost:8000/api/alphaCodes/${alphaCodeId}`);
-                const { alphaCode, description, payRate, overtimeRate, doubleTimeRate, trainingRate } = response.data;
+                const { alphaCode, description, payRate } = response.data;
                 setAlphaCode(alphaCode);
                 setDescription(description);
                 setPayRate(payRate);
-                setOvertimeRate(overtimeRate);
-                setDoubleTimeRate(doubleTimeRate);
-                setTrainingRate(trainingRate);
-            } catch (error) {
+               } catch (error) {
                 console.error('Error fetching alpha code:', error);
             }
         };
@@ -35,16 +32,7 @@ const UpdateAlphaCodeModal = ({ show, onHide, alphaCodeId }) => {
                 alphaCode,
                 description,
                 payRate,
-                overtimeRate,
-                doubleTimeRate,
-                trainingRate,
             });
-
-            // if (response.status === 200) {
-            //     alert('Alpha code updated successfully');
-            // } else {
-            //     alert('Failed to update alpha code');
-            // }
         } catch (error) {
             console.error('Error updating alpha code:', error);
             alert('Failed to update alpha code');
@@ -53,9 +41,6 @@ const UpdateAlphaCodeModal = ({ show, onHide, alphaCodeId }) => {
         setAlphaCode('');
         setDescription('');
         setPayRate('');
-        setOvertimeRate('');
-        setDoubleTimeRate('');
-        setTrainingRate('');
         onHide();
     };
 
@@ -92,36 +77,6 @@ const UpdateAlphaCodeModal = ({ show, onHide, alphaCodeId }) => {
                             value={payRate}
                             onChange={(e) => setPayRate(e.target.value)}
                             required
-                        />
-                    </InputGroup>
-
-                    <InputGroup>
-                        <InputGroup.Text>Overtime Rate</InputGroup.Text>
-                        <InputGroup.Text>$</InputGroup.Text>
-                        <Form.Control
-                            type="number"
-                            value={overtimeRate}
-                            onChange={(e) => setOvertimeRate(e.target.value)}
-                        />
-                    </InputGroup>
-
-                    <InputGroup>
-                        <InputGroup.Text>Double Time Rate</InputGroup.Text>
-                        <InputGroup.Text>$</InputGroup.Text>
-                        <Form.Control
-                            type="number"
-                            value={doubleTimeRate}
-                            onChange={(e) => setDoubleTimeRate(e.target.value)}
-                        />
-                    </InputGroup>
-
-                    <InputGroup>
-                        <InputGroup.Text>Training Rate</InputGroup.Text>
-                        <InputGroup.Text>$</InputGroup.Text>
-                        <Form.Control
-                            type="number"
-                            value={trainingRate}
-                            onChange={(e) => setTrainingRate(e.target.value)}
                         />
                     </InputGroup>
                 </Form>

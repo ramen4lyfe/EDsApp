@@ -8,18 +8,18 @@ const createAlphaCode = async (req, res) => {
             alphaCode,
             description,
             payRate,
-            overtimeRate,
-            doubleTimeRate,
-            trainingRate,
+            // overtimeRate,
+            // doubleTimeRate,
+            // trainingRate,
         } = req.body;
 
         const newAlphaCode = new AlphaCode({
             alphaCode,
             description,
             payRate,
-            overtimeRate,
-            doubleTimeRate,
-            trainingRate,
+            // overtimeRate,
+            // doubleTimeRate,
+            // trainingRate,
         });
 
         const savedAlphaCode = await newAlphaCode.save();

@@ -6,33 +6,20 @@ import CreateAlphaCodeModal from './modals/CreateAlphaCodeModal';
 import { BiPencil, BiTrash } from 'react-icons/bi';
 import UpdateAlphaCodeModal from './modals/UpdateAlphaCodeModal';
 
-
-
-
 const AlphaCodes = () => {
     const [alphaCode, setAlphaCode] = useState([])
     const [description, setDescription] = useState([])
     const [payRate, setPayRate] = useState([])
     const [show, setShow] = useState(false);
-    const [overtimeRate, setOvertimeRate] = useState([1.5])//overtime rate is 1.5 times pay rate
-    const [doubleTimeRate, setDoubleTimeRate] = useState([2])//double time rate is 2 times pay rate
-    // const [trainingRate, setTrainingRate] = useState([0.5])//training rate is base + 1
+    const [showCreateModal, setShowCreateModal] = useState(false);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [alphaCodeId, setAlphaCodeId] = useState('');
+    const [selectedAlphaCode, setSelectedAlphaCode] = useState(null);
 
+    const handleShowCreateModal = () => setShowCreateModal(true);
+    const handleCloseCreateModal = () => setShowCreateModal(false);
 
-
-    const handleShow = () => setShow(true);
-    const handleClose = () => setShow(false);
-
-    useEffect(() => {
-        axios.get('http://localhost:8000/api/alphaCodes')
-            .then(res => {
-                setAlphaCode(res.data)
-            }
-            )
-            .catch(err => console.log(err))
-    }, [show,])
+    
 
     const handleDeleteAlphaCode = async (id) => {
         try {
@@ -43,10 +30,13 @@ const AlphaCodes = () => {
         }
     }
 
-    const handleShowUpdateModal = (alphaCode) => {
+    const handleShowUpdateModal = (alphaCodeId) => {
+        const selectedAlphaCode = alphaCode.find(ac => ac._id === alphaCodeId);
+        setAlphaCodeId(alphaCodeId);
         setShowUpdateModal(true);
-        setAlphaCode(alphaCode);
+        setSelectedAlphaCode(selectedAlphaCode); 
     }
+
 
     const handleCloseUpdateModal = () => {
         setShowUpdateModal(false);
@@ -62,6 +52,14 @@ const AlphaCodes = () => {
         }
     }
 
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/alphaCodes')
+            .then(res => {
+                setAlphaCode(res.data)
+            }
+            )
+            .catch(err => console.log(err))
+    }, [show,])
 
 
 
@@ -72,14 +70,14 @@ const AlphaCodes = () => {
                     <PayrollNav />
                 </Col>
                 <Col md={10} className="p-3">
-                    <Row className='d-flex align-items-center'> 
+                    <Row className='d-flex align-items-center'>
                         <Col>
                             <h3> Alpha Codes</h3>
                         </Col>
                         <Col>
                             <ButtonGroup className="float-right">
-                                <Button variant="primary" onClick={handleShow}>Create Alpha Code</Button>
-                                <CreateAlphaCodeModal show={show} onHide={() => setShow(false)} />
+                                <Button variant="primary" onClick={handleShowCreateModal}>Create Alpha Code</Button>
+                                <CreateAlphaCodeModal show={showCreateModal} onHide={() => setShowCreateModal(false)} />
                             </ButtonGroup>
 
                         </Col>
@@ -98,16 +96,18 @@ const AlphaCodes = () => {
                                 <tr key={index}>
                                     <td>
                                         <ButtonGroup className=" d-flex justify-content-center">
-                                            <Button 
-                                                variant="light" 
+                                            <Button
+                                                variant="light"
                                                 size="sm"
-                                                onClick={() => setShow(true)}>
+                                                onClick={() => handleShowUpdateModal(alphaCode._id)}>
                                                 <BiPencil />
-                                                <UpdateAlphaCodeModal show={show} onHide={() => setShow(false)} />
                                             </Button>
-                                            <Button 
-                                                variant="light" 
-                                                size="sm" 
+                                            <UpdateAlphaCodeModal show={showUpdateModal} onHide={() => setShowUpdateModal(false)} alphaCode={selectedAlphaCode} />
+
+
+                                            <Button
+                                                variant="light"
+                                                size="sm"
                                                 onClick={() => handleDeleteAlphaCode(alphaCode._id)}>
                                                 <BiTrash />
                                             </Button>

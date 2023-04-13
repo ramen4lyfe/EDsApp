@@ -14,18 +14,6 @@ const alphaCodeSchema = new mongoose.Schema({
         type: Number,
         required: [true],
     },
-    // overtimeRate: {
-    //     type: Number,
-    //     // required: [true],
-    // },
-    // doubleTimeRate: {
-    //     type: Number,
-    //     // required: [true],
-    // },
-    // trainingRate: {
-    //     type: Number,
-    //     // required: [true],
-    // },
     createdAt: {
         type: Date,
         default: Date.now,

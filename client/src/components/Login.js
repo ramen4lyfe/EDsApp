@@ -21,7 +21,7 @@ const Login = ({ onLogin }) => {
 
         try {
             // Replace this URL with your own backend API endpoint
-            const response = await fetch('https://your-backend-url/api/auth/login', {
+            const response = await fetch('http://localhost:8000/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ const Login = ({ onLogin }) => {
     };
 
     return (
-        <Container>
+        <Container className='login-container'>
             <Row className="justify-content-md-center">
                 <Col md="6">
                     <h1>Login</h1>
@@ -82,7 +82,7 @@ const Login = ({ onLogin }) => {
                         <Button variant="primary" type="submit">
                             Login
                         </Button>
-                        <Link to="/create-account" className="ml-2">
+                        <Link to="/createaccounts" className="ml-2">
                             <Button variant="secondary">Create an Account</Button>
                         </Link>
                     </Form>

@@ -1,10 +1,14 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const authRoutes = require("./routes/authRoutes");
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({
+    extended: true
+}));
+app.use('/api/auth', authRoutes);
 require("./config/mongoose.config");
 // require all the routes files to make connection between the routes and the controllers
 require("./routes/employee.routes")(app);

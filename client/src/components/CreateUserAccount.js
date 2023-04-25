@@ -1,6 +1,9 @@
 // src/components/CreateUserAccount.js
 import React, { useState } from 'react';
 import { Container, Form, Button, Row, Col } from 'react-bootstrap';
+import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+
 
 const CreateUserAccount = () => {
     const [formData, setFormData] = useState({
@@ -10,14 +13,26 @@ const CreateUserAccount = () => {
         password: '',
     });
 
+    const navigate = useNavigate();
+
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Perform user account creation logic here
+
+        try {
+            // Replace this URL with your own backend API endpoint
+            const response = await axios.post('http://localhost:8000/api/user', formData);
+
+            // Redirect the user to the appropriate page after successful account creation
+            navigate('/login'); // Replace this with your desired page
+        } catch (err) {
+            console.error('An error occurred during account creation:', err);
+        }
+
         console.log('User account created:', formData);
     };
 

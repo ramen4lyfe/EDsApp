@@ -8,8 +8,13 @@ import NavigationBar from './components/navigation/NavigationBar';
 import { EmployeeProvider } from './components/context/EmployeeContext';
 import Timesheets from './components/Timesheets';
 import AlphaCodes from './components/AlphaCodes';
+import CreateUserAccount from './components/CreateUserAccount';
+import Login from './components/Login';
+import  { useState } from 'react';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
     <BrowserRouter>
       <EmployeeProvider>
@@ -22,6 +27,8 @@ function App() {
           <Route path="/payroll/timesheets" element={<Timesheets />} />
           <Route path="/update/:id" element={<UpdateEmployeeModal />} />
           <Route path="/payroll/alphacodes" element={<AlphaCodes />} />
+          <Route path="/createaccounts" element={<CreateUserAccount />} />
+          <Route path="/login" element={<Login onLogin={() => setIsLoggedIn(true)} />} />
         </Routes>
       </EmployeeProvider>
     </BrowserRouter>

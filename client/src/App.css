@@ -81,3 +81,8 @@
   flex-direction: column;
   justify-content: center;
 }
+
+.email-input {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='190' height='20' viewBox='0 0 150 20'%3E%3Ctext x='0' y='15' font-size='15' font-family='Arial, Helvetica, sans-serif'%3E%40edscapadegames.com%3C/text%3E%3C/svg%3E") no-repeat right 10px center;
+    padding-right: 170px;
+}

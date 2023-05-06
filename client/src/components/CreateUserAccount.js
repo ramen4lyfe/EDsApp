@@ -6,6 +6,7 @@ import axios from 'axios';
 import Card from 'react-bootstrap/Card';
 
 
+
 const CreateUserAccount = () => {
     const [formData, setFormData] = useState({
         firstName: '',
@@ -15,7 +16,9 @@ const CreateUserAccount = () => {
     });
 
     const [showPassword, setShowPassword] = useState(false);
-    
+
+    const [confirmPassword, setConfirmPassword] = useState('');
+
     const navigate = useNavigate();
 
     const handleChange = (event) => {
@@ -24,22 +27,24 @@ const CreateUserAccount = () => {
     };
 
     const handleShowPassword = () => setShowPassword(!showPassword);
-    
+
+    const handleConfirmPasswordChange = (event) => setConfirmPassword(event.target.value);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        if (formData.password !== confirmPassword) {
+            alert("Passwords do not match!");
+            return;
+        }
         try {
-            // Replace this URL with your own backend API endpoint
             const response = await axios.post('http://localhost:8000/api/user', formData);
-
-            // Redirect the user to the appropriate page after successful account creation
-            navigate('/login'); // Replace this with your desired page
+            navigate('/login');
         } catch (err) {
             console.error('An error occurred during account creation:', err);
         }
 
-        console.log('User account created:');
+        console.log('User account created successfully!');
     };
 
     return (
@@ -81,27 +86,45 @@ const CreateUserAccount = () => {
                                     value={formData.email}
                                     onChange={handleChange}
                                     required
-                                    placeholder='Username'
-                                    className='mb-4 email-input'
-                                />
-
-
-                                <Form.Control
-                                    type={showPassword ? "text" : "password"}
-                                    name="password"
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    required
-                                    placeholder='Password'
+                                    placeholder='Username@edscapadegames.com'
                                     className='mb-4'
                                 />
-                                <Form.Group controlId="showPassword" className="mb-4">
-                                    <Form.Check
-                                        type="checkbox"
-                                        label="Show Password"
-                                        onChange={handleShowPassword}
-                                    />
-                                </Form.Group>
+
+                                <Row>
+                                    <Col>
+                                        <Form.Control
+                                            type={showPassword ? "text" : "password"}
+                                            name="password"
+                                            value={formData.password}
+                                            onChange={handleChange}
+                                            required
+                                            placeholder='Password'
+                                            className='mb-4'
+                                        />
+                                    </Col>
+                                    <Col>
+                                        <Form.Control
+                                            type={showPassword ? "text" : "password"}
+                                            name="confirmPassword"
+                                            value={confirmPassword}
+                                            onChange={handleConfirmPasswordChange}
+                                            required
+                                            placeholder="Confirm Password"
+                                            className="mb-4"
+                                        />
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <Form.Group controlId="showPassword" className="mb-4">
+                                            <Form.Check
+                                                type="checkbox"
+                                                label="Show Password"
+                                                onChange={handleShowPassword}
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
                             </Form.Group>
                             <Button variant="primary" type="submit">
                                 Create Account

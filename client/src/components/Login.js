@@ -20,7 +20,6 @@ const Login = ({ onLogin }) => {
         event.preventDefault();
 
         try {
-            // Replace this URL with your own backend API endpoint
             const response = await fetch('http://localhost:8000/api/auth/login', {
                 method: 'POST',
                 headers: {

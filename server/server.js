@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -8,9 +9,10 @@ app.use(express.json());
 app.use(express.urlencoded({
     extended: true
 }));
+
+// Your routes go here
 app.use('/api/auth', authRoutes);
 require("./config/mongoose.config");
-// require all the routes files to make connection between the routes and the controllers
 require("./routes/employee.routes")(app);
 require("./routes/shift.routes")(app);
 require("./routes/booking.routes")(app);
@@ -18,6 +20,8 @@ require("./routes/timelog.routes")(app);
 require("./routes/payRatePerAlphaCode.routes")(app);
 require("./routes/alphaCode.routes")(app);
 require("./routes/user.routes")(app);
-app.listen(8000, () => {
-    console.log("Listening at Port 8000");
+
+const port = process.env.PORT || 8000;
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
